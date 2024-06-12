@@ -1,5 +1,5 @@
 import Header from "./Header";
-import Hello from "./Hello";
+import SignIn from "./SignIn";
 
 import { View } from "react-native";
 import { Route, Routes, Navigate } from "react-router-native";
@@ -9,7 +9,7 @@ const Main = () => {
     <View className="flex flex-grow justify-center items-center">
       <Header />
       <Routes>
-        <Route path="/" element={<Hello />} />
+        <Route path="/" element={<SignIn />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </View>
