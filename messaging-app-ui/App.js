@@ -1,14 +1,18 @@
+import Main from "./src/components/Main";
+
 import { StatusBar } from "expo-status-bar";
-import { Text, View } from "react-native";
+import { NativeRouter } from "react-router-native";
 
 import "./styles.css";
 
 const App = () => {
   return (
-    <View className="flex flex-grow justify-center items-center bg-white">
-      <Text>Hello world!</Text>
+    <>
+      <NativeRouter>
+        <Main />
+      </NativeRouter>
       <StatusBar style="auto" />
-    </View>
+    </>
   );
 };
 
