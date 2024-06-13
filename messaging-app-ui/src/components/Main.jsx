@@ -1,5 +1,6 @@
 import Header from "./Header";
 import SignIn from "./SignIn";
+import SignUp from "./SignUp";
 
 import { View } from "react-native";
 import { Route, Routes, Navigate } from "react-router-native";
@@ -10,6 +11,7 @@ const Main = () => {
       <Header />
       <Routes>
         <Route path="/" element={<SignIn />} />
+        <Route path="/signup" element={<SignUp />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </View>

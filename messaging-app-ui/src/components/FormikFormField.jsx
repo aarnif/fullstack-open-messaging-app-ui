@@ -9,7 +9,10 @@ const FormikFormField = ({ name, ...props }) => {
   return (
     <>
       <Text className="text-md font-medium text-slate-700">
-        {name.toUpperCase()}:
+        {name === "confirmPassword"
+          ? "confirm Password".toUpperCase()
+          : name.toUpperCase()}
+        :
       </Text>
       <TextInput
         style={{ borderColor: showError ? "red" : "#e2e8f0" }}
