@@ -1,3 +1,5 @@
+import useSignIn from "../hooks/useSignIn";
+
 import { Pressable, View, Text } from "react-native";
 import { Formik, useField } from "formik";
 import FormikFormField from "./FormikFormField";
@@ -79,11 +81,26 @@ export const SignInContainer = ({ onSubmit }) => {
 };
 
 const SignIn = () => {
+  const navigate = useNavigate();
+  const [signIn] = useSignIn();
+
   const onSubmit = async (values) => {
     const { username, password } = values;
     console.log("Logging in with the following values:");
     console.log("Username:", username);
     console.log("Password:", password);
+
+    try {
+      const { data } = await signIn({
+        username: username.toLowerCase(),
+        password,
+      });
+      navigate("/");
+      values.username = "";
+      values.password = "";
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return <SignInContainer onSubmit={onSubmit} />;
