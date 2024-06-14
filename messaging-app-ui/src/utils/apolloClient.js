@@ -3,7 +3,7 @@ import { ApolloClient, InMemoryCache, createHttpLink } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 
 const httpLink = createHttpLink({
-  uri: Constants.expoConfig.extra.uri,
+  uri: Constants.expoConfig.extra.apolloUri,
 });
 
 const createApolloClient = (authStorage) => {
