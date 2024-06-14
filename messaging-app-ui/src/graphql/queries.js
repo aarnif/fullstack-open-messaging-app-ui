@@ -8,3 +8,12 @@ export const GET_CURRENT_USER = gql`
     }
   }
 `;
+
+export const GET_CHATS_BY_USER = gql`
+  query AllChatsByUser($userId: ID!) {
+    allChatsByUser(userId: $userId) {
+      id
+      title
+    }
+  }
+`;
