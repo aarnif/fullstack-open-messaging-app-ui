@@ -69,7 +69,7 @@ const SignInForm = ({ onSubmit }) => {
 
 export const SignInContainer = ({ onSubmit, notify }) => {
   return (
-    <View className="w-full flex-grow flex flex-col justify-center items-center">
+    <View className="w-full flex-grow flex flex-col justify-center items-center bg-white">
       <Notify notify={notify} />
       <Formik
         initialValues={initialValues}

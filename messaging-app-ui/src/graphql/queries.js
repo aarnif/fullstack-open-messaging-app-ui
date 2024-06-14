@@ -14,6 +14,21 @@ export const GET_CHATS_BY_USER = gql`
     allChatsByUser(userId: $userId) {
       id
       title
+      image
+      participants {
+        id
+        username
+      }
+      messages {
+        id
+        sender {
+          id
+          username
+          name
+        }
+        content
+        createdAt
+      }
     }
   }
 `;
