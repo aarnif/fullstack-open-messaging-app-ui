@@ -3,8 +3,9 @@ import Chats from "./Chats";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import useAuthStorage from "../hooks/useAuthStorage";
+import useNotify from "../hooks/useNotify";
 
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { View, Text } from "react-native";
 import { Route, Routes, Navigate } from "react-router-native";
 import { useQuery } from "@apollo/client";
@@ -13,6 +14,7 @@ import { GET_CURRENT_USER } from "../graphql/queries";
 
 const Main = () => {
   const authStorage = useAuthStorage();
+  const notify = useNotify();
 
   const { data, error, loading } = useQuery(GET_CURRENT_USER, {
     fetchPolicy: "cache-and-network",
@@ -44,9 +46,12 @@ const Main = () => {
     <View className="flex flex-grow justify-center items-center">
       <Header />
       <Routes>
-        <Route path="/" element={data?.me ? <Chats /> : <SignIn />} />
-        <Route path="/signin" element={<SignIn />} />
-        <Route path="/signup" element={<SignUp />} />
+        <Route
+          path="/"
+          element={data?.me ? <Chats /> : <SignIn notify={notify} />}
+        />
+        <Route path="/signin" element={<SignIn notify={notify} />} />
+        <Route path="/signup" element={<SignUp notify={notify} />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </View>

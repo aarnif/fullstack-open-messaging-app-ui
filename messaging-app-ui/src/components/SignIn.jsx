@@ -1,4 +1,5 @@
 import useSignIn from "../hooks/useSignIn";
+import Notify from "./Notify";
 
 import { Pressable, View, Text } from "react-native";
 import { Formik, useField } from "formik";
@@ -66,9 +67,10 @@ const SignInForm = ({ onSubmit }) => {
   );
 };
 
-export const SignInContainer = ({ onSubmit }) => {
+export const SignInContainer = ({ onSubmit, notify }) => {
   return (
     <View className="w-full flex-grow flex flex-col justify-center items-center">
+      <Notify notify={notify} />
       <Formik
         initialValues={initialValues}
         onSubmit={onSubmit}
@@ -80,9 +82,9 @@ export const SignInContainer = ({ onSubmit }) => {
   );
 };
 
-const SignIn = () => {
+const SignIn = ({ notify }) => {
   const navigate = useNavigate();
-  const [signIn] = useSignIn();
+  const [signIn, result] = useSignIn();
 
   const onSubmit = async (values) => {
     const { username, password } = values;
@@ -98,12 +100,13 @@ const SignIn = () => {
       navigate("/");
       values.username = "";
       values.password = "";
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      console.log("Error signing in:", error);
+      notify.show({ content: result.error.message, isError: true });
     }
   };
 
-  return <SignInContainer onSubmit={onSubmit} />;
+  return <SignInContainer onSubmit={onSubmit} notify={notify} />;
 };
 
 export default SignIn;
