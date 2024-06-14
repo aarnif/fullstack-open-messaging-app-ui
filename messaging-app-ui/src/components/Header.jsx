@@ -1,4 +1,3 @@
-import { StatusBar } from "expo-status-bar";
 import { View, Text, Pressable } from "react-native";
 import { useQuery, useApolloClient } from "@apollo/client";
 import useAuthStorage from "../hooks/useAuthStorage";
@@ -23,7 +22,7 @@ const Header = () => {
 
   return (
     <View className="w-full flex flex-row justify-center items-center py-2 bg-green-600 shadow-lg">
-      <View className="mt-12 flex flex-row">
+      <View className="flex flex-row">
         <View className="flex-grow w-[100px] flex justify-center items-center"></View>
         <View className="flex-grow flex justify-center items-center">
           <Text className="text-xl text-white font-bold">Messaging App</Text>
@@ -36,7 +35,6 @@ const Header = () => {
           )}
         </View>
       </View>
-      <StatusBar style="light" />
     </View>
   );
 };

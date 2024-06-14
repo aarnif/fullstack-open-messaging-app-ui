@@ -5,8 +5,9 @@ import SignUp from "./SignUp";
 import useAuthStorage from "../hooks/useAuthStorage";
 import useNotify from "../hooks/useNotify";
 
-import { useState, useEffect } from "react";
-import { View, Text } from "react-native";
+import { StatusBar } from "expo-status-bar";
+import { useEffect } from "react";
+import { SafeAreaView, View, Text } from "react-native";
 import { Route, Routes, Navigate } from "react-router-native";
 import { useQuery } from "@apollo/client";
 
@@ -43,18 +44,25 @@ const Main = () => {
   console.log("Current user: ", data?.me);
 
   return (
-    <View className="flex flex-grow justify-center items-center">
+    <SafeAreaView className="flex flex-grow justify-center items-center bg-green-600">
+      <StatusBar style="light" />
       <Header />
       <Routes>
         <Route
           path="/"
-          element={data?.me ? <Chats /> : <SignIn notify={notify} />}
+          element={
+            data?.me ? (
+              <Chats userId={data?.me.id} />
+            ) : (
+              <SignIn notify={notify} />
+            )
+          }
         />
         <Route path="/signin" element={<SignIn notify={notify} />} />
         <Route path="/signup" element={<SignUp notify={notify} />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
-    </View>
+    </SafeAreaView>
   );
 };
 
