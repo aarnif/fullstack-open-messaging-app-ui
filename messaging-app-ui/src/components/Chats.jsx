@@ -1,24 +1,20 @@
+import { GET_CHATS_BY_USER } from "../graphql/queries";
+import getLatestMessageTime from "../utils/getLatestMessageTime";
+
 import { View, Text, FlatList, Image } from "react-native";
 import { useQuery } from "@apollo/client";
 
-import { GET_CHATS_BY_USER } from "../graphql/queries";
-
 import Constants from "expo-constants";
-import { formatDistance } from "date-fns";
 
 const imageUrl = Constants.expoConfig.extra.expressUri;
 
 const ChatItem = ({ item }) => {
   // console.log("Chat item:", item);
-  const lastMessage = item.messages[item.messages.length - 1];
-  const latestMessageTime =
-    formatDistance(new Date(lastMessage.createdAt), new Date()).replace(
-      "about",
-      ""
-    ) + " ago";
+
+  const latestMessage = item?.latestMessage ? item.latestMessage : null;
 
   return (
-    <View className="flex-row items-center p-4 border-b border-gray-300">
+    <View className="flex-row items-center p-4">
       <View className="mr-4">
         <Image
           className="w-12 h-12 rounded-full"
@@ -29,11 +25,25 @@ const ChatItem = ({ item }) => {
       </View>
       <View className="flex-1">
         <Text className="text-md font-bold">{item.title}</Text>
-        <Text className="text-gray-600">
-          {lastMessage.sender.name}: {lastMessage.content}
-        </Text>
+        {latestMessage ? (
+          <Text className="text-gray-600">
+            {latestMessage.sender.name}: {latestMessage.content}
+          </Text>
+        ) : (
+          <Text className="text-gray-600">No messages</Text>
+        )}
       </View>
-      <Text className="text-gray-400">{latestMessageTime}</Text>
+      <Text className="text-gray-400">
+        {getLatestMessageTime(latestMessage?.createdAt)}
+      </Text>
+    </View>
+  );
+};
+
+const ChatsHeader = () => {
+  return (
+    <View className="w-full">
+      <Text className="text-2xl font-bold p-4">Chats</Text>
     </View>
   );
 };
@@ -58,6 +68,7 @@ const Chats = ({ userId }) => {
 
   return (
     <FlatList
+      ListHeaderComponent={<ChatsHeader />}
       className="w-full bg-white"
       data={data?.allChatsByUser}
       renderItem={({ item }) => {
