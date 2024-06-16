@@ -8,7 +8,7 @@ const SearchBar = ({ searchByTitle, handleChange }) => {
       <View className="w-full flex-grow flex-row max-h-[50px] p-2 rounded-lg bg-slate-200 text-slate-800">
         <FontAwesomeIcon color={"#475569"} icon={faMagnifyingGlass} />
         <TextInput
-          className="pl-2"
+          className="w-full pl-2"
           placeholder="Search by title"
           value={searchByTitle}
           onChangeText={handleChange}

@@ -1,6 +1,7 @@
 import { GET_CHATS_BY_USER } from "../../graphql/queries";
 import SearchBar from "./SearchBar";
 import ChatItem from "./ChatItem";
+import LoadingIcon from "../LoadingIcon";
 
 import { useState } from "react";
 import { View, Text, FlatList } from "react-native";
@@ -41,7 +42,6 @@ const ChatsList = ({ data }) => {
 
 const Chats = ({ userId }) => {
   const [searchByTitle, setSearchByTitle] = useState("");
-  console.log("Search by title:", searchByTitle);
   const [debouncedSearchByTitle, setDebouncedSearchByTitle] = useDebounce(
     searchByTitle,
     500
@@ -65,10 +65,8 @@ const Chats = ({ userId }) => {
     <View className="w-full flex justify-center items-center bg-white">
       <ChatsHeader searchByTitle={searchByTitle} handleChange={handleChange} />
       {loading ? (
-        <View className="flex justify-start items-center">
-          <Text className="mt-8 text-2xl font-bold text-slate-200">
-            Loading...
-          </Text>
+        <View className="flex justify-end items-center">
+          <LoadingIcon />
         </View>
       ) : (
         <ChatsList data={data?.allChatsByUser} />

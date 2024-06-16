@@ -35,7 +35,7 @@ const Main = () => {
       <View className="flex flex-grow justify-center items-center">
         <Header />
         <View className="flex flex-grow justify-center items-center">
-          <Text className="text-4xl font-bold text-slate-200">Loading...</Text>
+          <LoadingIcon />
         </View>
       </View>
     );
