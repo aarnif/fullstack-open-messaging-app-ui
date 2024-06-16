@@ -1,5 +1,5 @@
 import Header from "./Header";
-import Chats from "./Chats";
+import Chats from "./Chats/index";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import useAuthStorage from "../hooks/useAuthStorage";
