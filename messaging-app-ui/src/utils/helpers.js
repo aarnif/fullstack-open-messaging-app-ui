@@ -8,4 +8,9 @@ const getLatestMessageTime = (latestMessageTime) =>
       ) + " ago"
     : null;
 
-export default getLatestMessageTime;
+const sliceLatestMessage = (latestMessage) =>
+  latestMessage.length > 30
+    ? latestMessage.slice(0, 30) + "..."
+    : latestMessage;
+
+export default { getLatestMessageTime, sliceLatestMessage };
