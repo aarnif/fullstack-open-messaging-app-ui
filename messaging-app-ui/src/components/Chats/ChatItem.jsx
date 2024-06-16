@@ -10,7 +10,7 @@ const ChatItem = ({ item }) => {
 
   if (!item.messages.length) {
     return (
-      <View className="flex-row items-center p-4">
+      <View className="flex flex-row items-center my-2 mx-4">
         <View className="mr-4">
           <Image
             className="w-12 h-12 rounded-full"
@@ -28,7 +28,7 @@ const ChatItem = ({ item }) => {
   }
 
   return (
-    <View className="flex-row items-center p-4">
+    <View className="flex flex-row items-center my-2 mx-4">
       <View className="mr-4">
         <Image
           className="w-12 h-12 rounded-full"

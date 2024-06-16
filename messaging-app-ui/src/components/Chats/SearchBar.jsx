@@ -1,14 +1,19 @@
 import { View, Text, TextInput } from "react-native";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 const SearchBar = ({ searchByTitle, handleChange }) => {
   return (
     <View className="mx-4 my-2">
-      <TextInput
-        className="w-full flex-grow max-h-[50px] p-2 border rounded-lg bg-slate-200 text-slate-800"
-        placeholder="Search by title"
-        value={searchByTitle}
-        onChangeText={handleChange}
-      />
+      <View className="w-full flex-grow flex-row max-h-[50px] p-2 rounded-lg bg-slate-200 text-slate-800">
+        <FontAwesomeIcon color={"#475569"} icon={faMagnifyingGlass} />
+        <TextInput
+          className="pl-2"
+          placeholder="Search by title"
+          value={searchByTitle}
+          onChangeText={handleChange}
+        />
+      </View>
     </View>
   );
 };
