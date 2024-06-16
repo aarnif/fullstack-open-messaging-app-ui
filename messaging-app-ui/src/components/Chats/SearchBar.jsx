@@ -1,52 +1,14 @@
 import { View, Text, TextInput } from "react-native";
-import { useField } from "formik";
 
-const SearchFormField = ({ name, ...props }) => {
-  const [field, meta, helpers] = useField(name);
-  const showError = meta.touched && meta.error;
-
+const SearchBar = ({ searchByTitle, handleChange }) => {
   return (
-    <>
-      <Text className="text-md font-medium text-slate-700">
-        {name === "confirmPassword"
-          ? "confirm Password".toUpperCase()
-          : name.toUpperCase()}
-        :
-      </Text>
+    <View className="mx-4 my-2">
       <TextInput
-        style={{ borderColor: showError ? "red" : "#e2e8f0" }}
         className="w-full flex-grow max-h-[50px] p-2 border rounded-lg bg-slate-200 text-slate-800"
-        onChangeText={(value) => helpers.setValue(value)}
-        onBlur={() => helpers.setTouched(true)}
-        value={field.value}
-        error={showError}
-        {...props}
-      />
-      <View className="h-[20px]">
-        {showError && (
-          <Text className="text-md text-red-600">{meta.error}</Text>
-        )}
-      </View>
-    </>
-  );
-};
-
-const SearchBar = ({ setTitle }) => {
-  const [searchField, searchMeta, searchHelpers] = useField("search");
-
-  const handleChange = (text) => {
-    searchHelpers.setValue(text);
-    setTitle(text);
-  };
-
-  return (
-    <View className="px-4">
-      <SearchFormField
-        name="search"
         placeholder="Search by title"
-        value={searchField.value}
+        value={searchByTitle}
         onChangeText={handleChange}
-      ></SearchFormField>
+      />
     </View>
   );
 };

@@ -10,8 +10,8 @@ export const GET_CURRENT_USER = gql`
 `;
 
 export const GET_CHATS_BY_USER = gql`
-  query AllChatsByUser($userId: ID!) {
-    allChatsByUser(userId: $userId) {
+  query AllChatsByUser($userId: ID!, $searchByTitle: String) {
+    allChatsByUser(userId: $userId, searchByTitle: $searchByTitle) {
       id
       title
       image

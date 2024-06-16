@@ -5,52 +5,75 @@ import ChatItem from "./ChatItem";
 import { useState } from "react";
 import { View, Text, FlatList } from "react-native";
 import { useQuery } from "@apollo/client";
-import { Formik } from "formik";
+import { useDebounce } from "use-debounce";
 
-const ChatsHeader = ({ setTitle }) => {
+const ChatsHeader = ({ searchByTitle, handleChange }) => {
   return (
-    <View className="w-full">
-      <Text className="text-2xl font-bold p-4">Chats</Text>
-      <Formik initialValues={{ search: "" }}>
-        <SearchBar setTitle={setTitle} />
-      </Formik>
+    <View className="w-full bg-white">
+      <Text className="text-2xl font-bold mt-4 mx-4 mb-2">Chats</Text>
+      <SearchBar searchByTitle={searchByTitle} handleChange={handleChange} />
     </View>
   );
 };
 
-const Chats = ({ userId }) => {
-  const [title, setTitle] = useState("");
-  const { data, loading } = useQuery(GET_CHATS_BY_USER, {
-    variables: {
-      userId: userId,
-    },
-    fetchPolicy: "cache-and-network",
-  });
-
-  // console.log("Chats data:", data);
-
-  const filteredChats = data?.allChatsByUser.filter((chat) =>
-    chat.title.toLowerCase().includes(title.toLowerCase())
-  );
-
-  if (loading) {
+const ChatsList = ({ data }) => {
+  if (!data.length) {
     return (
-      <View className="w-full flex flex-grow justify-center items-center bg-white">
-        <Text className="text-4xl font-bold text-slate-200">Loading...</Text>
+      <View className="flex justify-start items-center">
+        <Text className="mt-8 text-2xl font-bold text-slate-200">
+          No chats found
+        </Text>
       </View>
     );
   }
 
   return (
     <FlatList
-      ListHeaderComponent={<ChatsHeader setTitle={setTitle} />}
-      className="w-full bg-white"
-      data={filteredChats}
+      className="w-full"
+      data={data}
       renderItem={({ item }) => {
         return <ChatItem item={item} />;
       }}
       keyExtractor={({ id }) => id}
     />
+  );
+};
+
+const Chats = ({ userId }) => {
+  const [searchByTitle, setSearchByTitle] = useState("");
+  console.log("Search by title:", searchByTitle);
+  const [debouncedSearchByTitle, setDebouncedSearchByTitle] = useDebounce(
+    searchByTitle,
+    500
+  );
+  const { data, loading } = useQuery(GET_CHATS_BY_USER, {
+    variables: {
+      userId: userId,
+      searchByTitle: debouncedSearchByTitle,
+    },
+    fetchPolicy: "cache-and-network",
+  });
+
+  // console.log("Chats data:", data);
+
+  const handleChange = (text) => {
+    console.log("Search value:", text);
+    setSearchByTitle(text);
+  };
+
+  return (
+    <View className="w-full flex justify-center items-center bg-white">
+      <ChatsHeader searchByTitle={searchByTitle} handleChange={handleChange} />
+      {loading ? (
+        <View className="flex justify-start items-center">
+          <Text className="mt-8 text-2xl font-bold text-slate-200">
+            Loading...
+          </Text>
+        </View>
+      ) : (
+        <ChatsList data={data?.allChatsByUser} />
+      )}
+    </View>
   );
 };
 
