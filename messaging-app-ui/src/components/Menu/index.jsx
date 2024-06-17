@@ -2,7 +2,7 @@ import MenuButton from "./MenuButton";
 import { items } from "./MenuItems";
 import MenuItems from "./MenuItems";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { View } from "react-native";
 import {
   useChain,
@@ -16,27 +16,43 @@ const reactSpringAnimationDuration = 0.3;
 
 const Menu = () => {
   const [showMenu, setShowMenu] = useState(false);
+  const [isFirstRender, setIsFirstRender] = useState(true);
 
   const springsOverlayRef = useSpringRef();
   const springsOverlay = useSpring({
     ref: springsOverlayRef,
     from: {
-      translateX: showMenu ? -1000 : 0,
-      opacity: showMenu ? 0 : 1,
+      translateX: !isFirstRender ? -1000 : showMenu ? -1000 : 0,
+      opacity: !isFirstRender ? 0 : showMenu ? 0 : 1,
     },
     to: {
       translateX: showMenu ? 0 : -1000,
       opacity: showMenu ? 1 : 0,
     },
+    immediate: isFirstRender,
   });
+
+  useEffect(() => {
+    setIsFirstRender(false);
+  }, []);
+
+  console.log("First render: ", isFirstRender);
 
   const springsMenuButtonRef = useSpringRef();
   const springsMenuButton = useSpring({
     ref: springsMenuButtonRef,
     from: {
-      rotate: showMenu ? "0deg" : "45deg",
-      backgroundColor: showMenu ? "#16a34a" : "rgba(220, 38, 38, 0.5)",
-      borderColor: showMenu ? "#16a34a" : "#ef4444",
+      rotate: !isFirstRender ? "0deg" : showMenu ? "0deg" : "45deg",
+      backgroundColor: !isFirstRender
+        ? "#16a34a"
+        : showMenu
+        ? "#16a34a"
+        : "rgba(220, 38, 38, 0.5)",
+      borderColor: !isFirstRender
+        ? "#16a34a"
+        : showMenu
+        ? "#16a34a"
+        : "#ef4444",
     },
     to: {
       rotate: showMenu ? "45deg" : "0deg",
