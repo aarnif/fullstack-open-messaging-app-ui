@@ -2,6 +2,7 @@ import { GET_CHATS_BY_USER } from "../../graphql/queries";
 import SearchBar from "./SearchBar";
 import ChatItem from "./ChatItem";
 import LoadingIcon from "../LoadingIcon";
+import Menu from "../Menu";
 
 import { useState } from "react";
 import { View, Text, FlatList } from "react-native";
