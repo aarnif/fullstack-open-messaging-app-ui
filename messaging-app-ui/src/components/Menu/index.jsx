@@ -1,50 +1,41 @@
-import MenuItems from "./MenuItems";
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { View, Pressable } from "react-native";
-import { useSpring, animated } from "@react-spring/native";
+import {
+  useChain,
+  useSpring,
+  useSpringRef,
+  animated,
+} from "@react-spring/native";
 
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons/faPlus";
 
-const MenuButton = ({ showMenu, setShowMenu, overlayAnimation }) => {
-  const [springs, api] = useSpring(() => ({
-    from: {
-      rotate: !showMenu ? "0deg" : "45deg",
-      backgroundColor: !showMenu ? "#16a34a" : "rgba(220, 38, 38, 0.4)",
-    },
-  }));
+const reactSpringAnimationDuration = 0.3;
 
-  const handleClick = () => {
-    console.log("Menu button clicked");
-    setShowMenu(!showMenu);
-    overlayAnimation();
-    api.start({
-      from: {
-        rotate: !showMenu ? "0deg" : "45deg",
-        backgroundColor: !showMenu ? "#16a34a" : "rgba(220, 38, 38, 0.4)",
-      },
-      to: {
-        rotate: !showMenu ? "45deg" : "0deg",
-        backgroundColor: !showMenu ? "rgba(220, 38, 38, 0.4)" : "#16a34a",
-      },
-      config: { duration: 300 },
-    });
-  };
+const MenuButton = ({ showMenu, springsMenuButton, handleClick }) => {
+  // Change icon color manually during animation because react spring does not work with it
+  const [changeIconColor, setChangeIconColor] = useState("white");
+
+  useEffect(() => {
+    setTimeout(() => {
+      setChangeIconColor(showMenu ? "#ef4444" : "white");
+    }, reactSpringAnimationDuration * 1000);
+  }, [showMenu]);
 
   return (
     <Pressable onPress={handleClick}>
       <animated.View
         style={{
-          transform: [{ rotate: springs.rotate }],
-          backgroundColor: springs.backgroundColor,
-          borderColor: !showMenu ? "#16a34a" : "#ef4444",
+          transform: [{ rotate: springsMenuButton.rotate }],
+          backgroundColor: springsMenuButton.backgroundColor,
+          borderColor: springsMenuButton.borderColor,
         }}
         className="w-14 h-14 rounded-full flex justify-center items-center border-2"
       >
-        <MaterialCommunityIcons
-          name="plus"
-          size={50}
-          color={!showMenu ? "white" : "#ef4444"}
+        <FontAwesomeIcon
+          icon={faPlus}
+          size={36}
+          style={{ color: changeIconColor }}
         />
       </animated.View>
     </Pressable>
@@ -54,27 +45,46 @@ const MenuButton = ({ showMenu, setShowMenu, overlayAnimation }) => {
 const Menu = () => {
   const [showMenu, setShowMenu] = useState(false);
 
-  const [springs, api] = useSpring(() => ({
+  const springsOverlayRef = useSpringRef();
+  const springsOverlay = useSpring({
+    ref: springsOverlayRef,
     from: {
+      translateX: showMenu ? -1000 : 0,
+      opacity: showMenu ? 0 : 1,
+    },
+    to: {
       translateX: showMenu ? 0 : -1000,
       opacity: showMenu ? 1 : 0,
     },
-  }));
+  });
 
-  const overlayAnimation = () => {
-    console.log("Overlay clicked");
-    api.start({
-      from: {
-        translateX: showMenu ? 0 : -1000,
-        opacity: showMenu ? 1 : 0,
-      },
-      to: {
-        translateX: showMenu ? -1000 : 0,
-        opacity: showMenu ? 0 : 1,
-      },
-      config: { duration: 300 },
-    });
+  const springsMenuButtonRef = useSpringRef();
+  const springsMenuButton = useSpring({
+    ref: springsMenuButtonRef,
+    from: {
+      rotate: showMenu ? "0deg" : "45deg",
+      backgroundColor: showMenu ? "#16a34a" : "rgba(220, 38, 38, 0.5)",
+      borderColor: showMenu ? "#16a34a" : "#ef4444",
+    },
+    to: {
+      rotate: showMenu ? "45deg" : "0deg",
+      backgroundColor: showMenu ? "rgba(220, 38, 38, 0.5)" : "#16a34a",
+      borderColor: showMenu ? "#ef4444" : "#16a34a",
+    },
+  });
+
+  useChain(
+    showMenu
+      ? [springsOverlayRef, springsMenuButtonRef]
+      : [springsMenuButtonRef, springsOverlayRef],
+    [0, reactSpringAnimationDuration]
+  );
+
+  const handleClick = () => {
+    setShowMenu((showMenu) => !showMenu);
   };
+
+  console.log("showMenu", showMenu);
 
   return (
     <>
@@ -88,8 +98,8 @@ const Menu = () => {
           bottom: -100,
           backgroundColor: "rgba(0, 0, 0, 0.5)",
           zIndex: 10,
-          transform: [{ translateX: springs.translateX }],
-          opacity: springs.opacity,
+          transform: [{ translateX: springsOverlay.translateX }],
+          opacity: springsOverlay.opacity,
         }}
       ></animated.View>
 
@@ -102,11 +112,10 @@ const Menu = () => {
         }}
         className="flex justify-end items-end"
       >
-        {showMenu && <MenuItems />}
         <MenuButton
           showMenu={showMenu}
-          setShowMenu={setShowMenu}
-          overlayAnimation={overlayAnimation}
+          springsMenuButton={springsMenuButton}
+          handleClick={handleClick}
         />
       </View>
     </>
