@@ -66,7 +66,7 @@ const Chats = ({ userId }) => {
   };
 
   return (
-    <View className="w-full flex justify-center items-center bg-white">
+    <>
       <ChatsHeader searchByTitle={searchByTitle} handleChange={handleChange} />
       {loading ? (
         <View className="flex justify-end items-center">
@@ -75,7 +75,7 @@ const Chats = ({ userId }) => {
       ) : (
         <ChatsList data={data?.allChatsByUser} />
       )}
-    </View>
+    </>
   );
 };
 

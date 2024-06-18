@@ -4,7 +4,7 @@ import ContactItem from "./ContactItem";
 import LoadingIcon from "../LoadingIcon";
 
 import { useState } from "react";
-import { View, Text, FlatList } from "react-native";
+import { ScrollView, View, Text, FlatList } from "react-native";
 import { useQuery } from "@apollo/client";
 import { useDebounce } from "use-debounce";
 
@@ -65,7 +65,7 @@ const Contacts = () => {
   };
 
   return (
-    <View className="w-full flex justify-center items-center bg-white">
+    <>
       <ContactsHeader
         searchByTitle={searchByName}
         handleChange={handleChange}
@@ -77,7 +77,7 @@ const Contacts = () => {
       ) : (
         <ContactsList data={data?.allContactsByUser.contacts} />
       )}
-    </View>
+    </>
   );
 };
 
