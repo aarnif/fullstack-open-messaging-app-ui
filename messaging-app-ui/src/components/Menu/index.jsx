@@ -40,7 +40,10 @@ const Menu = () => {
           color={iconColor}
         />
       ),
-      handlePress: () => console.log("Chats"),
+      handlePress: () => {
+        setShowMenu(false);
+        navigate("/");
+      },
     },
     {
       id: "3",
@@ -54,7 +57,10 @@ const Menu = () => {
           color={iconColor}
         />
       ),
-      handlePress: () => console.log("Contacts"),
+      handlePress: () => {
+        setShowMenu(false);
+        navigate("/contacts");
+      },
     },
     {
       id: "4",

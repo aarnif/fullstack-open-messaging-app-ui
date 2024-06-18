@@ -2,6 +2,7 @@ import Header from "./Header";
 import Chats from "./Chats/index";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
+import Contacts from "./Contacts/index";
 import useAuthStorage from "../hooks/useAuthStorage";
 import useNotify from "../hooks/useNotify";
 import Menu from "./Menu";
@@ -71,6 +72,7 @@ const Main = () => {
           />
           <Route path="/signin" element={<SignIn notify={notify} />} />
           <Route path="/signup" element={<SignUp notify={notify} />} />
+          <Route path="/contacts" element={<Contacts />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
         {data?.me && <Menu />}

@@ -41,3 +41,16 @@ export const GET_CHATS_BY_USER = gql`
     }
   }
 `;
+
+export const GET_CONTACTS_BY_USER = gql`
+  query AllContactsByUser($searchByName: String) {
+    allContactsByUser(searchByName: $searchByName) {
+      contacts {
+        id
+        username
+        name
+        about
+      }
+    }
+  }
+`;
