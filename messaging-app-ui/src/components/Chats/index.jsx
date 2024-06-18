@@ -1,8 +1,7 @@
 import { GET_CHATS_BY_USER } from "../../graphql/queries";
-import SearchBar from "./SearchBar";
+import SearchBar from "../SearchBar";
 import ChatItem from "./ChatItem";
 import LoadingIcon from "../LoadingIcon";
-import Menu from "../Menu";
 
 import { useState } from "react";
 import { View, Text, FlatList } from "react-native";
@@ -13,7 +12,11 @@ const ChatsHeader = ({ searchByTitle, handleChange }) => {
   return (
     <View className="w-full bg-white">
       <Text className="text-2xl font-bold mt-4 mx-4 mb-2">Chats</Text>
-      <SearchBar searchByTitle={searchByTitle} handleChange={handleChange} />
+      <SearchBar
+        placeholder={"Search by title..."}
+        searchByTitle={searchByTitle}
+        handleChange={handleChange}
+      />
     </View>
   );
 };

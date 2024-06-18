@@ -5,7 +5,7 @@ import Constants from "expo-constants";
 
 const ChatItem = ({ item }) => {
   // console.log("Chat item:", item);
-  const imageUrl = Constants.expoConfig.extra.expressUri;
+  const imageUrl = Constants.expoConfig.extra.apolloUri;
   const latestMessage = item.latestMessage;
 
   if (!item.messages.length) {
@@ -13,10 +13,10 @@ const ChatItem = ({ item }) => {
       <View className="flex flex-row items-center my-2 mx-4">
         <View className="mr-4">
           <Image
-            className="w-12 h-12 rounded-full"
             source={{
               uri: `${imageUrl}/images/chats/${item.id}`,
             }}
+            style={{ width: 48, height: 48, borderRadius: 9999 }}
           />
         </View>
         <View className="flex-1">
