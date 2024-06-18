@@ -7,7 +7,7 @@ const MenuItem = ({ item }) => {
       className="mb-2 relative max-w-[180px] flex flex-row justify-start items-center"
     >
       <Text className="text-xl font-bold text-slate-200">{item.title}</Text>
-      <Pressable>
+      <Pressable onPress={item.handlePress}>
         <View
           style={{ backgroundColor: item.backgroundColor }}
           className="ml-4 w-14 h-14 flex justify-center items-center bg-slate-400 border-2 border-slate-200 rounded-full shadow-lg"

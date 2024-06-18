@@ -73,7 +73,7 @@ const Main = () => {
           <Route path="/signup" element={<SignUp notify={notify} />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
-        <Menu />
+        {data?.me && <Menu />}
       </View>
     </SafeAreaView>
   );

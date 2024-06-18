@@ -9,10 +9,14 @@ const reactSpringAnimationDuration = 0.3;
 const MenuButton = ({ showMenu, springsMenuButton, handleClick }) => {
   // Change icon color manually during animation because react spring does not work with it
   const [changeIconColor, setChangeIconColor] = useState("white");
+  const [iconName, setIconName] = useState("menu");
+  const [iconSize, setIconSize] = useState(40);
 
   useEffect(() => {
     setTimeout(() => {
       setChangeIconColor(showMenu ? "#ef4444" : "white");
+      setIconName(showMenu ? "plus" : "menu");
+      setIconSize(showMenu ? 50 : 40);
     }, reactSpringAnimationDuration * 1000);
   }, [showMenu]);
 
@@ -26,7 +30,11 @@ const MenuButton = ({ showMenu, springsMenuButton, handleClick }) => {
         }}
         className="w-14 h-14 rounded-full flex justify-center items-center border-2"
       >
-        <MaterialCommunityIcons name="plus" size={50} color={changeIconColor} />
+        <MaterialCommunityIcons
+          name={iconName}
+          size={iconSize}
+          color={changeIconColor}
+        />
       </animated.View>
     </Pressable>
   );

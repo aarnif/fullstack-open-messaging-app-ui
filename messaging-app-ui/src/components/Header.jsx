@@ -4,6 +4,7 @@ import useAuthStorage from "../hooks/useAuthStorage";
 import { useNavigate } from "react-router-native";
 
 import { GET_CURRENT_USER } from "../graphql/queries";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 const Header = () => {
   const authStorage = useAuthStorage();
@@ -29,8 +30,14 @@ const Header = () => {
         </View>
         <View className="flex-grow w-[100px] flex justify-center items-center">
           {data?.me && (
-            <Pressable onPress={signOut}>
-              <Text className="text-md text-white font-bold">Sign Out</Text>
+            <Pressable onPress={() => console.log("Plus icon pressed!")}>
+              <View className="w-8 h-8 rounded-full flex justify-center items-center bg-green-700 shadow-xl">
+                <MaterialCommunityIcons
+                  name={"plus"}
+                  size={24}
+                  color={"white"}
+                />
+              </View>
             </Pressable>
           )}
         </View>

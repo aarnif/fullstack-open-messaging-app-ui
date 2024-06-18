@@ -1,8 +1,10 @@
 import MenuButton from "./MenuButton";
-import { items } from "./MenuItems";
 import MenuItems from "./MenuItems";
+import useAuthStorage from "../../hooks/useAuthStorage";
 
+import { useApolloClient } from "@apollo/client";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-native";
 import { View } from "react-native";
 import {
   useChain,
@@ -11,10 +13,91 @@ import {
   useTransition,
   animated,
 } from "@react-spring/native";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 const reactSpringAnimationDuration = 0.3;
+const iconSize = 32;
+const iconColor = "white";
 
 const Menu = () => {
+  const authStorage = useAuthStorage();
+  const navigate = useNavigate();
+  const client = useApolloClient();
+
+  const menuItemsData = [
+    {
+      id: "1",
+      title: "Profile",
+      positionFromRight: 210,
+      backgroundColor: "#0ea5e9",
+      icon: (
+        <MaterialCommunityIcons
+          name="account-box"
+          size={iconSize}
+          color={iconColor}
+        />
+      ),
+      handlePress: () => console.log("Profile"),
+    },
+    {
+      id: "2",
+      title: "Chats",
+      positionFromRight: 155,
+      backgroundColor: "#22c55e",
+      icon: (
+        <MaterialCommunityIcons
+          name="chat-outline"
+          size={iconSize}
+          color={iconColor}
+        />
+      ),
+      handlePress: () => console.log("Chats"),
+    },
+    {
+      id: "3",
+      title: "Contacts",
+      positionFromRight: 100,
+      backgroundColor: "#f59e0b",
+      icon: (
+        <MaterialCommunityIcons
+          name="contacts"
+          size={iconSize}
+          color={iconColor}
+        />
+      ),
+      handlePress: () => console.log("Contacts"),
+    },
+    {
+      id: "4",
+      title: "Settings",
+      positionFromRight: 55,
+      backgroundColor: "#a855f7",
+      icon: (
+        <MaterialCommunityIcons name="cog" size={iconSize} color={iconColor} />
+      ),
+      handlePress: () => console.log("Settings"),
+    },
+    {
+      id: "5",
+      title: "Sign Out",
+      positionFromRight: 20,
+      backgroundColor: "#ef4444",
+      icon: (
+        <MaterialCommunityIcons
+          name="logout"
+          size={iconSize}
+          color={iconColor}
+        />
+      ),
+      handlePress: () => {
+        console.log("Sign out!");
+        authStorage.removeAccessToken();
+        client.resetStore();
+        navigate("/");
+      },
+    },
+  ];
+
   const [showMenu, setShowMenu] = useState(false);
   const [isFirstRender, setIsFirstRender] = useState(true);
 
@@ -35,8 +118,6 @@ const Menu = () => {
   useEffect(() => {
     setIsFirstRender(false);
   }, []);
-
-  console.log("First render: ", isFirstRender);
 
   const springsMenuButtonRef = useSpringRef();
   const springsMenuButton = useSpring({
@@ -62,9 +143,9 @@ const Menu = () => {
   });
 
   const transRef = useSpringRef();
-  const transitions = useTransition(showMenu ? items : [], {
+  const transitions = useTransition(showMenu ? menuItemsData : [], {
     ref: transRef,
-    trail: 300 / items.length,
+    trail: 300 / menuItemsData.length,
     from: { opacity: 0 },
     enter: { opacity: 1 },
     leave: { opacity: 0 },
@@ -76,10 +157,6 @@ const Menu = () => {
       : [transRef, springsMenuButtonRef, springsOverlayRef],
     [0, reactSpringAnimationDuration, reactSpringAnimationDuration * 2]
   );
-
-  const handleClick = () => {
-    setShowMenu((showMenu) => !showMenu);
-  };
 
   return (
     <>
@@ -111,7 +188,7 @@ const Menu = () => {
         <MenuButton
           showMenu={showMenu}
           springsMenuButton={springsMenuButton}
-          handleClick={handleClick}
+          handleClick={() => setShowMenu((showMenu) => !showMenu)}
         />
       </View>
     </>
