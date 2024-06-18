@@ -11,8 +11,13 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 const iconSize = 32;
 const iconColor = "white";
+const menuAnimationWaitTime = 900; // Swich routes after menu animation finishes, except when signing out
 
 const Menu = () => {
+  const authStorage = useAuthStorage();
+  const navigate = useNavigate();
+  const client = useApolloClient();
+
   const menuItemsData = [
     {
       id: "1",
@@ -42,7 +47,9 @@ const Menu = () => {
       ),
       handlePress: () => {
         setShowMenu(false);
-        navigate("/");
+        setTimeout(() => {
+          navigate("/");
+        }, menuAnimationWaitTime);
       },
     },
     {
@@ -59,7 +66,9 @@ const Menu = () => {
       ),
       handlePress: () => {
         setShowMenu(false);
-        navigate("/contacts");
+        setTimeout(() => {
+          navigate("/contacts");
+        }, menuAnimationWaitTime);
       },
     },
     {
@@ -86,16 +95,13 @@ const Menu = () => {
       ),
       handlePress: () => {
         console.log("Sign out!");
+        navigate("/");
+        setShowMenu(false);
         authStorage.removeAccessToken();
         client.resetStore();
-        navigate("/");
       },
     },
   ];
-
-  const authStorage = useAuthStorage();
-  const navigate = useNavigate();
-  const client = useApolloClient();
 
   const [
     springsOverlay,

@@ -26,6 +26,9 @@ const useMenuAnimation = (menuItemsData) => {
       opacity: showMenu ? 1 : 0,
     },
     immediate: isFirstRender,
+    onRest: () => {
+      console.log("Menu animation finished");
+    },
   });
 
   useEffect(() => {
