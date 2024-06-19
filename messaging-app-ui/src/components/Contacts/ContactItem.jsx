@@ -1,17 +1,15 @@
 import { View, Text, Image } from "react-native";
-
-import Constants from "expo-constants";
+import baseUrl from "../../../baseUrl";
 
 const ContactItem = ({ item }) => {
   // console.log("Chat item:", item);
-  const imageUrl = Constants.expoConfig.extra.apolloUri;
 
   return (
     <View className="flex flex-row items-center my-2 mx-4">
       <View className="mr-4">
         <Image
           source={{
-            uri: `${imageUrl}/images/contacts/${item.id}`,
+            uri: `${baseUrl}/images/contacts/${item.id}`,
           }}
           style={{ width: 48, height: 48, borderRadius: 9999 }}
         />

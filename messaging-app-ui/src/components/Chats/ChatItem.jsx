@@ -1,13 +1,12 @@
+import baseUrl from "../../../baseUrl";
 import helpers from "../../utils/helpers";
 import { View, Pressable, Text, Image } from "react-native";
 
 import { useNavigate } from "react-router-native";
-import Constants from "expo-constants";
 
 const ChatItem = ({ item }) => {
   const navigate = useNavigate();
   // console.log("Chat item:", item);
-  const imageUrl = Constants.expoConfig.extra.apolloUri;
   const latestMessage = item.latestMessage;
 
   const handlePress = () => {
@@ -21,7 +20,7 @@ const ChatItem = ({ item }) => {
         <View className="mr-4">
           <Image
             source={{
-              uri: `${imageUrl}/images/chats/${item.id}`,
+              uri: `${baseUrl}/images/chats/${item.id}`,
             }}
             style={{ width: 48, height: 48, borderRadius: 9999 }}
           />
@@ -41,7 +40,7 @@ const ChatItem = ({ item }) => {
           <Image
             className="w-12 h-12 rounded-full"
             source={{
-              uri: `${imageUrl}/images/chats/${item.id}`,
+              uri: `${baseUrl}/images/chats/${item.id}`,
             }}
           />
         </View>
