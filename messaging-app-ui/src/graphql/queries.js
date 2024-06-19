@@ -70,7 +70,9 @@ export const GET_CHAT_BY_ID = gql`
         id
         content
         sender {
+          id
           username
+          name
         }
         createdAt
       }
