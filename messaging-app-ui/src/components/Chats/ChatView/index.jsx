@@ -1,8 +1,8 @@
 import { GET_CHAT_BY_ID } from "../../../graphql/queries";
 import LoadingIcon from "../../LoadingIcon";
 import ChatHeader from "./ChatHeader";
+import Messages from "./Messages";
 
-import { View, Text } from "react-native";
 import { useQuery } from "@apollo/client";
 import { useMatch } from "react-router-native";
 
@@ -15,16 +15,17 @@ const ChatView = ({ user }) => {
     fetchPolicy: "cache-and-network",
   });
 
-  console.log("Match:", match.chatId);
-  console.log("Chat view data:", data);
+  // console.log("Match:", match.chatId);
+  // console.log("Chat view data:", data);
+
+  if (loading) {
+    return <LoadingIcon />;
+  }
 
   return (
     <>
-      {loading ? (
-        <LoadingIcon />
-      ) : (
-        <ChatHeader user={user} chat={data?.findChatById} />
-      )}
+      <ChatHeader user={user} chat={data.findChatById} />
+      <Messages user={user} messages={data?.findChatById.messages} />
     </>
   );
 };
