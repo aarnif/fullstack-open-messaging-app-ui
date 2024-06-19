@@ -54,3 +54,25 @@ export const GET_CONTACTS_BY_USER = gql`
     }
   }
 `;
+
+export const GET_CHAT_BY_ID = gql`
+  query FindChatById($chatId: ID!) {
+    findChatById(chatId: $chatId) {
+      id
+      title
+      image
+      participants {
+        id
+        username
+      }
+      messages {
+        id
+        content
+        sender {
+          username
+        }
+        createdAt
+      }
+    }
+  }
+`;

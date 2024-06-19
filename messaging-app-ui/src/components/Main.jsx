@@ -1,5 +1,6 @@
 import Header from "./Header";
 import Chats from "./Chats/index";
+import ChatView from "./Chats/ChatView";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import Contacts from "./Contacts/index";
@@ -60,8 +61,9 @@ const Main = () => {
         <StatusBar style="light" />
         <Header />
         <Routes>
+          <Route path="/" element={<Navigate to="/chats" replace />} />
           <Route
-            path="/"
+            path="/chats"
             element={
               data?.me ? (
                 <Chats userId={data?.me.id} />
@@ -70,6 +72,7 @@ const Main = () => {
               )
             }
           />
+          <Route path="/chats/:id" element={<ChatView />} />
           <Route path="/signin" element={<SignIn notify={notify} />} />
           <Route path="/signup" element={<SignUp notify={notify} />} />
           <Route path="/contacts" element={<Contacts />} />
