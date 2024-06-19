@@ -64,6 +64,7 @@ export const GET_CHAT_BY_ID = gql`
       participants {
         id
         username
+        name
       }
       messages {
         id
