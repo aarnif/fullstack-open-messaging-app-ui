@@ -1,4 +1,5 @@
 import Notify from "./Notify";
+import Header from "./Header";
 
 import { Pressable, View, Text } from "react-native";
 import { Formik, useField } from "formik";
@@ -137,7 +138,12 @@ const SignUp = ({ notify }) => {
     }
   };
 
-  return <SignUpContainer onSubmit={onSubmit} notify={notify} />;
+  return (
+    <>
+      <Header />
+      <SignUpContainer onSubmit={onSubmit} notify={notify} />
+    </>
+  );
 };
 
 export default SignUp;

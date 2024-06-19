@@ -1,5 +1,6 @@
 import useSignIn from "../hooks/useSignIn";
 import Notify from "./Notify";
+import Header from "./Header";
 
 import { Pressable, View, Text } from "react-native";
 import { Formik, useField } from "formik";
@@ -106,7 +107,12 @@ const SignIn = ({ notify }) => {
     }
   };
 
-  return <SignInContainer onSubmit={onSubmit} notify={notify} />;
+  return (
+    <>
+      <Header />
+      <SignInContainer onSubmit={onSubmit} notify={notify} />
+    </>
+  );
 };
 
 export default SignIn;

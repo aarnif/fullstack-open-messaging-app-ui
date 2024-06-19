@@ -1,6 +1,6 @@
 import Header from "./Header";
 import Chats from "./Chats/index";
-import ChatView from "./Chats/ChatView";
+import ChatView from "./Chats/ChatView/index";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import Contacts from "./Contacts/index";
@@ -14,7 +14,6 @@ import { useState, useEffect } from "react";
 import { SafeAreaView, View, Text } from "react-native";
 import { Route, Routes, Navigate } from "react-router-native";
 import { useQuery } from "@apollo/client";
-import { useSpring, animated } from "@react-spring/native";
 
 import { GET_CURRENT_USER } from "../graphql/queries";
 
@@ -25,13 +24,6 @@ const Main = () => {
   const { data, error, loading } = useQuery(GET_CURRENT_USER, {
     fetchPolicy: "cache-and-network",
   });
-
-  const [springs, api] = useSpring(() => ({
-    from: {
-      width: "0vw",
-      opacity: 0,
-    },
-  }));
 
   useEffect(() => {
     const fetchToken = async () => {
@@ -59,7 +51,6 @@ const Main = () => {
     <SafeAreaView style={{ flex: 1 }} className="bg-green-600">
       <View style={{ flex: 1 }} className="bg-white">
         <StatusBar style="light" />
-        <Header />
         <Routes>
           <Route path="/" element={<Navigate to="/chats" replace />} />
           <Route
@@ -72,7 +63,7 @@ const Main = () => {
               )
             }
           />
-          <Route path="/chats/:id" element={<ChatView />} />
+          <Route path="/chats/:id" element={<ChatView user={data?.me} />} />
           <Route path="/signin" element={<SignIn notify={notify} />} />
           <Route path="/signup" element={<SignUp notify={notify} />} />
           <Route path="/contacts" element={<Contacts />} />

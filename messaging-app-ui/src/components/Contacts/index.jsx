@@ -1,10 +1,11 @@
 import { GET_CONTACTS_BY_USER } from "../../graphql/queries";
+import Header from "../Header";
 import SearchBar from "../SearchBar";
 import ContactItem from "./ContactItem";
 import LoadingIcon from "../LoadingIcon";
 
 import { useState } from "react";
-import { ScrollView, View, Text, FlatList } from "react-native";
+import { View, Text, FlatList } from "react-native";
 import { useQuery } from "@apollo/client";
 import { useDebounce } from "use-debounce";
 
@@ -66,6 +67,7 @@ const Contacts = () => {
 
   return (
     <>
+      <Header />
       <ContactsHeader
         searchByTitle={searchByName}
         handleChange={handleChange}

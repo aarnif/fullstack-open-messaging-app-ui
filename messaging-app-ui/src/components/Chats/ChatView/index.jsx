@@ -1,11 +1,12 @@
-import { GET_CHAT_BY_ID } from "../../graphql/queries";
-import LoadingIcon from "../LoadingIcon";
+import { GET_CHAT_BY_ID } from "../../../graphql/queries";
+import LoadingIcon from "../../LoadingIcon";
+import ChatHeader from "./ChatHeader";
 
 import { View, Text } from "react-native";
 import { useQuery } from "@apollo/client";
 import { useMatch } from "react-router-native";
 
-const ChatView = () => {
+const ChatView = ({ user }) => {
   const match = useMatch("/chats/:chatId").params;
   const { data, loading } = useQuery(GET_CHAT_BY_ID, {
     variables: {
@@ -18,9 +19,13 @@ const ChatView = () => {
   console.log("Chat view data:", data);
 
   return (
-    <View className="flex justify-center items-center">
-      {loading ? <LoadingIcon /> : <Text>{data?.findChatById.title}</Text>}
-    </View>
+    <>
+      {loading ? (
+        <LoadingIcon />
+      ) : (
+        <ChatHeader user={user} chat={data?.findChatById} />
+      )}
+    </>
   );
 };
 

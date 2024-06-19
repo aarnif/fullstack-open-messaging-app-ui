@@ -1,4 +1,5 @@
 import { GET_CHATS_BY_USER } from "../../graphql/queries";
+import Header from "../Header";
 import SearchBar from "../SearchBar";
 import ChatItem from "./ChatItem";
 import LoadingIcon from "../LoadingIcon";
@@ -67,6 +68,7 @@ const Chats = ({ userId }) => {
 
   return (
     <>
+      <Header />
       <ChatsHeader searchByTitle={searchByTitle} handleChange={handleChange} />
       {loading ? (
         <View className="flex justify-end items-center">
