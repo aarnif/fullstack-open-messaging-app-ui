@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-native";
 const ChatItem = ({ item }) => {
   const navigate = useNavigate();
   // console.log("Chat item:", item);
-  const latestMessage = item.latestMessage;
+  const latestMessage = item.messages[0];
 
   const handlePress = () => {
     console.log("Pressed chat titled:", item.title);

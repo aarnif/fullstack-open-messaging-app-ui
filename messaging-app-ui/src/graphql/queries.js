@@ -29,15 +29,6 @@ export const GET_CHATS_BY_USER = gql`
         content
         createdAt
       }
-      latestMessage {
-        sender {
-          id
-          username
-          name
-        }
-        content
-        createdAt
-      }
     }
   }
 `;
