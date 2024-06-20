@@ -3,6 +3,7 @@ import Header from "../Header";
 import SearchBar from "../SearchBar";
 import ChatItem from "./ChatItem";
 import LoadingIcon from "../LoadingIcon";
+import Menu from "../Menu";
 
 import { useState } from "react";
 import { View, Text, FlatList } from "react-native";
@@ -45,7 +46,7 @@ const ChatsList = ({ data }) => {
   );
 };
 
-const Chats = ({ userId }) => {
+const Chats = ({ user }) => {
   const [searchByTitle, setSearchByTitle] = useState("");
   const [debouncedSearchByTitle, setDebouncedSearchByTitle] = useDebounce(
     searchByTitle,
@@ -53,7 +54,7 @@ const Chats = ({ userId }) => {
   );
   const { data, loading } = useQuery(GET_CHATS_BY_USER, {
     variables: {
-      userId: userId,
+      userId: user.id,
       searchByTitle: debouncedSearchByTitle,
     },
     fetchPolicy: "cache-and-network",
@@ -77,6 +78,7 @@ const Chats = ({ userId }) => {
       ) : (
         <ChatsList data={data?.allChatsByUser} />
       )}
+      {user && <Menu />}
     </>
   );
 };

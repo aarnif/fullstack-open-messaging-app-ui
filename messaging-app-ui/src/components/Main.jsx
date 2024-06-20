@@ -6,7 +6,6 @@ import SignUp from "./SignUp";
 import Contacts from "./Contacts/index";
 import useAuthStorage from "../hooks/useAuthStorage";
 import useNotify from "../hooks/useNotify";
-import Menu from "./Menu";
 import LoadingIcon from "./LoadingIcon";
 
 import { StatusBar } from "expo-status-bar";
@@ -56,20 +55,15 @@ const Main = () => {
           <Route
             path="/chats"
             element={
-              data?.me ? (
-                <Chats userId={data?.me.id} />
-              ) : (
-                <SignIn notify={notify} />
-              )
+              data?.me ? <Chats user={data?.me} /> : <SignIn notify={notify} />
             }
           />
           <Route path="/chats/:id" element={<ChatView user={data?.me} />} />
           <Route path="/signin" element={<SignIn notify={notify} />} />
           <Route path="/signup" element={<SignUp notify={notify} />} />
-          <Route path="/contacts" element={<Contacts />} />
+          <Route path="/contacts" element={<Contacts user={data?.me} />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
-        {data?.me && <Menu />}
       </View>
     </SafeAreaView>
   );

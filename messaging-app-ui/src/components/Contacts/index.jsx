@@ -3,6 +3,7 @@ import Header from "../Header";
 import SearchBar from "../SearchBar";
 import ContactItem from "./ContactItem";
 import LoadingIcon from "../LoadingIcon";
+import Menu from "../Menu";
 
 import { useState } from "react";
 import { View, Text, FlatList } from "react-native";
@@ -45,7 +46,7 @@ const ContactsList = ({ data }) => {
   );
 };
 
-const Contacts = () => {
+const Contacts = ({ user }) => {
   const [searchByName, setSearchByName] = useState("");
   const [debouncedSearchByName, setDebouncedSearchByName] = useDebounce(
     searchByName,
@@ -79,6 +80,7 @@ const Contacts = () => {
       ) : (
         <ContactsList data={data?.allContactsByUser.contacts} />
       )}
+      {user && <Menu />}
     </>
   );
 };
