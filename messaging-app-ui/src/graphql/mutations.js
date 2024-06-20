@@ -15,3 +15,27 @@ export const CREATE_USER = gql`
     }
   }
 `;
+
+export const ADD_MESSAGE_TO_CHAT = gql`
+  mutation AddMessageToChat($chatId: ID!, $content: String!) {
+    addMessageToChat(chatId: $chatId, content: $content) {
+      id
+      title
+      participants {
+        id
+        username
+        name
+      }
+      messages {
+        id
+        sender {
+          id
+          username
+          name
+        }
+        content
+        createdAt
+      }
+    }
+  }
+`;

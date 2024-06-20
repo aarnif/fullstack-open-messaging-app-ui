@@ -8,7 +8,7 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 const ChatHeader = ({ user, chat }) => {
   const navigate = useNavigate();
 
-  console.log("Chat participants:", chat.participants);
+  // console.log("Chat participants:", chat.participants);
 
   const chatParticipantsString = chat.participants
     .map((participant) =>

@@ -1,8 +1,9 @@
 import Message from "./Message";
+import NewMessage from "./NewMessage";
 
 import { View, Text, FlatList } from "react-native";
 
-const Messages = ({ user, messages }) => {
+const Messages = ({ user, chatId, messages }) => {
   if (!messages.length) {
     return (
       <View className="flex justify-start items-center">
@@ -13,14 +14,18 @@ const Messages = ({ user, messages }) => {
     );
   }
   return (
-    <FlatList
-      className="w-full"
-      data={messages}
-      renderItem={({ item }) => {
-        return <Message user={user} message={item} />;
-      }}
-      keyExtractor={({ id }) => id}
-    />
+    <>
+      <FlatList
+        className="w-full"
+        data={messages}
+        renderItem={({ item }) => {
+          return <Message user={user} message={item} />;
+        }}
+        keyExtractor={({ id }) => id}
+        inverted={true}
+      />
+      <NewMessage chatId={chatId} />
+    </>
   );
 };
 

@@ -25,7 +25,11 @@ const ChatView = ({ user }) => {
   return (
     <>
       <ChatHeader user={user} chat={data.findChatById} />
-      <Messages user={user} messages={data?.findChatById.messages} />
+      <Messages
+        user={user}
+        chatId={match.chatId}
+        messages={data?.findChatById.messages}
+      />
     </>
   );
 };
