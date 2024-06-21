@@ -36,3 +36,13 @@ export const ADD_MESSAGE_TO_CHAT = gql`
 
   ${CHAT_DETAILS}
 `;
+
+export const DELETE_CHAT = gql`
+  mutation DeleteChat($chatId: ID!) {
+    deleteChat(chatId: $chatId) {
+      ...ChatDetails
+    }
+  }
+
+  ${CHAT_DETAILS}
+`;
