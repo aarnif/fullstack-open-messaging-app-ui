@@ -1,7 +1,7 @@
 import { GET_CONTACTS_BY_USER } from "../../graphql/queries";
 import LoadingIcon from "../LoadingIcon";
 import SearchBar from "../SearchBar";
-import ContactItem from "../Contacts/ContactItem";
+import ContactItem from "./ContactItem";
 
 import {
   Modal,
@@ -29,7 +29,7 @@ const ContactsHeader = ({ searchByTitle, handleChange }) => {
   );
 };
 
-const ContactsList = ({ data }) => {
+const ContactsList = ({ user, data, setShowNewChatModal }) => {
   if (!data.length) {
     return (
       <View className="flex-1 justify-start items-center bg-white">
@@ -45,7 +45,13 @@ const ContactsList = ({ data }) => {
       className="w-full bg-white"
       data={data}
       renderItem={({ item }) => {
-        return <ContactItem item={item} />;
+        return (
+          <ContactItem
+            user={user}
+            item={item}
+            setShowNewChatModal={setShowNewChatModal}
+          />
+        );
       }}
       keyExtractor={({ id }) => id}
     />
@@ -95,8 +101,9 @@ const NewChatModal = ({ user, showNewChatModal, setShowNewChatModal }) => {
           </View>
         ) : (
           <ContactsList
+            user={user}
             data={data?.allContactsByUser.contacts}
-            backgroundColor={"white"}
+            setShowNewChatModal={setShowNewChatModal}
           />
         )}
       </SafeAreaView>

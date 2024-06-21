@@ -4,7 +4,7 @@ import { View, Pressable, Text, Image } from "react-native";
 
 import { useNavigate } from "react-router-native";
 
-const ChatItem = ({ item }) => {
+const ChatItem = ({ user, item }) => {
   const navigate = useNavigate();
   // console.log("Chat item:", item);
   const latestMessage = item.messages[0];
@@ -16,20 +16,22 @@ const ChatItem = ({ item }) => {
 
   if (!item.messages.length) {
     return (
-      <View className="flex flex-row items-center my-2 mx-4">
-        <View className="mr-4">
-          <Image
-            source={{
-              uri: `${baseUrl}/images/chats/${item.id}`,
-            }}
-            style={{ width: 48, height: 48, borderRadius: 9999 }}
-          />
+      <Pressable onPress={handlePress}>
+        <View className="flex flex-row items-center my-2 mx-4">
+          <View className="mr-4">
+            <Image
+              source={{
+                uri: `${baseUrl}/images/chats/${item.id}`,
+              }}
+              style={{ width: 48, height: 48, borderRadius: 9999 }}
+            />
+          </View>
+          <View className="flex-1">
+            <Text className="text-md font-bold">{item.title}</Text>
+            <Text className="text-gray-600">No messages</Text>
+          </View>
         </View>
-        <View className="flex-1">
-          <Text className="text-md font-bold">{item.title}</Text>
-          <Text className="text-gray-600">No messages</Text>
-        </View>
-      </View>
+      </Pressable>
     );
   }
 
@@ -48,8 +50,10 @@ const ChatItem = ({ item }) => {
           <Text className="text-md font-bold">{item.title}</Text>
 
           <Text className="text-gray-600">
-            {latestMessage.sender.name}:{" "}
-            {helpers.sliceLatestMessage(latestMessage.content)}
+            {latestMessage.sender.id === user.id
+              ? "You"
+              : latestMessage.sender.name}
+            : {helpers.sliceLatestMessage(latestMessage.content)}
           </Text>
         </View>
         <Text className="text-gray-400">

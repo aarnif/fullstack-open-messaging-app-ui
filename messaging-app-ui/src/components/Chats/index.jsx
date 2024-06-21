@@ -24,7 +24,7 @@ const ChatsHeader = ({ searchByTitle, handleChange }) => {
   );
 };
 
-const ChatsList = ({ data }) => {
+const ChatsList = ({ user, data }) => {
   if (!data.length) {
     return (
       <View className="flex justify-start items-center">
@@ -40,7 +40,7 @@ const ChatsList = ({ data }) => {
       className="w-full"
       data={data}
       renderItem={({ item }) => {
-        return <ChatItem item={item} />;
+        return <ChatItem user={user} item={item} />;
       }}
       keyExtractor={({ id }) => id}
     />
@@ -101,7 +101,7 @@ const Chats = ({ user, setShowNewChatModal }) => {
           <LoadingIcon />
         </View>
       ) : (
-        <ChatsList data={data?.allChatsByUser} />
+        <ChatsList user={user} data={data?.allChatsByUser} />
       )}
       {user && <Menu />}
     </>
