@@ -1,4 +1,5 @@
 import { gql } from "@apollo/client";
+import { CHAT_DETAILS } from "./queries";
 
 export const LOGIN = gql`
   mutation Login($username: String!, $password: String!) {
@@ -19,23 +20,9 @@ export const CREATE_USER = gql`
 export const ADD_MESSAGE_TO_CHAT = gql`
   mutation AddMessageToChat($chatId: ID!, $content: String!) {
     addMessageToChat(chatId: $chatId, content: $content) {
-      id
-      title
-      participants {
-        id
-        username
-        name
-      }
-      messages {
-        id
-        sender {
-          id
-          username
-          name
-        }
-        content
-        createdAt
-      }
+      ...ChatDetails
     }
   }
+
+  ${CHAT_DETAILS}
 `;

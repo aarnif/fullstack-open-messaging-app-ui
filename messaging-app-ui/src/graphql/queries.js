@@ -1,5 +1,28 @@
 import { gql } from "@apollo/client";
 
+export const CHAT_DETAILS = gql`
+  fragment ChatDetails on Chat {
+    id
+    title
+    image
+    participants {
+      id
+      username
+      name
+    }
+    messages {
+      id
+      content
+      sender {
+        id
+        username
+        name
+      }
+      createdAt
+    }
+  }
+`;
+
 export const GET_CURRENT_USER = gql`
   query {
     me {
@@ -12,25 +35,11 @@ export const GET_CURRENT_USER = gql`
 export const GET_CHATS_BY_USER = gql`
   query AllChatsByUser($userId: ID!, $searchByTitle: String) {
     allChatsByUser(userId: $userId, searchByTitle: $searchByTitle) {
-      id
-      title
-      image
-      participants {
-        id
-        username
-      }
-      messages {
-        id
-        sender {
-          id
-          username
-          name
-        }
-        content
-        createdAt
-      }
+      ...ChatDetails
     }
   }
+
+  ${CHAT_DETAILS}
 `;
 
 export const GET_CONTACTS_BY_USER = gql`
@@ -49,24 +58,9 @@ export const GET_CONTACTS_BY_USER = gql`
 export const GET_CHAT_BY_ID = gql`
   query FindChatById($chatId: ID!) {
     findChatById(chatId: $chatId) {
-      id
-      title
-      image
-      participants {
-        id
-        username
-        name
-      }
-      messages {
-        id
-        content
-        sender {
-          id
-          username
-          name
-        }
-        createdAt
-      }
+      ...ChatDetails
     }
   }
+
+  ${CHAT_DETAILS}
 `;
