@@ -1,7 +1,9 @@
 import baseUrl from "../../../../baseUrl";
+import { DELETE_CHAT } from "../../../graphql/mutations";
 
 import { View, Text, Image, Pressable } from "react-native";
 import { useNavigate } from "react-router-native";
+import { useMutation } from "@apollo/client";
 
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
@@ -10,14 +12,25 @@ const ChatHeader = ({ user, chat }) => {
 
   // console.log("Chat participants:", chat.participants);
 
+  const [mutate] = useMutation(DELETE_CHAT, {
+    onError: (error) => {
+      console.log(error.graphQLErrors[0].message);
+    },
+  });
+
   const chatParticipantsString = chat.participants
     .map((participant) =>
       participant.username === user.username ? "You" : participant.name
     )
     .join(", ");
 
-  const goBack = () => {
+  const goBack = async () => {
     console.log("Go back to chats page!");
+    if (!chat.messages.length) {
+      console.log("Delete chat:", chat.id);
+      await mutate({ variables: { chatId: chat.id } });
+    }
+
     navigate("/chats");
   };
 
