@@ -94,7 +94,7 @@ const Chats = ({ user }) => {
 
   return (
     <>
-      <Header />
+      <Header user={user} />
       <ChatsHeader searchByTitle={searchByTitle} handleChange={handleChange} />
       {loading ? (
         <View className="flex justify-end items-center">

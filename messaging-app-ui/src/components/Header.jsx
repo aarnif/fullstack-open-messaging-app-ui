@@ -1,24 +1,10 @@
 import { View, Text, Pressable } from "react-native";
-import { useQuery, useApolloClient } from "@apollo/client";
-import useAuthStorage from "../hooks/useAuthStorage";
-import { useNavigate } from "react-router-native";
 
-import { GET_CURRENT_USER } from "../graphql/queries";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
-const Header = () => {
-  const authStorage = useAuthStorage();
-  const navigate = useNavigate();
-  const { data, error, loading } = useQuery(GET_CURRENT_USER, {
-    fetchPolicy: "cache-and-network",
-  });
-  const client = useApolloClient();
-
-  const signOut = () => {
-    console.log("Sign out!");
-    authStorage.removeAccessToken();
-    client.resetStore();
-    navigate("/");
+const Header = ({ user }) => {
+  const handlePress = () => {
+    console.log("Plus icon pressed!");
   };
 
   return (
@@ -29,8 +15,8 @@ const Header = () => {
           <Text className="text-xl text-white font-bold">Messaging App</Text>
         </View>
         <View className="flex-grow w-[100px] flex justify-center items-center">
-          {data?.me && (
-            <Pressable onPress={() => console.log("Plus icon pressed!")}>
+          {user && (
+            <Pressable onPress={handlePress}>
               <View className="w-8 h-8 rounded-full flex justify-center items-center bg-green-700 shadow-xl">
                 <MaterialCommunityIcons
                   name={"plus"}

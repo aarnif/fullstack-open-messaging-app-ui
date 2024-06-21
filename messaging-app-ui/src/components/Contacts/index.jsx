@@ -68,7 +68,7 @@ const Contacts = ({ user }) => {
 
   return (
     <>
-      <Header />
+      <Header user={user} />
       <ContactsHeader
         searchByTitle={searchByName}
         handleChange={handleChange}
