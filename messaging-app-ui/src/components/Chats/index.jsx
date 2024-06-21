@@ -47,7 +47,7 @@ const ChatsList = ({ data }) => {
   );
 };
 
-const Chats = ({ user }) => {
+const Chats = ({ user, setShowNewChatModal }) => {
   const client = useApolloClient();
   const [searchByTitle, setSearchByTitle] = useState("");
   const [debouncedSearchByTitle] = useDebounce(searchByTitle, 500);
@@ -94,7 +94,7 @@ const Chats = ({ user }) => {
 
   return (
     <>
-      <Header user={user} />
+      <Header user={user} setShowNewChatModal={setShowNewChatModal} />
       <ChatsHeader searchByTitle={searchByTitle} handleChange={handleChange} />
       {loading ? (
         <View className="flex justify-end items-center">

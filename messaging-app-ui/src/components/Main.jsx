@@ -7,6 +7,7 @@ import Contacts from "./Contacts/index";
 import useAuthStorage from "../hooks/useAuthStorage";
 import useNotify from "../hooks/useNotify";
 import LoadingIcon from "./LoadingIcon";
+import NewChatModal from "./NewChatModal";
 
 import { StatusBar } from "expo-status-bar";
 import { useState, useEffect } from "react";
@@ -17,6 +18,7 @@ import { useQuery } from "@apollo/client";
 import { GET_CURRENT_USER } from "../graphql/queries";
 
 const Main = () => {
+  const [showNewChatModal, setShowNewChatModal] = useState(false);
   const authStorage = useAuthStorage();
   const notify = useNotify();
 
@@ -55,15 +57,37 @@ const Main = () => {
           <Route
             path="/chats"
             element={
-              data?.me ? <Chats user={data?.me} /> : <SignIn notify={notify} />
+              data?.me ? (
+                <Chats
+                  user={data?.me}
+                  setShowNewChatModal={setShowNewChatModal}
+                />
+              ) : (
+                <SignIn notify={notify} />
+              )
             }
           />
           <Route path="/chats/:id" element={<ChatView user={data?.me} />} />
           <Route path="/signin" element={<SignIn notify={notify} />} />
           <Route path="/signup" element={<SignUp notify={notify} />} />
-          <Route path="/contacts" element={<Contacts user={data?.me} />} />
+          <Route
+            path="/contacts"
+            element={
+              <Contacts
+                user={data?.me}
+                setShowNewChatModal={setShowNewChatModal}
+              />
+            }
+          />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
+        {showNewChatModal && (
+          <NewChatModal
+            user={data?.me}
+            showNewChatModal={showNewChatModal}
+            setShowNewChatModal={setShowNewChatModal}
+          />
+        )}
       </View>
     </SafeAreaView>
   );
