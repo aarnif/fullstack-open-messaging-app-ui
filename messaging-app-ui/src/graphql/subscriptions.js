@@ -24,10 +24,6 @@ export const NEW_CHAT_ADDED = gql`
 
 export const CHAT_DELETED = gql`
   subscription ChatDeleted {
-    chatDeleted {
-      ...ChatDetails
-    }
+    chatDeleted
   }
-
-  ${CHAT_DETAILS}
 `;
