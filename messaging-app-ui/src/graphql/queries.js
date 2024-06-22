@@ -64,3 +64,13 @@ export const GET_CHAT_BY_ID = gql`
 
   ${CHAT_DETAILS}
 `;
+
+export const GET_CHAT_BY_PARTICIPANTS = gql`
+  query FindChatByParticipants($participants: [ID!]!) {
+    findChatByParticipants(participants: $participants) {
+      ...ChatDetails
+    }
+  }
+
+  ${CHAT_DETAILS}
+`;
