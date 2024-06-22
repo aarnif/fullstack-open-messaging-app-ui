@@ -2,7 +2,9 @@ import { Pressable, View, Text, Image } from "react-native";
 import baseUrl from "../../../baseUrl";
 
 import { CREATE_CHAT } from "../../graphql/mutations";
-import { useMutation } from "@apollo/client";
+import { GET_CHAT_BY_PARTICIPANTS } from "../../graphql/queries";
+
+import { useMutation, useQuery } from "@apollo/client";
 import { useNavigate } from "react-router-native";
 
 const ContactItem = ({ user, item, setShowNewChatModal }) => {
@@ -11,10 +13,25 @@ const ContactItem = ({ user, item, setShowNewChatModal }) => {
       console.log(error.graphQLErrors[0].message);
     },
   });
+  const { data, loading } = useQuery(GET_CHAT_BY_PARTICIPANTS, {
+    variables: {
+      participants: [user.id, item.id],
+    },
+    fetchPolicy: "cache-and-network",
+  });
+
   const navigate = useNavigate();
 
   const handlePress = async () => {
     console.log(`Contact item ${item.id} pressed!`);
+
+    // Check if user already has a chat with this contact and navigate to it
+    if (data?.findChatByParticipants) {
+      console.log("Chat exists:", data.findChatByParticipants);
+      navigate(`/chats/${data.findChatByParticipants.id}`);
+      setShowNewChatModal(false);
+      return;
+    }
 
     try {
       const { data, error } = await mutate({
