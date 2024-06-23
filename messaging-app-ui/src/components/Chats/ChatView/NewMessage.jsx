@@ -1,3 +1,5 @@
+import useSubscriptions from "../../../hooks/useSubscriptions";
+
 import { useState } from "react";
 import {
   View,
@@ -8,19 +10,24 @@ import {
   Keyboard,
   Pressable,
 } from "react-native";
+
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { useMutation } from "@apollo/client";
+import { GET_CHAT_BY_ID } from "../../../graphql/queries";
 import { ADD_MESSAGE_TO_CHAT } from "../../../graphql/mutations";
 
-const NewMessage = ({ chatId }) => {
+const NewMessage = ({ chatId, user }) => {
   const [message, setMessage] = useState("");
+
+  useSubscriptions(user);
 
   const [mutate] = useMutation(ADD_MESSAGE_TO_CHAT, {
     onError: (error) => {
       console.log(error.graphQLErrors[0].message);
       notify.show({ content: error.graphQLErrors[0].message, isError: true });
     },
+    refetchQueries: [{ query: GET_CHAT_BY_ID, variables: { chatId: chatId } }],
   });
 
   const handlePress = async () => {

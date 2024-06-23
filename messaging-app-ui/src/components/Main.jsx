@@ -22,9 +22,7 @@ const Main = () => {
   const authStorage = useAuthStorage();
   const notify = useNotify();
 
-  const { data, error, loading } = useQuery(GET_CURRENT_USER, {
-    fetchPolicy: "cache-and-network",
-  });
+  const { data, error, loading } = useQuery(GET_CURRENT_USER);
 
   useEffect(() => {
     const fetchToken = async () => {

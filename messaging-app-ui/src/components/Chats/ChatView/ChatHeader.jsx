@@ -1,4 +1,5 @@
 import baseUrl from "../../../../baseUrl";
+import useSubscriptions from "../../../hooks/useSubscriptions";
 import { DELETE_CHAT } from "../../../graphql/mutations";
 
 import { View, Text, Image, Pressable } from "react-native";
@@ -10,13 +11,13 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 const ChatHeader = ({ user, chat }) => {
   const navigate = useNavigate();
 
-  // console.log("Chat participants:", chat.participants);
-
   const [mutate] = useMutation(DELETE_CHAT, {
     onError: (error) => {
       console.log(error.graphQLErrors[0].message);
     },
   });
+
+  useSubscriptions(user);
 
   const chatParticipantsString = chat.participants
     .map((participant) =>
@@ -26,6 +27,7 @@ const ChatHeader = ({ user, chat }) => {
 
   const goBack = async () => {
     console.log("Go back to chats page!");
+    // Delete chat if user does not post any messages after creating it
     if (!chat.messages.length) {
       console.log("Delete chat:", chat.id);
       await mutate({ variables: { chatId: chat.id } });

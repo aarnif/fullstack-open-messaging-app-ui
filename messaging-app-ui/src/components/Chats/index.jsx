@@ -1,10 +1,12 @@
 import { GET_CHATS_BY_USER } from "../../graphql/queries";
-import { NEW_MESSAGE_ADDED } from "../../graphql/subscriptions";
+
 import Header from "../Header";
 import SearchBar from "../SearchBar";
 import ChatItem from "./ChatItem";
 import LoadingIcon from "../LoadingIcon";
 import Menu from "../Menu";
+
+import useSubscriptions from "../../hooks/useSubscriptions";
 
 import { useState } from "react";
 import { View, Text, FlatList } from "react-native";
@@ -56,34 +58,11 @@ const Chats = ({ user, setShowNewChatModal }) => {
       userId: user.id,
       searchByTitle: debouncedSearchByTitle,
     },
-    fetchPolicy: "cache-and-network",
   });
 
-  useSubscription(NEW_MESSAGE_ADDED, {
-    onData: ({ data }) => {
-      const updatedChat = data.data.messageToChatAdded;
-      client.cache.updateQuery(
-        {
-          query: GET_CHATS_BY_USER,
-          variables: { userId: user.id, searchByTitle: searchByTitle },
-        },
-        ({ allChatsByUser }) => {
-          return {
-            allChatsByUser: allChatsByUser
-              .map((chat) => {
-                return chat.id === updatedChat.id ? updatedChat : chat;
-              })
-              .sort((a, b) => {
-                return (
-                  new Date(b.messages[0].createdAt) -
-                  new Date(a.messages[0].createdAt)
-                );
-              }),
-          };
-        }
-      );
-    },
-  });
+  console.log("Rendering Chats component...");
+
+  useSubscriptions(user);
 
   // console.log("Chats data:", data);
 

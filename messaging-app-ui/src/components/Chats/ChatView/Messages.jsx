@@ -1,7 +1,7 @@
 import Message from "./Message";
 import NewMessage from "./NewMessage";
 
-import { View, Text, FlatList } from "react-native";
+import { Text, FlatList } from "react-native";
 
 const Messages = ({ user, chatId, messages }) => {
   return (
@@ -26,7 +26,7 @@ const Messages = ({ user, chatId, messages }) => {
           inverted={true}
         />
       )}
-      <NewMessage chatId={chatId} />
+      <NewMessage chatId={chatId} user={user} />
     </>
   );
 };
