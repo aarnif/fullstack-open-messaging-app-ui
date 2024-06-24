@@ -82,6 +82,7 @@ const Main = () => {
         {showNewChatModal && (
           <NewChatModal
             user={data?.me}
+            notify={notify}
             showNewChatModal={showNewChatModal}
             setShowNewChatModal={setShowNewChatModal}
           />

@@ -1,56 +1,19 @@
-import { Pressable, View, Text, Image } from "react-native";
+import { Pressable, View, Text, Image, TextInput } from "react-native";
 import baseUrl from "../../../baseUrl";
 
-import { CREATE_CHAT } from "../../graphql/mutations";
-import { GET_CHAT_BY_PARTICIPANTS } from "../../graphql/queries";
+import { useState } from "react";
 
-import { useMutation, useQuery } from "@apollo/client";
-import { useNavigate } from "react-router-native";
+const ContactItem = ({ user, item, setChosenUsersIds }) => {
+  const [choose, setChoose] = useState(false);
 
-const ContactItem = ({ user, item, setShowNewChatModal }) => {
-  const [mutate] = useMutation(CREATE_CHAT, {
-    onError: (error) => {
-      console.log(error.graphQLErrors[0].message);
-    },
-  });
-  const { data, loading } = useQuery(GET_CHAT_BY_PARTICIPANTS, {
-    variables: {
-      participants: [user.id, item.id],
-    },
-    fetchPolicy: "cache-and-network",
-  });
-
-  const navigate = useNavigate();
-
-  const handlePress = async () => {
-    console.log(`Contact item ${item.id} pressed!`);
-
-    // Check if user already has a chat with this contact and navigate to it
-    if (data?.findChatByParticipants) {
-      console.log("Chat exists:", data.findChatByParticipants);
-      navigate(`/chats/${data.findChatByParticipants.id}`);
-      setShowNewChatModal(false);
-      return;
+  const handlePress = () => {
+    console.log("Contact pressed:", item.id);
+    if (choose) {
+      setChosenUsersIds((prev) => [...prev.filter((id) => id !== item.id)]);
+    } else {
+      setChosenUsersIds((prev) => [...prev, item.id]);
     }
-
-    try {
-      const { data, error } = await mutate({
-        variables: {
-          title: item.name,
-          participants: [user.id, item.id],
-        },
-      });
-      console.log("Data:", data);
-
-      if (data) {
-        console.log("Created chat:", data);
-        navigate(`/chats/${data.createChat.id}`);
-        setShowNewChatModal(false);
-      }
-    } catch (error) {
-      console.log("Error creating chat:", error);
-      console.log(error);
-    }
+    setChoose(!choose);
   };
 
   return (
@@ -74,6 +37,9 @@ const ContactItem = ({ user, item, setShowNewChatModal }) => {
             </Text>
           </View>
           <Text className="text-sm text-slate-700">{item.about}</Text>
+        </View>
+        <View>
+          {choose && <Text className="text-sm text-slate-700">Chosen</Text>}
         </View>
       </View>
     </Pressable>
