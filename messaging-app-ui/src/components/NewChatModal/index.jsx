@@ -40,6 +40,7 @@ const ContactsHeader = ({ searchByTitle, handleChange }) => {
 const ContactsList = ({
   user,
   data,
+  chosenUsersIds,
   setChosenUsersIds,
   setShowNewChatModal,
 }) => {
@@ -62,6 +63,7 @@ const ContactsList = ({
           <ContactItem
             user={user}
             item={item}
+            chosenUsersIds={chosenUsersIds}
             setChosenUsersIds={setChosenUsersIds}
             setShowNewChatModal={setShowNewChatModal}
           />
@@ -201,6 +203,7 @@ const NewChatModal = ({
           <ContactsList
             user={user}
             data={res1.data?.allContactsByUser.contacts}
+            chosenUsersIds={chosenUsersIds}
             setChosenUsersIds={setChosenUsersIds}
             setShowNewChatModal={setShowNewChatModal}
           />
