@@ -12,7 +12,7 @@ import Notify from "../Notify";
 
 import useNewChatModalHeaderAnimation from "../../hooks/useNewChatModalHeaderAnimation";
 
-import { Modal, SafeAreaView, View, TextInput } from "react-native";
+import { Modal, SafeAreaView, View, Text, TextInput } from "react-native";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { useState } from "react";
@@ -24,7 +24,7 @@ import { animated } from "@react-spring/native";
 
 const SearchBarContainer = ({ searchByTitle, handleChange }) => {
   return (
-    <View className="w-full bg-white">
+    <View className="py-2 w-full bg-white">
       <SearchBar
         placeholder={"Search by name..."}
         searchByTitle={searchByTitle}
@@ -155,10 +155,15 @@ const NewChatModal = ({
               },
             ],
           }}
-          className="absolute bottom-8 w-full bg-white"
+          className="absolute bottom-8 w-full bg-white shadow-lg"
         >
           <Notify notify={notify} />
           <View className="mx-4 my-4">
+            <View className="w-full flex justify-center items-center pb-2">
+              <Text className="text-sm text-slate-800 font-bold">
+                {`${chosenUsersIds.length} contacts selected`}
+              </Text>
+            </View>
             <View className="w-full flex-grow flex-row max-h-[50px] p-2 rounded-lg bg-slate-200 text-slate-800">
               <MaterialCommunityIcons
                 size={24}
