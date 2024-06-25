@@ -1,15 +1,24 @@
 import { View, Text, Pressable } from "react-native";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
+import { animated } from "@react-spring/native";
+
 const Header = ({
   showNewChatModal,
   setShowNewChatModal,
   chosenUsersIds,
   handlePress,
+  springs,
 }) => {
   return (
     <>
-      <View className="w-full flex flex-row justify-center items-center py-2 bg-green-600 shadow-lg">
+      <animated.View
+        style={{
+          opacity: springs.opacity,
+          transform: [{ translateX: springs.translateX }],
+        }}
+        className="w-full flex flex-row justify-center items-center py-2 bg-green-600 shadow-lg"
+      >
         <View className="w-[70px] flex justify-center items-center">
           <View className="w-8 h-8 rounded-full flex justify-center items-center bg-green-700 shadow-xl">
             <Pressable onPress={() => setShowNewChatModal(!showNewChatModal)}>
@@ -35,12 +44,12 @@ const Header = ({
             </Pressable>
           </View>
         </View>
-      </View>
-      <View className="w-full bg-green-600 flex justify-center items-center py-2">
+      </animated.View>
+      <animated.View className="w-full bg-green-600 flex justify-center items-center py-2">
         <Text className="text-sm text-white font-bold">
           {chosenUsersIds.length} contacts selected
         </Text>
-      </View>
+      </animated.View>
     </>
   );
 };

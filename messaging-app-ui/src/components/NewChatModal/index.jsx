@@ -10,6 +10,8 @@ import ContactsList from "./ContactsList";
 
 import Notify from "../Notify";
 
+import useNewChatModalHeaderAnimation from "../../hooks/useNewChatModalHeaderAnimation";
+
 import { Modal, SafeAreaView, View, TextInput } from "react-native";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
@@ -36,10 +38,21 @@ const NewChatModal = ({
   showNewChatModal,
   setShowNewChatModal,
 }) => {
+  const [isChatTypeGroup, setChatType] = useState(false);
   const [chosenUsersIds, setChosenUsersIds] = useState([]);
   const [groupChatTitle, setGroupChatTitle] = useState("");
   const [searchByName, setSearchByName] = useState("");
   const [debouncedSearchByName] = useDebounce(searchByName, 500);
+
+  console.log("Is group chat:", isChatTypeGroup);
+  console.log("Chosen users:", chosenUsersIds);
+  console.log();
+
+  const { springs } = useNewChatModalHeaderAnimation({
+    chosenUsersIds,
+    isChatTypeGroup,
+    setChatType,
+  });
 
   const res1 = useQuery(GET_CONTACTS_BY_USER, {
     variables: {
@@ -106,7 +119,7 @@ const NewChatModal = ({
     (contact) => contact.id === chosenUsersIds[0]
   );
 
-  console.log("Individual chat participant:", individualChatParticipant?.name);
+  // console.log("Individual chat participant:", individualChatParticipant?.name);
 
   return (
     <Modal animationType="slide" visible={showNewChatModal}>
@@ -116,33 +129,34 @@ const NewChatModal = ({
           setShowNewChatModal={setShowNewChatModal}
           chosenUsersIds={chosenUsersIds}
           handlePress={handlePress}
+          springs={springs}
         />
 
         <View className="w-full bg-white">
           <Notify notify={notify} />
-          <View className="mx-4 my-2">
-            <View className="w-full flex-grow flex-row max-h-[50px] p-2 rounded-lg bg-slate-200 text-slate-800">
-              <MaterialCommunityIcons
-                size={24}
-                color={"#475569"}
-                name="chat-outline"
-              />
-              <TextInput
-                className="w-full pl-2"
-                value={
-                  individualChatParticipant &&
-                  chosenUsersIds.length === 1 &&
-                  individualChatParticipant.name
-                }
-                placeholder={
-                  chosenUsersIds.length > 1
-                    ? "Enter group chat title..."
-                    : "Enter chat title..."
-                }
-                onChangeText={(text) => setGroupChatTitle(text)}
-              />
+          {isChatTypeGroup && (
+            <View className="mx-4 my-2">
+              <View className="w-full flex-grow flex-row max-h-[50px] p-2 rounded-lg bg-slate-200 text-slate-800">
+                <MaterialCommunityIcons
+                  size={24}
+                  color={"#475569"}
+                  name="chat-outline"
+                />
+                <TextInput
+                  className="w-full pl-2"
+                  editable={chosenUsersIds.length > 1}
+                  selectTextOnFocus={chosenUsersIds.length > 1}
+                  value={
+                    individualChatParticipant &&
+                    chosenUsersIds.length === 1 &&
+                    individualChatParticipant.name
+                  }
+                  placeholder={"Enter group chat title..."}
+                  onChangeText={(text) => setGroupChatTitle(text)}
+                />
+              </View>
             </View>
-          </View>
+          )}
         </View>
 
         <SearchBarContainer
