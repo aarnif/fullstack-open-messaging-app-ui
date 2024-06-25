@@ -8,14 +8,13 @@ const Header = ({
   setShowNewChatModal,
   chosenUsersIds,
   handlePress,
-  springs,
+  springsHeader,
 }) => {
   return (
     <>
       <animated.View
         style={{
-          opacity: springs.opacity,
-          transform: [{ translateX: springs.translateX }],
+          transform: [{ translateX: springsHeader.translateX }],
         }}
         className="w-full flex flex-row justify-center items-center py-2 bg-green-600 shadow-lg"
       >
@@ -45,9 +44,10 @@ const Header = ({
           </View>
         </View>
       </animated.View>
+
       <animated.View className="w-full bg-green-600 flex justify-center items-center py-2">
         <Text className="text-sm text-white font-bold">
-          {chosenUsersIds.length} contacts selected
+          {`${chosenUsersIds.length} contacts selected`}
         </Text>
       </animated.View>
     </>

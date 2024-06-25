@@ -1,34 +1,46 @@
 import { useEffect } from "react";
-import { useSpring } from "@react-spring/native";
+import { useSpring, useTransition } from "@react-spring/native";
 
 const useNewChatModalHeaderAnimation = ({
   chosenUsersIds,
   isChatTypeGroup,
   setChatType,
 }) => {
-  const [springs, api] = useSpring(() => ({
+  const [springsHeader, apiHeader] = useSpring(() => ({
     from: { translateX: 0 },
+  }));
+
+  const [springsTextInput, apiTextInput] = useSpring(() => ({
+    from: { opacity: 0, translateY: 20 },
   }));
 
   useEffect(() => {
     if (chosenUsersIds.length > 1 && !isChatTypeGroup) {
       console.log("Start header animation!");
-      api.start({
-        from: { translateX: -100 },
+      apiHeader.start({
+        from: { translateX: -50 },
         to: { translateX: 0 },
+      });
+      apiTextInput.start({
+        from: { opacity: 0, translateY: 20 },
+        to: { opacity: 1, translateY: 0 },
       });
       setChatType(true);
     } else if (chosenUsersIds.length <= 1 && isChatTypeGroup) {
       console.log("Reverse header animation!");
-      api.start({
+      apiHeader.start({
         from: { translateX: 100 },
         to: { translateX: 0 },
+      });
+      apiTextInput.start({
+        from: { opacity: 1, translateY: 0 },
+        to: { opacity: 0, translateY: 20 },
       });
       setChatType(false);
     }
   }, [chosenUsersIds]);
 
-  return { springs, api };
+  return { springsHeader, springsTextInput };
 };
 
 export default useNewChatModalHeaderAnimation;

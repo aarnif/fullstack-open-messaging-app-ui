@@ -20,6 +20,8 @@ import { useQuery, useMutation } from "@apollo/client";
 import { useDebounce } from "use-debounce";
 import { useNavigate } from "react-router-native";
 
+import { animated } from "@react-spring/native";
+
 const SearchBarContainer = ({ searchByTitle, handleChange }) => {
   return (
     <View className="w-full bg-white">
@@ -48,7 +50,7 @@ const NewChatModal = ({
   console.log("Chosen users:", chosenUsersIds);
   console.log();
 
-  const { springs } = useNewChatModalHeaderAnimation({
+  const { springsHeader, springsTextInput } = useNewChatModalHeaderAnimation({
     chosenUsersIds,
     isChatTypeGroup,
     setChatType,
@@ -115,12 +117,6 @@ const NewChatModal = ({
     setSearchByName(text);
   };
 
-  const individualChatParticipant = res1.data?.allContactsByUser.contacts.find(
-    (contact) => contact.id === chosenUsersIds[0]
-  );
-
-  // console.log("Individual chat participant:", individualChatParticipant?.name);
-
   return (
     <Modal animationType="slide" visible={showNewChatModal}>
       <SafeAreaView style={{ flex: 1 }} className="bg-green-600">
@@ -129,35 +125,8 @@ const NewChatModal = ({
           setShowNewChatModal={setShowNewChatModal}
           chosenUsersIds={chosenUsersIds}
           handlePress={handlePress}
-          springs={springs}
+          springsHeader={springsHeader}
         />
-
-        <View className="w-full bg-white">
-          <Notify notify={notify} />
-          {isChatTypeGroup && (
-            <View className="mx-4 my-2">
-              <View className="w-full flex-grow flex-row max-h-[50px] p-2 rounded-lg bg-slate-200 text-slate-800">
-                <MaterialCommunityIcons
-                  size={24}
-                  color={"#475569"}
-                  name="chat-outline"
-                />
-                <TextInput
-                  className="w-full pl-2"
-                  editable={chosenUsersIds.length > 1}
-                  selectTextOnFocus={chosenUsersIds.length > 1}
-                  value={
-                    individualChatParticipant &&
-                    chosenUsersIds.length === 1 &&
-                    individualChatParticipant.name
-                  }
-                  placeholder={"Enter group chat title..."}
-                  onChangeText={(text) => setGroupChatTitle(text)}
-                />
-              </View>
-            </View>
-          )}
-        </View>
 
         <SearchBarContainer
           searchByTitle={searchByName}
@@ -176,6 +145,37 @@ const NewChatModal = ({
             setShowNewChatModal={setShowNewChatModal}
           />
         )}
+
+        <animated.View
+          style={{
+            opacity: springsTextInput.opacity,
+            transform: [
+              {
+                translateY: springsTextInput.translateY,
+              },
+            ],
+          }}
+          className="absolute bottom-8 w-full bg-white"
+        >
+          <Notify notify={notify} />
+          <View className="mx-4 my-4">
+            <View className="w-full flex-grow flex-row max-h-[50px] p-2 rounded-lg bg-slate-200 text-slate-800">
+              <MaterialCommunityIcons
+                size={24}
+                color={"#475569"}
+                name="chat-outline"
+              />
+              <TextInput
+                className="w-full pl-2"
+                editable={chosenUsersIds.length > 1}
+                selectTextOnFocus={chosenUsersIds.length > 1}
+                value={groupChatTitle}
+                placeholder={"Enter group chat title..."}
+                onChangeText={(text) => setGroupChatTitle(text)}
+              />
+            </View>
+          </View>
+        </animated.View>
       </SafeAreaView>
     </Modal>
   );
