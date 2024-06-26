@@ -13,11 +13,17 @@ export const CHAT_DETAILS = gql`
     messages {
       id
       content
-      isRead
       sender {
         id
         username
         name
+      }
+      isReadBy {
+        member {
+          id
+          username
+        }
+        isRead
       }
       createdAt
     }

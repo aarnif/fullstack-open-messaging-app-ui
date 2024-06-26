@@ -14,8 +14,10 @@ const ChatItem = ({ user, item }) => {
     navigate(`/chats/${item.id}`);
   };
 
-  const newMessagesCount = item.messages.filter(
-    (message) => message.sender.id !== user.id && !message.isRead
+  const newMessagesCount = item.messages.filter((message) =>
+    message.isReadBy.find(
+      (member) => member.member.id === user.id && !member.isRead
+    )
   ).length;
 
   if (!item.messages.length) {
@@ -41,7 +43,7 @@ const ChatItem = ({ user, item }) => {
 
   return (
     <Pressable onPress={handlePress}>
-      <View className="flex flex-row items-center my-2 mx-4">
+      <View className="flex flex-row items-start my-2 mx-4">
         <View className="mr-4">
           <Image
             className="w-12 h-12 rounded-full"
