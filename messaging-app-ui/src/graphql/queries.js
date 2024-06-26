@@ -13,6 +13,7 @@ export const CHAT_DETAILS = gql`
     messages {
       id
       content
+      isRead
       sender {
         id
         username
