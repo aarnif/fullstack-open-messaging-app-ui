@@ -1,7 +1,7 @@
 import baseUrl from "../../../baseUrl";
 import helpers from "../../utils/helpers";
-import { View, Pressable, Text, Image } from "react-native";
 
+import { View, Pressable, Text, Image } from "react-native";
 import { useNavigate } from "react-router-native";
 
 const ChatItem = ({ user, item }) => {
@@ -13,6 +13,10 @@ const ChatItem = ({ user, item }) => {
     console.log("Pressed chat titled:", item.title);
     navigate(`/chats/${item.id}`);
   };
+
+  const newMessagesCount = item.messages.filter(
+    (message) => message.sender.id !== user.id && !message.isRead
+  ).length;
 
   if (!item.messages.length) {
     return (
@@ -56,9 +60,25 @@ const ChatItem = ({ user, item }) => {
             : {helpers.sliceLatestMessage(latestMessage.content)}
           </Text>
         </View>
-        <Text className="text-gray-400">
-          {helpers.getLatestMessageTime(latestMessage?.createdAt)}
-        </Text>
+        <View className="w-[100px] flex justify-start items-center">
+          <View className="w-full flex justify-center items-center">
+            <Text className="text-gray-400">
+              {helpers.getLatestMessageTime(latestMessage?.createdAt)}
+            </Text>
+          </View>
+          <View className="w-full flex justify-center items-center">
+            <View
+              style={{
+                backgroundColor: newMessagesCount > 0 ? "#16a34a" : "white",
+              }}
+              className="mt-1 w-[20px] h-[20px] flex justify-center items-center bg-green-500 rounded-full"
+            >
+              <Text className="text-white font-semibold">
+                {newMessagesCount > 0 && newMessagesCount}
+              </Text>
+            </View>
+          </View>
+        </View>
       </View>
     </Pressable>
   );
