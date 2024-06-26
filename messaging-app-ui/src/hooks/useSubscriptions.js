@@ -2,6 +2,7 @@ import {
   CHAT_DELETED,
   NEW_CHAT_ADDED,
   NEW_MESSAGE_ADDED,
+  MESSAGES_IN_CHAT_READ,
 } from "../graphql/subscriptions";
 
 import { GET_CHATS_BY_USER } from "../graphql/queries";
@@ -94,6 +95,37 @@ const useSubscriptions = (user) => {
                 new Date(a.messages[0].createdAt)
               );
             }),
+          };
+        }
+      );
+    },
+  });
+
+  useSubscription(MESSAGES_IN_CHAT_READ, {
+    onData: ({ data }) => {
+      console.log("Use MESSAGES_IN_CHAT_READ-subscription:");
+      const updatedChat = data.data.messagesInChatRead;
+      client.cache.updateQuery(
+        {
+          query: GET_CHATS_BY_USER,
+          variables: { userId: user.id, searchByTitle: "" },
+        },
+        ({ allChatsByUser }) => {
+          return {
+            allChatsByUser: allChatsByUser
+              .map((chat) => {
+                return chat.id === updatedChat.id ? { ...updatedChat } : chat;
+              })
+              .sort((a, b) => {
+                if (!a.messages.length) return 1;
+
+                if (!b.messages.length) return -1;
+
+                return (
+                  new Date(b.messages[0].createdAt) -
+                  new Date(a.messages[0].createdAt)
+                );
+              }),
           };
         }
       );
