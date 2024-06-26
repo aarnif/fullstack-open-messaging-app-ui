@@ -42,3 +42,13 @@ export const DELETE_CHAT = gql`
     deleteChat(chatId: $chatId)
   }
 `;
+
+export const MARK_MESSAGES_IN_CHAT_READ = gql`
+  mutation MarkAllMessagesInChatRead($chatId: ID!) {
+    markAllMessagesInChatRead(chatId: $chatId) {
+      ...ChatDetails
+    }
+  }
+
+  ${CHAT_DETAILS}
+`;

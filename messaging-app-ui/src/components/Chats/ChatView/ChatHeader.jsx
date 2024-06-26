@@ -1,6 +1,8 @@
 import baseUrl from "../../../../baseUrl";
-import useSubscriptions from "../../../hooks/useSubscriptions";
-import { DELETE_CHAT } from "../../../graphql/mutations";
+import {
+  DELETE_CHAT,
+  MARK_MESSAGES_IN_CHAT_READ,
+} from "../../../graphql/mutations";
 
 import { View, Text, Image, Pressable } from "react-native";
 import { useNavigate } from "react-router-native";
@@ -11,13 +13,20 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 const ChatHeader = ({ user, chat }) => {
   const navigate = useNavigate();
 
-  const [mutate] = useMutation(DELETE_CHAT, {
+  const [mutateDeleteChat] = useMutation(DELETE_CHAT, {
     onError: (error) => {
       console.log(error.graphQLErrors[0].message);
     },
   });
 
-  useSubscriptions(user);
+  const [mutateMarkMessagesInChatRead] = useMutation(
+    MARK_MESSAGES_IN_CHAT_READ,
+    {
+      onError: (error) => {
+        console.log(error.graphQLErrors[0].message);
+      },
+    }
+  );
 
   const chatParticipantsString = chat.participants
     .map((participant) =>
@@ -30,8 +39,13 @@ const ChatHeader = ({ user, chat }) => {
     // Delete chat if user does not post any messages after creating it
     if (!chat.messages.length) {
       console.log("Delete chat:", chat.id);
-      await mutate({ variables: { chatId: chat.id } });
+      await mutateDeleteChat({ variables: { chatId: chat.id } });
     }
+
+    console.log("Mark messages in chat read:", chat.id);
+    await mutateMarkMessagesInChatRead({
+      variables: { chatId: chat.id },
+    });
 
     navigate("/chats");
   };
