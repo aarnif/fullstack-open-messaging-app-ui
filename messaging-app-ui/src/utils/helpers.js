@@ -1,6 +1,6 @@
 import { format, isToday, isThisWeek } from "date-fns";
 
-const getLatestMessageTime = (latestMessageTime) => {
+const formatMessageTime = (latestMessageTime) => {
   if (!latestMessageTime) {
     return null;
   } else if (isToday(new Date(latestMessageTime))) {
@@ -24,4 +24,8 @@ const newMessagesCount = (user, messages) =>
     )
   ).length;
 
-export default { getLatestMessageTime, sliceLatestMessage, newMessagesCount };
+export default {
+  formatMessageTime,
+  sliceLatestMessage,
+  newMessagesCount,
+};

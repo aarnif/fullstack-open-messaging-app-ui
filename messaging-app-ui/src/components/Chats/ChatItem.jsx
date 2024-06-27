@@ -61,7 +61,7 @@ const ChatItem = ({ user, item }) => {
         <View className="w-[100px] flex justify-start items-center">
           <View className="w-full flex justify-center items-center">
             <Text className="text-gray-400">
-              {helpers.getLatestMessageTime(latestMessage?.createdAt)}
+              {helpers.formatMessageTime(latestMessage?.createdAt)}
             </Text>
           </View>
           <View className="w-full flex justify-center items-center">
