@@ -1,9 +1,38 @@
 import Message from "./Message";
 import NewMessage from "./NewMessage";
+import helpers from "../../../utils/helpers";
 
-import { Text, FlatList } from "react-native";
+import { View, Text, FlatList } from "react-native";
+
+const NewMessages = ({ newMessagesCount }) => {
+  return (
+    <View className="px-4 w-full flex justify-center items-center">
+      <View className="w-full flex justify-center items-center border-b border-slate-800">
+        <Text key={"New messages"} className="font-semibold text-slate-800">
+          {newMessagesCount} new messages
+        </Text>
+      </View>
+    </View>
+  );
+};
+
+const RenderMessages = ({ user, item, index, newMessagesCount }) => {
+  const newMessagesAfterIndex = index === newMessagesCount;
+  const senderIsCurrentUser = item.sender.id === user.id;
+
+  return (
+    <>
+      {newMessagesCount > 0 && newMessagesAfterIndex && senderIsCurrentUser && (
+        <NewMessages newMessagesCount={newMessagesCount} />
+      )}
+      <Message user={user} message={item} index={index} />
+    </>
+  );
+};
 
 const Messages = ({ user, chatId, messages }) => {
+  const newMessagesCount = helpers.newMessagesCount(user, messages);
+  console.log("New messages count:", newMessagesCount);
   return (
     <>
       {!messages.length ? (
@@ -19,8 +48,15 @@ const Messages = ({ user, chatId, messages }) => {
         <FlatList
           className="w-full"
           data={messages}
-          renderItem={({ item }) => {
-            return <Message user={user} message={item} />;
+          renderItem={({ item, index }) => {
+            return (
+              <RenderMessages
+                user={user}
+                item={item}
+                index={index}
+                newMessagesCount={newMessagesCount}
+              />
+            );
           }}
           keyExtractor={({ id }) => id}
           inverted={true}

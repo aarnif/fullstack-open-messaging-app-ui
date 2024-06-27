@@ -17,4 +17,11 @@ const sliceLatestMessage = (latestMessage) =>
     ? latestMessage.slice(0, 30) + "..."
     : latestMessage;
 
-export default { getLatestMessageTime, sliceLatestMessage };
+const newMessagesCount = (user, messages) =>
+  messages.filter((message) =>
+    message.isReadBy.find(
+      (member) => member.member.id === user.id && !member.isRead
+    )
+  ).length;
+
+export default { getLatestMessageTime, sliceLatestMessage, newMessagesCount };

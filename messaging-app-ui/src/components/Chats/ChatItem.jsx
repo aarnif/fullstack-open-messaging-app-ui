@@ -14,11 +14,7 @@ const ChatItem = ({ user, item }) => {
     navigate(`/chats/${item.id}`);
   };
 
-  const newMessagesCount = item.messages.filter((message) =>
-    message.isReadBy.find(
-      (member) => member.member.id === user.id && !member.isRead
-    )
-  ).length;
+  const newMessagesCount = helpers.newMessagesCount(user, item.messages);
 
   if (!item.messages.length) {
     return (
