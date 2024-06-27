@@ -1,4 +1,5 @@
 import baseUrl from "../../../../baseUrl";
+import helpers from "../../../utils/helpers";
 
 import { View, Text, Image } from "react-native";
 
@@ -10,6 +11,9 @@ const MessageByAnotherUser = ({ message }) => {
           {message.sender.name}
         </Text>
         <Text className="text-gray-800">{message.content}</Text>
+        <Text className="mt-1 self-end text-xs text-gray-800">
+          {helpers.formatMessageTime(message.createdAt)}
+        </Text>
       </View>
       <Image
         source={{
@@ -28,9 +32,12 @@ const MessageByAnotherUser = ({ message }) => {
 const MessageByCurrentUser = ({ message }) => {
   return (
     <View className="mr-2 my-2">
-      <View className="max-w-[300px] self-end mr-6 p-2 bg-green-300 rounded-lg">
+      <View className="max-w-[300px] self-end mr-6 pt-2 px-2 pb-1 bg-green-300 rounded-lg">
         <Text className="mb-1 text-gray-800 font-bold">{"You"}</Text>
         <Text className="text-gray-800">{message.content}</Text>
+        <Text className="mt-1 self-end text-xs text-gray-800">
+          {helpers.formatMessageTime(message.createdAt)}
+        </Text>
       </View>
     </View>
   );
