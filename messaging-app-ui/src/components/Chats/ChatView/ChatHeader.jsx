@@ -4,13 +4,14 @@ import {
   MARK_MESSAGES_IN_CHAT_READ,
 } from "../../../graphql/mutations";
 
+import { useState } from "react";
 import { View, Text, Image, Pressable } from "react-native";
 import { useNavigate } from "react-router-native";
 import { useMutation } from "@apollo/client";
 
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
-const ChatHeader = ({ user, chat }) => {
+const ChatHeader = ({ user, chat, setShowChatInfoModal }) => {
   const navigate = useNavigate();
 
   const [mutateDeleteChat] = useMutation(DELETE_CHAT, {
@@ -50,6 +51,11 @@ const ChatHeader = ({ user, chat }) => {
     navigate("/chats");
   };
 
+  const getInfo = () => {
+    console.log("Clicked chat info!");
+    setShowChatInfoModal(true);
+  };
+
   return (
     <View className="w-full flex flex-row justify-center items-center py-2 bg-green-600 shadow-lg">
       <View className="flex flex-row">
@@ -62,20 +68,26 @@ const ChatHeader = ({ user, chat }) => {
             />
           </Pressable>
         </View>
-        <View className="max-w-[250px] flex-grow flex flex-row justify-center items-center">
-          <View className="mr-2">
-            <Image
-              source={{
-                uri: `${baseUrl}/images/chats/${chat.id}`,
-              }}
-              style={{ width: 48, height: 48, borderRadius: 9999 }}
-            />
+        <Pressable onPress={getInfo}>
+          <View className="max-w-[250px] flex-grow flex flex-row justify-center items-center">
+            <View className="mr-2">
+              <Image
+                source={{
+                  uri: `${baseUrl}/images/chats/${chat.id}`,
+                }}
+                style={{ width: 48, height: 48, borderRadius: 9999 }}
+              />
+            </View>
+            <View>
+              <Text className="text-base text-white font-bold">
+                {chat.title}
+              </Text>
+              <Text className="text-sm text-white">
+                {chatParticipantsString}
+              </Text>
+            </View>
           </View>
-          <View>
-            <Text className="text-base text-white font-bold">{chat.title}</Text>
-            <Text className="text-sm text-white">{chatParticipantsString}</Text>
-          </View>
-        </View>
+        </Pressable>
         <View className="w-[50px] ml-4 flex-grow flex justify-center items-center"></View>
       </View>
     </View>

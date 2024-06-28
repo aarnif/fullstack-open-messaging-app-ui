@@ -1,0 +1,88 @@
+import baseUrl from "../../../../../baseUrl";
+import ContactsList from "./ContactsList";
+
+import {
+  Modal,
+  SafeAreaView,
+  View,
+  Text,
+  Pressable,
+  Image,
+} from "react-native";
+import { useMutation } from "@apollo/client";
+
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+
+const ChatInfoModal = ({
+  user,
+  chat,
+  showChatInfoModal,
+  setShowChatInfoModal,
+}) => {
+  const goBack = () => {
+    console.log("Go back to chats page!");
+    setShowChatInfoModal(false);
+  };
+
+  const leaveChat = () => {
+    console.log("Leave chat:", chat.id);
+  };
+
+  return (
+    <Modal animationType="slide" visible={showChatInfoModal}>
+      <SafeAreaView style={{ flex: 1 }} className="bg-green-600">
+        <View className="w-full flex flex-row justify-center items-center py-2 bg-green-600 shadow-lg">
+          <View className="flex flex-row">
+            <View className="w-[50px] mr-4 flex-grow flex justify-center items-center">
+              <Pressable onPress={goBack}>
+                <MaterialCommunityIcons
+                  name={"chevron-left"}
+                  size={36}
+                  color={"white"}
+                />
+              </Pressable>
+            </View>
+
+            <View className="max-w-[250px] flex-grow flex flex-row justify-center items-center">
+              <View>
+                <Text className="text-xl text-white font-bold">Chat Info</Text>
+              </View>
+            </View>
+
+            <View className="w-[50px] ml-4 flex-grow flex justify-center items-center"></View>
+          </View>
+        </View>
+        <View className="w-full py-4 flex justify-center items-center bg-white">
+          <Image
+            source={{
+              uri: `${baseUrl}/images/chats/${chat.id}`,
+            }}
+            style={{ width: 100, height: 100, borderRadius: 9999 }}
+          />
+          <Text className="pt-4 text-xl text-slate-800 font-bold">
+            {chat.title}
+          </Text>
+          <Text className="mx-8 text-sm text-slate-800 text-center">
+            {chat.description}
+          </Text>
+        </View>
+        <View className="w-full py-2 flex justify-center items-start bg-white">
+          <Text className="mx-4 text-xl text-slate-800 font-bold">
+            {`${chat.participants.length} members`}
+          </Text>
+        </View>
+        <ContactsList user={user} data={chat.participants} chatId={chat.id} />
+        <View className="w-full px-4 flex justify-center items-start bg-white">
+          <Pressable
+            onPress={leaveChat}
+            className="mb-8 w-full flex-grow max-h-[60px] p-2 flex justify-center items-center border-2 border-red-400 bg-red-400 rounded-xl"
+          >
+            <Text className="text-xl font-bold text-slate-200">Leave Chat</Text>
+          </Pressable>
+        </View>
+      </SafeAreaView>
+    </Modal>
+  );
+};
+
+export default ChatInfoModal;
