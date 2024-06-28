@@ -5,10 +5,12 @@ export const CHAT_DETAILS = gql`
     id
     title
     image
+    description
     participants {
       id
       username
       name
+      about
     }
     messages {
       id
