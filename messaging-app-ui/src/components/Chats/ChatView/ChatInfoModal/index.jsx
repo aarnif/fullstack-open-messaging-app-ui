@@ -1,5 +1,6 @@
 import baseUrl from "../../../../../baseUrl";
 import ContactsList from "./ContactsList";
+import { LEAVE_GROUP_CHAT } from "../../../../graphql/mutations";
 
 import {
   Modal,
@@ -10,6 +11,7 @@ import {
   Image,
 } from "react-native";
 import { useMutation } from "@apollo/client";
+import { useNavigate } from "react-router-native";
 
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
@@ -19,13 +21,30 @@ const ChatInfoModal = ({
   showChatInfoModal,
   setShowChatInfoModal,
 }) => {
+  const [mutate] = useMutation(LEAVE_GROUP_CHAT, {
+    onError: (error) => {
+      console.log(error.graphQLErrors[0].message);
+    },
+  });
+  const navigate = useNavigate();
+
   const goBack = () => {
     console.log("Go back to chats page!");
     setShowChatInfoModal(false);
   };
 
-  const leaveChat = () => {
-    console.log("Leave chat:", chat.id);
+  const leaveChat = async () => {
+    console.log("Leave group chat:", chat.title);
+    try {
+      const { data, error } = await mutate({
+        variables: { chatId: chat.id, participantId: user.id },
+      });
+      console.log("Left group chat:", chat.title);
+      navigate("/chats");
+    } catch (error) {
+      console.log("Error leaving chat:", error);
+      console.log(error);
+    }
   };
 
   return (
@@ -72,7 +91,7 @@ const ChatInfoModal = ({
           </Text>
         </View>
         <ContactsList user={user} data={chat.participants} chatId={chat.id} />
-        <View className="w-full px-4 flex justify-center items-start bg-white">
+        <View className="w-full p-4 flex justify-center items-start bg-white">
           <Pressable
             onPress={leaveChat}
             className="mb-8 w-full flex-grow max-h-[60px] p-2 flex justify-center items-center border-2 border-red-400 bg-red-400 rounded-xl"
