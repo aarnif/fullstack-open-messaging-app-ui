@@ -37,3 +37,9 @@ export const MESSAGES_IN_CHAT_READ = gql`
 
   ${CHAT_DETAILS}
 `;
+
+export const LEFT_GROUP_CHAT = gql`
+  subscription LeftChat {
+    leftGroupChat
+  }
+`;
