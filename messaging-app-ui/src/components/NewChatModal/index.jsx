@@ -151,13 +151,14 @@ const NewChatModal = ({
         <animated.View
           style={{
             opacity: springsTextInput.opacity,
+            display: springsTextInput.display,
             transform: [
               {
                 translateY: springsTextInput.translateY,
               },
             ],
           }}
-          className="absolute bottom-8 w-full bg-white shadow-lg"
+          className="w-full bg-white shadow-lg"
         >
           <Notify notify={notify} />
           <View className="mx-4 my-4">
