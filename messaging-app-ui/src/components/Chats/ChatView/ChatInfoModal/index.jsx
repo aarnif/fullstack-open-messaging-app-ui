@@ -1,6 +1,9 @@
 import baseUrl from "../../../../../baseUrl";
 import ContactsList from "./ContactsList";
-import { LEAVE_GROUP_CHAT } from "../../../../graphql/mutations";
+import {
+  LEAVE_GROUP_CHAT,
+  ADD_MESSAGE_TO_CHAT,
+} from "../../../../graphql/mutations";
 
 import {
   Modal,
@@ -21,7 +24,13 @@ const ChatInfoModal = ({
   showChatInfoModal,
   setShowChatInfoModal,
 }) => {
-  const [mutate] = useMutation(LEAVE_GROUP_CHAT, {
+  console.log("User:", user);
+  const [leaveChatMutate] = useMutation(LEAVE_GROUP_CHAT, {
+    onError: (error) => {
+      console.log(error.graphQLErrors[0].message);
+    },
+  });
+  const [leaveChatMessageMutate] = useMutation(ADD_MESSAGE_TO_CHAT, {
     onError: (error) => {
       console.log(error.graphQLErrors[0].message);
     },
@@ -36,8 +45,15 @@ const ChatInfoModal = ({
   const leaveChat = async () => {
     console.log("Leave group chat:", chat.title);
     try {
-      const { data, error } = await mutate({
+      await leaveChatMutate({
         variables: { chatId: chat.id, participantId: user.id },
+      });
+      await leaveChatMessageMutate({
+        variables: {
+          chatId: chat.id,
+          type: "notification",
+          content: `left.`,
+        },
       });
       console.log("Left group chat:", chat.title);
       navigate("/chats");

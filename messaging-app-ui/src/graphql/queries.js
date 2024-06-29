@@ -15,6 +15,7 @@ export const CHAT_DETAILS = gql`
     }
     messages {
       id
+      type
       content
       sender {
         id
@@ -38,6 +39,7 @@ export const GET_CURRENT_USER = gql`
     me {
       id
       username
+      name
     }
   }
 `;

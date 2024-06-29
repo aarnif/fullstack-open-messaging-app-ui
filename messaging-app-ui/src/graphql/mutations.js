@@ -36,8 +36,8 @@ export const CREATE_CHAT = gql`
 `;
 
 export const ADD_MESSAGE_TO_CHAT = gql`
-  mutation AddMessageToChat($chatId: ID!, $content: String!) {
-    addMessageToChat(chatId: $chatId, content: $content) {
+  mutation AddMessageToChat($chatId: ID!, $type: String, $content: String!) {
+    addMessageToChat(chatId: $chatId, type: $type, content: $content) {
       ...ChatDetails
     }
   }
