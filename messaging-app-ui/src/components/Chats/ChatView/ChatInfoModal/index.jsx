@@ -24,6 +24,7 @@ const ChatInfoModal = ({
   showChatInfoModal,
   setShowChatInfoModal,
 }) => {
+  const chatAdmin = chat.admin;
   console.log("User:", user);
   const [leaveChatMutate] = useMutation(LEAVE_GROUP_CHAT, {
     onError: (error) => {
@@ -106,15 +107,19 @@ const ChatInfoModal = ({
             {`${chat.participants.length} members`}
           </Text>
         </View>
-        <ContactsList user={user} data={chat.participants} chatId={chat.id} />
-        <View className="w-full p-4 flex justify-center items-start bg-white">
-          <Pressable
-            onPress={leaveChat}
-            className="mb-8 w-full flex-grow max-h-[60px] p-2 flex justify-center items-center border-2 border-red-400 bg-red-400 rounded-xl"
-          >
-            <Text className="text-xl font-bold text-slate-200">Leave Chat</Text>
-          </Pressable>
-        </View>
+        <ContactsList user={user} data={chat.participants} admin={chatAdmin} />
+        {user.id !== chatAdmin.id && (
+          <View className="w-full p-4 flex justify-center items-start bg-white">
+            <Pressable
+              onPress={leaveChat}
+              className="mb-8 w-full flex-grow max-h-[60px] p-2 flex justify-center items-center border-2 border-red-400 bg-red-400 rounded-xl"
+            >
+              <Text className="text-xl font-bold text-slate-200">
+                Leave Chat
+              </Text>
+            </Pressable>
+          </View>
+        )}
       </SafeAreaView>
     </Modal>
   );

@@ -2,7 +2,7 @@ import baseUrl from "../../../../../baseUrl";
 
 import { View, Text, Image } from "react-native";
 
-const ContactItem = ({ user, item }) => {
+const ContactItem = ({ user, item, admin }) => {
   console.log("Contact item:", item);
   return (
     <View className="flex flex-row items-center py-2 px-4 rounded-lg">
@@ -25,6 +25,9 @@ const ContactItem = ({ user, item }) => {
         </View>
         <Text className="text-sm text-slate-700">{item.about}</Text>
       </View>
+      {admin.id === item.id && (
+        <Text className="text-md text-slate-700 font-semibold">Admin</Text>
+      )}
     </View>
   );
 };

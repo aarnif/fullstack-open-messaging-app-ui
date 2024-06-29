@@ -7,6 +7,12 @@ export const CHAT_DETAILS = gql`
     image
     description
     isGroupChat
+    admin {
+      id
+      username
+      name
+      about
+    }
     participants {
       id
       username
