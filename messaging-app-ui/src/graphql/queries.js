@@ -6,6 +6,7 @@ export const CHAT_DETAILS = gql`
     title
     image
     description
+    isGroupChat
     participants {
       id
       username

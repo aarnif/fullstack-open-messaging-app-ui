@@ -18,8 +18,16 @@ export const CREATE_USER = gql`
 `;
 
 export const CREATE_CHAT = gql`
-  mutation CreateChat($title: String, $participants: [ID!]!) {
-    createChat(title: $title, participants: $participants) {
+  mutation CreateChat(
+    $title: String
+    $description: String
+    $participants: [ID!]!
+  ) {
+    createChat(
+      title: $title
+      description: $description
+      participants: $participants
+    ) {
       ...ChatDetails
     }
   }

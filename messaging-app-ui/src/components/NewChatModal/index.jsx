@@ -43,6 +43,7 @@ const NewChatModal = ({
   const [isChatTypeGroup, setChatType] = useState(false);
   const [chosenUsersIds, setChosenUsersIds] = useState([]);
   const [groupChatTitle, setGroupChatTitle] = useState("");
+  const [groupChatDescription, setGroupChatDescription] = useState("");
   const [searchByName, setSearchByName] = useState("");
   const [debouncedSearchByName] = useDebounce(searchByName, 500);
 
@@ -94,6 +95,7 @@ const NewChatModal = ({
       const { data, error } = await mutate({
         variables: {
           title: groupChatTitle,
+          description: groupChatDescription,
           participants: [user.id, ...chosenUsersIds],
         },
       });
@@ -164,7 +166,7 @@ const NewChatModal = ({
                 {`${chosenUsersIds.length} contacts selected`}
               </Text>
             </View>
-            <View className="w-full flex-grow flex-row max-h-[50px] p-2 rounded-lg bg-slate-200 text-slate-800">
+            <View className="w-full flex-grow flex-row max-h-[50px] p-2 mb-2 rounded-lg bg-slate-200 text-slate-800">
               <MaterialCommunityIcons
                 size={24}
                 color={"#475569"}
@@ -177,6 +179,21 @@ const NewChatModal = ({
                 value={groupChatTitle}
                 placeholder={"Enter group chat title..."}
                 onChangeText={(text) => setGroupChatTitle(text)}
+              />
+            </View>
+            <View className="w-full flex-grow flex-row max-h-[50px] p-2 rounded-lg bg-slate-200 text-slate-800">
+              <MaterialCommunityIcons
+                size={24}
+                color={"#475569"}
+                name="text-box-outline"
+              />
+              <TextInput
+                className="w-full pl-2"
+                editable={chosenUsersIds.length > 1}
+                selectTextOnFocus={chosenUsersIds.length > 1}
+                value={groupChatDescription}
+                placeholder={"Enter group chat description..."}
+                onChangeText={(text) => setGroupChatDescription(text)}
               />
             </View>
           </View>

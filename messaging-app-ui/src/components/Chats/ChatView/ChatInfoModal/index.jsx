@@ -82,7 +82,7 @@ const ChatInfoModal = ({
             {chat.title}
           </Text>
           <Text className="mx-8 text-sm text-slate-800 text-center">
-            {chat.description}
+            {!chat.description.length ? "No description" : chat.description}
           </Text>
         </View>
         <View className="w-full py-2 flex justify-center items-start bg-white">
