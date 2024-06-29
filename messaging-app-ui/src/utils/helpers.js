@@ -18,10 +18,12 @@ const sliceLatestMessage = (latestMessage) =>
     : latestMessage;
 
 const newMessagesCount = (user, messages) =>
-  messages.filter((message) =>
-    message.isReadBy.find(
-      (member) => member.member.id === user.id && !member.isRead
-    )
+  messages.filter(
+    (message) =>
+      message.type === "message" &&
+      message.isReadBy.find(
+        (member) => member.member.id === user.id && !member.isRead
+      )
   ).length;
 
 export default {
