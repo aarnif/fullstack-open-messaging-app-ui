@@ -4,6 +4,21 @@ import helpers from "../../utils/helpers";
 import { View, Pressable, Text, Image } from "react-native";
 import { useNavigate } from "react-router-native";
 
+const LatestMessage = ({ user, latestMessage }) => {
+  if (latestMessage.type === "notification") {
+    return <Text className="text-gray-600">{latestMessage.content}</Text>;
+  }
+
+  return (
+    <Text className="text-gray-600">
+      {latestMessage.sender.id === user.id
+        ? "You:"
+        : `${latestMessage.sender.name}:`}{" "}
+      {helpers.sliceLatestMessage(latestMessage.content)}
+    </Text>
+  );
+};
+
 const ChatItem = ({ user, item }) => {
   const navigate = useNavigate();
   // console.log("Chat item:", item);
@@ -51,12 +66,7 @@ const ChatItem = ({ user, item }) => {
         <View className="flex-1">
           <Text className="text-md font-bold">{item.title}</Text>
 
-          <Text className="text-gray-600">
-            {latestMessage.sender.id === user.id
-              ? "You"
-              : latestMessage.sender.name}
-            : {helpers.sliceLatestMessage(latestMessage.content)}
-          </Text>
+          <LatestMessage user={user} latestMessage={latestMessage} />
         </View>
         <View className="w-[100px] flex justify-start items-center">
           <View className="w-full flex justify-center items-center">
