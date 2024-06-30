@@ -7,9 +7,7 @@ const NotificationMessage = ({ message }) => {
   return (
     <View className="my-2">
       <View className="min-w-[80px] max-w-[300px] self-center flex flex-row pt-2 px-2 pb-1 bg-gray-300 rounded-lg">
-        <Text className="text-gray-800 text-sm">
-          {`${message.sender.name} ${message.content}`}
-        </Text>
+        <Text className="text-gray-800 text-sm">{`${message.content}`}</Text>
       </View>
     </View>
   );
