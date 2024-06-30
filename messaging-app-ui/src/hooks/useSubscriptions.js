@@ -3,6 +3,7 @@ import {
   NEW_CHAT_ADDED,
   NEW_MESSAGE_ADDED,
   MESSAGES_IN_CHAT_READ,
+  PARTICIPANTS_ADDED_TO_GROUP_CHAT,
   LEFT_GROUP_CHAT,
 } from "../graphql/subscriptions";
 
@@ -116,6 +117,39 @@ const useSubscriptions = (user) => {
             allChatsByUser: allChatsByUser
               .map((chat) => {
                 return chat.id === updatedChat.id ? { ...updatedChat } : chat;
+              })
+              .sort((a, b) => {
+                if (!a.messages.length) return 1;
+
+                if (!b.messages.length) return -1;
+
+                return (
+                  new Date(b.messages[0].createdAt) -
+                  new Date(a.messages[0].createdAt)
+                );
+              }),
+          };
+        }
+      );
+    },
+  });
+
+  useSubscription(PARTICIPANTS_ADDED_TO_GROUP_CHAT, {
+    onData: ({ data }) => {
+      console.log("Use PARTICIPANTS_ADDED_TO_GROUP_CHAT-subscription:");
+      const chatWithAddedParticipants = data.data.participantsAddedToGroupChat;
+      client.cache.updateQuery(
+        {
+          query: GET_CHATS_BY_USER,
+          variables: { userId: user.id, searchByTitle: "" },
+        },
+        ({ allChatsByUser }) => {
+          return {
+            allChatsByUser: allChatsByUser
+              .map((chat) => {
+                return chat.id === chatWithAddedParticipants.id
+                  ? { ...chatWithAddedParticipants }
+                  : chat;
               })
               .sort((a, b) => {
                 if (!a.messages.length) return 1;
