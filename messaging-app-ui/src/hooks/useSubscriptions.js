@@ -146,11 +146,7 @@ const useSubscriptions = (user) => {
         ({ allChatsByUser }) => {
           return {
             allChatsByUser: allChatsByUser
-              .map((chat) => {
-                return chat.id === chatWithAddedParticipants.id
-                  ? { ...chatWithAddedParticipants }
-                  : chat;
-              })
+              .concat(chatWithAddedParticipants)
               .sort((a, b) => {
                 if (!a.messages.length) return 1;
 
