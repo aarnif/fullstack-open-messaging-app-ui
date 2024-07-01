@@ -4,6 +4,7 @@ import {
   NEW_MESSAGE_ADDED,
   MESSAGES_IN_CHAT_READ,
   PARTICIPANTS_ADDED_TO_GROUP_CHAT,
+  PARTICIPANTS_REMOVED_FROM_GROUP_CHAT,
   LEFT_GROUP_CHAT,
 } from "../graphql/subscriptions";
 
@@ -144,9 +145,93 @@ const useSubscriptions = (user) => {
           variables: { userId: user.id, searchByTitle: "" },
         },
         ({ allChatsByUser }) => {
+          const checkIfChatAlreadyExists = allChatsByUser.find(
+            (chat) => chat.id === chatWithAddedParticipants.id
+          );
+
+          if (checkIfChatAlreadyExists) {
+            return {
+              allChatsByUser: allChatsByUser
+                .map((chat) => {
+                  return chat.id === chatWithAddedParticipants.id
+                    ? { ...chatWithAddedParticipants }
+                    : chat;
+                })
+                .sort((a, b) => {
+                  if (!a.messages.length) return 1;
+
+                  if (!b.messages.length) return -1;
+
+                  return (
+                    new Date(b.messages[0].createdAt) -
+                    new Date(a.messages[0].createdAt)
+                  );
+                }),
+            };
+          }
+
           return {
             allChatsByUser: allChatsByUser
               .concat(chatWithAddedParticipants)
+              .sort((a, b) => {
+                if (!a.messages.length) return 1;
+
+                if (!b.messages.length) return -1;
+
+                return (
+                  new Date(b.messages[0].createdAt) -
+                  new Date(a.messages[0].createdAt)
+                );
+              }),
+          };
+        }
+      );
+    },
+  });
+
+  // When using this hook for the first time Apollo-client throws a console warning: "JSON Parse error: Unterminated string",
+  // unable to find the cause of this warning right now.
+  useSubscription(PARTICIPANTS_REMOVED_FROM_GROUP_CHAT, {
+    onData: ({ data }) => {
+      console.log("Use PARTICIPANTS_REMOVED_FROM_GROUP_CHAT-subscription:");
+      const updatedChat = data.data.participantsRemovedFromGroupChat;
+      client.cache.updateQuery(
+        {
+          query: GET_CHATS_BY_USER,
+          variables: { userId: user.id, searchByTitle: "" },
+        },
+        ({ allChatsByUser }) => {
+          const checkIfUserIsParticipant = updatedChat.participants.find(
+            (participant) => participant.id === user.id
+          );
+
+          console.log(
+            "Check if user is participant:",
+            checkIfUserIsParticipant
+          );
+
+          if (!checkIfUserIsParticipant) {
+            return {
+              allChatsByUser: allChatsByUser
+                .filter((chat) => chat.id !== updatedChat.id)
+                .sort((a, b) => {
+                  if (!a.messages.length) return 1;
+
+                  if (!b.messages.length) return -1;
+
+                  return (
+                    new Date(b.messages[0].createdAt) -
+                    new Date(a.messages[0].createdAt)
+                  );
+                }),
+            };
+          }
+
+          return {
+            allChatsByUser: allChatsByUser
+              .map((chat) => {
+                return chat.id === updatedChat.id ? { ...updatedChat } : chat;
+              })
               .sort((a, b) => {
                 if (!a.messages.length) return 1;
 

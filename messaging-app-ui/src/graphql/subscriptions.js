@@ -48,6 +48,16 @@ export const PARTICIPANTS_ADDED_TO_GROUP_CHAT = gql`
   ${CHAT_DETAILS}
 `;
 
+export const PARTICIPANTS_REMOVED_FROM_GROUP_CHAT = gql`
+  subscription ParticipantsRemovedFromGroupChat {
+    participantsRemovedFromGroupChat {
+      ...ChatDetails
+    }
+  }
+
+  ${CHAT_DETAILS}
+`;
+
 export const LEFT_GROUP_CHAT = gql`
   subscription LeftChat {
     leftGroupChat
