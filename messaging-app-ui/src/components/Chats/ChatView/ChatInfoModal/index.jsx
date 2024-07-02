@@ -21,6 +21,7 @@ const ChatInfoModal = ({
   showChatInfoModal,
   setShowChatInfoModal,
   setShowAddMembersModal,
+  setShowRemoveMembersModal,
 }) => {
   const chatAdmin = chat.admin;
   console.log("User:", user);
@@ -53,6 +54,12 @@ const ChatInfoModal = ({
   const handlePressAddMembers = () => {
     console.log("Add members to chat!");
     setShowAddMembersModal(true);
+    setShowChatInfoModal(false);
+  };
+
+  const handlePressRemoveMembers = () => {
+    console.log("Remove members from chat!");
+    setShowRemoveMembersModal(true);
     setShowChatInfoModal(false);
   };
 
@@ -114,13 +121,23 @@ const ChatInfoModal = ({
         )}
         {user.id === chatAdmin.id && (
           <>
-            <View className="w-full p-4 flex justify-center items-start bg-white">
+            <View className="w-full px-4 py-2 flex justify-center items-start bg-white">
               <Pressable
                 onPress={handlePressAddMembers}
-                className="mb-8 w-full flex-grow max-h-[60px] p-2 flex justify-center items-center border-2 border-green-400 bg-green-400 rounded-xl"
+                className="w-full flex-grow max-h-[60px] p-2 flex justify-center items-center border-2 border-green-400 bg-green-400 rounded-xl"
               >
                 <Text className="text-xl font-bold text-slate-200">
                   Add Members
+                </Text>
+              </Pressable>
+            </View>
+            <View className="w-full px-4 py-2 flex justify-center items-start bg-white">
+              <Pressable
+                onPress={handlePressRemoveMembers}
+                className="w-full flex-grow max-h-[60px] p-2 flex justify-center items-center border-2 border-red-400 bg-red-400 rounded-xl"
+              >
+                <Text className="text-xl font-bold text-slate-200">
+                  Remove Members
                 </Text>
               </Pressable>
             </View>
