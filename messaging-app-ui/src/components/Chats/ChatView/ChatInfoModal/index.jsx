@@ -1,9 +1,6 @@
 import baseUrl from "../../../../../baseUrl";
 import ContactsList from "./ContactsList";
-import {
-  LEAVE_GROUP_CHAT,
-  ADD_MESSAGE_TO_CHAT,
-} from "../../../../graphql/mutations";
+import { LEAVE_GROUP_CHAT } from "../../../../graphql/mutations";
 
 import {
   Modal,
@@ -23,15 +20,11 @@ const ChatInfoModal = ({
   chat,
   showChatInfoModal,
   setShowChatInfoModal,
+  setShowAddMembersModal,
 }) => {
   const chatAdmin = chat.admin;
   console.log("User:", user);
-  const [leaveChatMutate] = useMutation(LEAVE_GROUP_CHAT, {
-    onError: (error) => {
-      console.log(error.graphQLErrors[0].message);
-    },
-  });
-  const [leaveChatMessageMutate] = useMutation(ADD_MESSAGE_TO_CHAT, {
+  const [mutate] = useMutation(LEAVE_GROUP_CHAT, {
     onError: (error) => {
       console.log(error.graphQLErrors[0].message);
     },
@@ -46,15 +39,8 @@ const ChatInfoModal = ({
   const leaveChat = async () => {
     console.log("Leave group chat:", chat.title);
     try {
-      await leaveChatMutate({
+      await mutate({
         variables: { chatId: chat.id, participantId: user.id },
-      });
-      await leaveChatMessageMutate({
-        variables: {
-          chatId: chat.id,
-          type: "notification",
-          content: `left.`,
-        },
       });
       console.log("Left group chat:", chat.title);
       navigate("/chats");
@@ -62,6 +48,12 @@ const ChatInfoModal = ({
       console.log("Error leaving chat:", error);
       console.log(error);
     }
+  };
+
+  const handlePressAddMembers = () => {
+    console.log("Add members to chat!");
+    setShowAddMembersModal(true);
+    setShowChatInfoModal(false);
   };
 
   return (
@@ -119,6 +111,20 @@ const ChatInfoModal = ({
               </Text>
             </Pressable>
           </View>
+        )}
+        {user.id === chatAdmin.id && (
+          <>
+            <View className="w-full p-4 flex justify-center items-start bg-white">
+              <Pressable
+                onPress={handlePressAddMembers}
+                className="mb-8 w-full flex-grow max-h-[60px] p-2 flex justify-center items-center border-2 border-green-400 bg-green-400 rounded-xl"
+              >
+                <Text className="text-xl font-bold text-slate-200">
+                  Add Members
+                </Text>
+              </Pressable>
+            </View>
+          </>
         )}
       </SafeAreaView>
     </Modal>
