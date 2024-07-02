@@ -3,6 +3,7 @@ import LoadingIcon from "../../LoadingIcon";
 import ChatHeader from "./ChatHeader";
 import Messages from "./Messages";
 import ChatInfoModal from "./ChatInfoModal/index.jsx";
+import AddMembersModal from "./UpdateMembersModal/AddMembersModal.jsx";
 
 import { useState } from "react";
 import { useQuery } from "@apollo/client";
@@ -10,6 +11,7 @@ import { useMatch } from "react-router-native";
 
 const ChatView = ({ user }) => {
   const [showChatInfoModal, setShowChatInfoModal] = useState(false);
+  const [showAddMembersModal, setShowAddMembersModal] = useState(false);
   const match = useMatch("/chats/:chatId").params;
   const { data, loading } = useQuery(GET_CHAT_BY_ID, {
     variables: {
@@ -39,6 +41,15 @@ const ChatView = ({ user }) => {
           chat={data.findChatById}
           showChatInfoModal={showChatInfoModal}
           setShowChatInfoModal={setShowChatInfoModal}
+          setShowAddMembersModal={setShowAddMembersModal}
+        />
+      )}
+      {showAddMembersModal && (
+        <AddMembersModal
+          user={user}
+          chat={data.findChatById}
+          showAddMembersModal={showAddMembersModal}
+          setShowAddMembersModal={setShowAddMembersModal}
         />
       )}
     </>
