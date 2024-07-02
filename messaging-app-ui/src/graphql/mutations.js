@@ -71,6 +71,22 @@ export const ADD_NEW_CHAT_MEMBERS = gql`
   ${CHAT_DETAILS}
 `;
 
+export const REMOVE_CHAT_MEMBERS = gql`
+  mutation RemoveParticipantsFromGroupChat(
+    $chatId: ID!
+    $participants: [ID!]!
+  ) {
+    removeParticipantsFromGroupChat(
+      chatId: $chatId
+      participants: $participants
+    ) {
+      ...ChatDetails
+    }
+  }
+
+  ${CHAT_DETAILS}
+`;
+
 export const LEAVE_GROUP_CHAT = gql`
   mutation LeaveGroupChat($chatId: ID!) {
     leaveGroupChat(chatId: $chatId)
