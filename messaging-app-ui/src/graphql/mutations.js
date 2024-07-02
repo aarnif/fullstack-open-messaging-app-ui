@@ -61,6 +61,16 @@ export const MARK_MESSAGES_IN_CHAT_READ = gql`
   ${CHAT_DETAILS}
 `;
 
+export const ADD_NEW_CHAT_MEMBERS = gql`
+  mutation AddParticipantsToGroupChat($chatId: ID!, $participants: [ID!]!) {
+    addParticipantsToGroupChat(chatId: $chatId, participants: $participants) {
+      ...ChatDetails
+    }
+  }
+
+  ${CHAT_DETAILS}
+`;
+
 export const LEAVE_GROUP_CHAT = gql`
   mutation LeaveGroupChat($chatId: ID!) {
     leaveGroupChat(chatId: $chatId)
