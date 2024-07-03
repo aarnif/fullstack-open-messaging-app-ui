@@ -40,6 +40,17 @@ export const CHAT_DETAILS = gql`
   }
 `;
 
+export const GET_ALL_USERS = gql`
+  query AllUsers($searchByName: String) {
+    allUsers(searchByName: $searchByName) {
+      id
+      username
+      name
+      about
+    }
+  }
+`;
+
 export const GET_CURRENT_USER = gql`
   query {
     me {
