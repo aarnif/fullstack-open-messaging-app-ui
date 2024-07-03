@@ -92,3 +92,18 @@ export const LEAVE_GROUP_CHAT = gql`
     leaveGroupChat(chatId: $chatId)
   }
 `;
+
+export const ADD_CONTACTS = gql`
+  mutation AddContacts($contacts: [ID!]!) {
+    addContacts(contacts: $contacts) {
+      id
+      username
+      name
+      contacts {
+        id
+        username
+        name
+      }
+    }
+  }
+`;
