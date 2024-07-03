@@ -2,12 +2,7 @@ import { View, Text, Pressable } from "react-native";
 
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
-const Header = ({ user, setShowNewChatModal }) => {
-  const handlePress = () => {
-    console.log("New Chat modal button pressed!");
-    setShowNewChatModal(true);
-  };
-
+const Header = ({ user, handlePress }) => {
   return (
     <View className="w-full flex flex-row justify-center items-center py-2 bg-green-600 shadow-lg">
       <View className="flex flex-row">

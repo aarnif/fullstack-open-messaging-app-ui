@@ -49,8 +49,7 @@ const ChatsList = ({ user, data }) => {
   );
 };
 
-const Chats = ({ user, setShowNewChatModal }) => {
-  const client = useApolloClient();
+const Chats = ({ user, handleNewChatPress }) => {
   const [searchByTitle, setSearchByTitle] = useState("");
   const [debouncedSearchByTitle] = useDebounce(searchByTitle, 500);
   const { data, loading } = useQuery(GET_CHATS_BY_USER, {
@@ -73,7 +72,7 @@ const Chats = ({ user, setShowNewChatModal }) => {
 
   return (
     <>
-      <Header user={user} setShowNewChatModal={setShowNewChatModal} />
+      <Header user={user} handlePress={handleNewChatPress} />
       <ChatsHeader searchByTitle={searchByTitle} handleChange={handleChange} />
       {loading ? (
         <View className="flex justify-end items-center">

@@ -8,6 +8,7 @@ import useAuthStorage from "../hooks/useAuthStorage";
 import useNotify from "../hooks/useNotify";
 import LoadingIcon from "./LoadingIcon";
 import NewChatModal from "./NewChatModal";
+import NewContactModal from "./NewContactModal";
 
 import { StatusBar } from "expo-status-bar";
 import { useState, useEffect } from "react";
@@ -19,6 +20,7 @@ import { GET_CURRENT_USER } from "../graphql/queries";
 
 const Main = () => {
   const [showNewChatModal, setShowNewChatModal] = useState(false);
+  const [showNewContactModal, setShowNewContactModal] = useState(false);
   const authStorage = useAuthStorage();
   const notify = useNotify();
 
@@ -32,6 +34,16 @@ const Main = () => {
     };
     fetchToken();
   }, []);
+
+  const handleNewChatPress = () => {
+    console.log("New Chat modal button pressed!");
+    setShowNewChatModal(true);
+  };
+
+  const handleNewContactPress = () => {
+    console.log("New Contact modal button pressed!");
+    setShowNewContactModal(true);
+  };
 
   if (loading) {
     return (
@@ -58,7 +70,7 @@ const Main = () => {
               data?.me ? (
                 <Chats
                   user={data?.me}
-                  setShowNewChatModal={setShowNewChatModal}
+                  handleNewChatPress={handleNewChatPress}
                 />
               ) : (
                 <SignIn notify={notify} />
@@ -73,7 +85,7 @@ const Main = () => {
             element={
               <Contacts
                 user={data?.me}
-                setShowNewChatModal={setShowNewChatModal}
+                handleNewContactPress={handleNewContactPress}
               />
             }
           />
@@ -85,6 +97,13 @@ const Main = () => {
             notify={notify}
             showNewChatModal={showNewChatModal}
             setShowNewChatModal={setShowNewChatModal}
+          />
+        )}
+        {showNewContactModal && (
+          <NewContactModal
+            user={data?.me}
+            showNewContactModal={showNewContactModal}
+            setShowNewContactModal={setShowNewContactModal}
           />
         )}
       </View>

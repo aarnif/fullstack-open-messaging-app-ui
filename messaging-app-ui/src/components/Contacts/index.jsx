@@ -1,4 +1,5 @@
 import { GET_CONTACTS_BY_USER } from "../../graphql/queries";
+import useSubscriptions from "../../hooks/useSubscriptions";
 import Header from "../Header";
 import SearchBar from "../SearchBar";
 import ContactItem from "./ContactItem";
@@ -46,7 +47,7 @@ const ContactsList = ({ data }) => {
   );
 };
 
-const Contacts = ({ user }) => {
+const Contacts = ({ user, handleNewContactPress }) => {
   const [searchByName, setSearchByName] = useState("");
   const [debouncedSearchByName, setDebouncedSearchByName] = useDebounce(
     searchByName,
@@ -56,8 +57,9 @@ const Contacts = ({ user }) => {
     variables: {
       searchByName: debouncedSearchByName,
     },
-    fetchPolicy: "cache-and-network",
   });
+
+  useSubscriptions(user);
 
   //   console.log("Contacts data:", data);
 
@@ -68,7 +70,7 @@ const Contacts = ({ user }) => {
 
   return (
     <>
-      <Header user={user} />
+      <Header user={user} handlePress={handleNewContactPress} />
       <ContactsHeader
         searchByTitle={searchByName}
         handleChange={handleChange}
