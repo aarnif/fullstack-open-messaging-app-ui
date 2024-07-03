@@ -63,3 +63,14 @@ export const LEFT_GROUP_CHAT = gql`
     leftGroupChat
   }
 `;
+
+export const CONTACTS_ADDED = gql`
+  subscription ContactsAdded {
+    contactsAdded {
+      id
+      username
+      name
+      about
+    }
+  }
+`;

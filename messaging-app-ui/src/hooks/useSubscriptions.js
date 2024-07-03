@@ -6,9 +6,10 @@ import {
   PARTICIPANTS_ADDED_TO_GROUP_CHAT,
   PARTICIPANTS_REMOVED_FROM_GROUP_CHAT,
   LEFT_GROUP_CHAT,
+  CONTACTS_ADDED,
 } from "../graphql/subscriptions";
 
-import { GET_CHATS_BY_USER } from "../graphql/queries";
+import { GET_CHATS_BY_USER, GET_CONTACTS_BY_USER } from "../graphql/queries";
 
 import { useApolloClient, useSubscription } from "@apollo/client";
 
@@ -273,6 +274,25 @@ const useSubscriptions = (user) => {
                   new Date(a.messages[0].createdAt)
                 );
               }),
+          };
+        }
+      );
+    },
+  });
+
+  useSubscription(CONTACTS_ADDED, {
+    onData: ({ data }) => {
+      console.log("Use CONTACTS_ADDED-subscription:");
+      const addedContacts = data.data.contactsAdded;
+      console.log("Added contacts:", addedContacts);
+      client.cache.updateQuery(
+        {
+          query: GET_CONTACTS_BY_USER,
+          variables: { searchByName: "" },
+        },
+        ({ allContactsByUser }) => {
+          return {
+            allContactsByUser: allContactsByUser,
           };
         }
       );
