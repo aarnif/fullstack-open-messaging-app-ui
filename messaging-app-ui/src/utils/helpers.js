@@ -4,7 +4,7 @@ const formatMessageTime = (latestMessageTime) => {
   if (!latestMessageTime) {
     return null;
   } else if (isToday(new Date(latestMessageTime))) {
-    return format(new Date(latestMessageTime), "hh:mm");
+    return format(new Date(latestMessageTime), "HH:mm");
   } else if (isThisWeek(new Date(latestMessageTime))) {
     return format(new Date(latestMessageTime), "EEEE");
   } else {
