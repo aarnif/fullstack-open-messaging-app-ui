@@ -1,4 +1,4 @@
-import { GET_ALL_USERS } from "../../graphql/queries";
+import { GET_ALL_CONTACTS_EXCEPT_BY_USER } from "../../graphql/queries";
 import { ADD_CONTACTS } from "../../graphql/mutations";
 import LoadingIcon from "../LoadingIcon";
 import SearchBar from "../SearchBar";
@@ -43,7 +43,7 @@ const NewContactModal = ({
   console.log("Chosen users:", chosenUsersIds);
   console.log();
 
-  const { data, loading } = useQuery(GET_ALL_USERS, {
+  const { data, loading } = useQuery(GET_ALL_CONTACTS_EXCEPT_BY_USER, {
     variables: {
       searchByName: debouncedSearchByName,
     },
@@ -88,8 +88,6 @@ const NewContactModal = ({
     setSearchByName(text);
   };
 
-  console.log("All users data:", data?.allUsers);
-
   return (
     <Modal animationType="slide" visible={showNewContactModal}>
       <SafeAreaView style={{ flex: 1 }} className="bg-green-600">
@@ -129,7 +127,7 @@ const NewContactModal = ({
         ) : (
           <ContactsList
             user={user}
-            data={data?.allUsers}
+            data={data?.allContactsExceptByUser}
             chosenUsersIds={chosenUsersIds}
             setChosenUsersIds={setChosenUsersIds}
           />

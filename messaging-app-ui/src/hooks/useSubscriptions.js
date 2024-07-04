@@ -291,8 +291,12 @@ const useSubscriptions = (user) => {
           variables: { searchByName: "" },
         },
         ({ allContactsByUser }) => {
+          console.log("All contacts by user:", allContactsByUser);
           return {
-            allContactsByUser: allContactsByUser,
+            allContactsByUser: {
+              ...allContactsByUser,
+              contacts: allContactsByUser.contacts.concat(addedContacts),
+            },
           };
         }
       );
