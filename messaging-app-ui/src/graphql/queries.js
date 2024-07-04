@@ -84,6 +84,17 @@ export const GET_CONTACTS_BY_USER = gql`
   }
 `;
 
+export const GET_ALL_CONTACTS_EXCEPT_BY_USER = gql`
+  query AllContactsExceptByUser($searchByName: String) {
+    allContactsExceptByUser(searchByName: $searchByName) {
+      id
+      username
+      name
+      about
+    }
+  }
+`;
+
 export const GET_CHAT_BY_ID = gql`
   query FindChatById($chatId: ID!) {
     findChatById(chatId: $chatId) {
