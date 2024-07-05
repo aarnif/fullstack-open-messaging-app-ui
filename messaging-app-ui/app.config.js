@@ -1,4 +1,5 @@
 import "dotenv/config";
+import plugin from "tailwindcss";
 
 export default {
   name: "messaging-app-ui",
@@ -27,4 +28,13 @@ export default {
   extra: {
     apolloUri: process.env.APOLLO_URI,
   },
+  plugins: [
+    [
+      "expo-image-picker",
+      {
+        photosPermission:
+          "The app accesses your photos to let you share them with your friends.",
+      },
+    ],
+  ],
 };

@@ -1,4 +1,7 @@
 import baseUrl from "../../../baseUrl";
+import FormikFormField from "../FormikFormField";
+
+import { useState } from "react";
 
 import {
   Modal,
@@ -9,20 +12,37 @@ import {
   Image,
 } from "react-native";
 import { Formik, useField } from "formik";
-import FormikFormField from "../FormikFormField";
+import * as ImagePicker from "expo-image-picker";
 
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
-const UploadProfilePicture = ({ user }) => {
+const UploadProfilePicture = ({ image, setImage }) => {
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
+
+    console.log("Result:", result);
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
+
+  console.log("Image:", image);
+
   return (
-    <Pressable className="mb-[20px]">
+    <Pressable className="mb-[20px]" onPress={pickImage}>
       <Text className="text-md font-medium text-slate-700">
         PROFILE PICTURE:
       </Text>
       <View className="w-full p-2 flex justify-center items-center rounded-lg bg-slate-200 text-slate-800">
         <Image
           source={{
-            uri: `${baseUrl}/images/contacts/${user.id}`,
+            uri: image,
           }}
           style={{ width: 80, height: 80, borderRadius: 9999 }}
         />
@@ -34,7 +54,7 @@ const UploadProfilePicture = ({ user }) => {
   );
 };
 
-const EditProfileForm = ({ user, goBack, onSubmit }) => {
+const EditProfileForm = ({ goBack, onSubmit, image, setImage }) => {
   const [nameField, nameMeta, nameHelpers] = useField("name");
   const [aboutField, aboutMeta, aboutHelpers] = useField("about");
 
@@ -64,7 +84,7 @@ const EditProfileForm = ({ user, goBack, onSubmit }) => {
         </View>
       </View>
       <View className="w-full p-8 flex-grow flex flex-col bg-white">
-        <UploadProfilePicture user={user} />
+        <UploadProfilePicture image={image} setImage={setImage} />
 
         <FormikFormField
           name="name"
@@ -85,15 +105,21 @@ const EditProfileForm = ({ user, goBack, onSubmit }) => {
 };
 
 export const EditProfileContainer = ({
-  user,
   goBack,
   onSubmit,
+  image,
+  setImage,
   initialValues,
 }) => {
   return (
     <Formik initialValues={initialValues} onSubmit={onSubmit}>
       {({ handleSubmit }) => (
-        <EditProfileForm user={user} goBack={goBack} onSubmit={handleSubmit} />
+        <EditProfileForm
+          goBack={goBack}
+          onSubmit={handleSubmit}
+          image={image}
+          setImage={setImage}
+        />
       )}
     </Formik>
   );
@@ -104,6 +130,7 @@ const EditProfileModal = ({
   showEditProfileModal,
   setShowEditProfileModal,
 }) => {
+  const [image, setImage] = useState(`${baseUrl}/images/contacts/${user.id}`);
   const initialValues = {
     name: user.name,
     about: user.about,
@@ -117,6 +144,7 @@ const EditProfileModal = ({
   const onSubmit = async (values) => {
     const { name, about } = values;
     console.log("Edit profile with following values:");
+    console.log("Image:", image);
     console.log("Name:", name);
     console.log("About:", about);
   };
@@ -125,9 +153,10 @@ const EditProfileModal = ({
     <Modal animationType="slide" visible={showEditProfileModal}>
       <SafeAreaView style={{ flex: 1 }} className="bg-green-600">
         <EditProfileContainer
-          user={user}
           goBack={goBack}
           onSubmit={onSubmit}
+          image={image}
+          setImage={setImage}
           initialValues={initialValues}
         />
       </SafeAreaView>
