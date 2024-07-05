@@ -4,15 +4,18 @@ import ChatView from "./Chats/ChatView/index";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import Contacts from "./Contacts/index";
-import useAuthStorage from "../hooks/useAuthStorage";
-import useNotify from "../hooks/useNotify";
+import Profile from "./Profile";
 import LoadingIcon from "./LoadingIcon";
 import NewChatModal from "./NewChatModal";
 import NewContactModal from "./NewContactModal";
+import EditProfileModal from "./EditProfileModal";
+
+import useAuthStorage from "../hooks/useAuthStorage";
+import useNotify from "../hooks/useNotify";
 
 import { StatusBar } from "expo-status-bar";
 import { useState, useEffect } from "react";
-import { SafeAreaView, View, Text } from "react-native";
+import { SafeAreaView, View } from "react-native";
 import { Route, Routes, Navigate } from "react-router-native";
 import { useQuery } from "@apollo/client";
 
@@ -89,6 +92,7 @@ const Main = () => {
               />
             }
           />
+          <Route path="/profile" element={<Profile user={data?.me} />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
         {showNewChatModal && (

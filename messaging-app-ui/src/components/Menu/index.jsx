@@ -31,7 +31,12 @@ const Menu = () => {
           color={iconColor}
         />
       ),
-      handlePress: () => console.log("Profile"),
+      handlePress: () => {
+        setShowMenu(false);
+        setTimeout(() => {
+          navigate("/profile");
+        }, menuAnimationWaitTime);
+      },
     },
     {
       id: "2",
