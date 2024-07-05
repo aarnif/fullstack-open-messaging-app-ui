@@ -24,6 +24,7 @@ import { GET_CURRENT_USER } from "../graphql/queries";
 const Main = () => {
   const [showNewChatModal, setShowNewChatModal] = useState(false);
   const [showNewContactModal, setShowNewContactModal] = useState(false);
+  const [showEditProfileModal, setShowEditProfileModal] = useState(false);
   const authStorage = useAuthStorage();
   const notify = useNotify();
 
@@ -46,6 +47,11 @@ const Main = () => {
   const handleNewContactPress = () => {
     console.log("New Contact modal button pressed!");
     setShowNewContactModal(true);
+  };
+
+  const handleEditProfilePress = () => {
+    console.log("Edit Profile modal button pressed!");
+    setShowEditProfileModal(true);
   };
 
   if (loading) {
@@ -92,7 +98,15 @@ const Main = () => {
               />
             }
           />
-          <Route path="/profile" element={<Profile user={data?.me} />} />
+          <Route
+            path="/profile"
+            element={
+              <Profile
+                user={data?.me}
+                handleEditProfilePress={handleEditProfilePress}
+              />
+            }
+          />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
         {showNewChatModal && (
@@ -108,6 +122,13 @@ const Main = () => {
             user={data?.me}
             showNewContactModal={showNewContactModal}
             setShowNewContactModal={setShowNewContactModal}
+          />
+        )}
+        {showEditProfileModal && (
+          <EditProfileModal
+            user={data?.me}
+            showEditProfileModal={showEditProfileModal}
+            setShowEditProfileModal={setShowEditProfileModal}
           />
         )}
       </View>

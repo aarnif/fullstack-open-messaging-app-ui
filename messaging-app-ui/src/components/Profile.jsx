@@ -5,10 +5,10 @@ import Menu from "./Menu";
 
 import { View, Text, Image } from "react-native";
 
-const Profile = ({ user }) => {
+const Profile = ({ user, handleEditProfilePress }) => {
   return (
     <>
-      <Header user={user} />
+      <Header user={user} handlePress={handleEditProfilePress} />
       <Text className="text-2xl font-bold mt-4 mx-4 mb-2">Profile</Text>
       <View className="w-full py-4 flex justify-center items-center bg-white">
         <Image
