@@ -36,5 +36,11 @@ export default {
           "The app accesses your photos to let you share them with your friends.",
       },
     ],
+    [
+      "expo-camera",
+      {
+        cameraPermission: "Allow $(PRODUCT_NAME) to access your camera",
+      },
+    ],
   ],
 };
