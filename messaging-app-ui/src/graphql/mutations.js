@@ -107,3 +107,14 @@ export const ADD_CONTACTS = gql`
     }
   }
 `;
+
+export const EDIT_PROFILE = gql`
+  mutation EditProfile($name: String, $about: String) {
+    editProfile(name: $name, about: $about) {
+      id
+      username
+      name
+      about
+    }
+  }
+`;

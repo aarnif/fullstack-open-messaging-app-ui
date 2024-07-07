@@ -1,8 +1,10 @@
 import baseUrl from "../../../baseUrl";
+import { EDIT_PROFILE } from "../../graphql/mutations";
 import FormikFormField from "../FormikFormField";
 import UploadProfilePictureWindow from "./UploadProfilePictureWindow";
 
 import { useState } from "react";
+import { useMutation } from "@apollo/client";
 
 import {
   Modal,
@@ -129,6 +131,7 @@ const EditProfileModal = ({
   showEditProfileModal,
   setShowEditProfileModal,
 }) => {
+  const [mutate] = useMutation(EDIT_PROFILE);
   const [showUploadPictureModal, setShowUploadPictureModal] = useState(false);
   const [image, setImage] = useState(`${baseUrl}/images/contacts/${user.id}`);
   const initialValues = {
@@ -157,6 +160,22 @@ const EditProfileModal = ({
     console.log("Image:", image);
     console.log("Name:", name);
     console.log("About:", about);
+
+    try {
+      const { data } = await mutate({
+        variables: {
+          name,
+          about,
+        },
+      });
+
+      setShowEditProfileModal(false);
+
+      console.log("Edited profile successfully!");
+      console.log("Edited profile:", data);
+    } catch (error) {
+      console.error("Error editing profile:", error);
+    }
   };
 
   return (
