@@ -1,5 +1,15 @@
 import { gql } from "@apollo/client";
 
+export const USER_DETAILS = gql`
+  fragment UserDetails on User {
+    id
+    username
+    name
+    about
+    profilePicture
+  }
+`;
+
 export const CHAT_DETAILS = gql`
   fragment ChatDetails on Chat {
     id
@@ -14,19 +24,14 @@ export const CHAT_DETAILS = gql`
       about
     }
     participants {
-      id
-      username
-      name
-      about
+      ...UserDetails
     }
     messages {
       id
       type
       content
       sender {
-        id
-        username
-        name
+        ...UserDetails
       }
       isReadBy {
         member {
@@ -38,28 +43,28 @@ export const CHAT_DETAILS = gql`
       createdAt
     }
   }
+
+  ${USER_DETAILS}
 `;
 
 export const GET_ALL_USERS = gql`
   query AllUsers($searchByName: String) {
     allUsers(searchByName: $searchByName) {
-      id
-      username
-      name
-      about
+      ...UserDetails
     }
   }
+
+  ${USER_DETAILS}
 `;
 
 export const GET_CURRENT_USER = gql`
   query {
     me {
-      id
-      username
-      name
-      about
+      ...UserDetails
     }
   }
+
+  ${USER_DETAILS}
 `;
 
 export const GET_CHATS_BY_USER = gql`
@@ -76,24 +81,22 @@ export const GET_CONTACTS_BY_USER = gql`
   query AllContactsByUser($searchByName: String) {
     allContactsByUser(searchByName: $searchByName) {
       contacts {
-        id
-        username
-        name
-        about
+        ...UserDetails
       }
     }
   }
+
+  ${USER_DETAILS}
 `;
 
 export const GET_ALL_CONTACTS_EXCEPT_BY_USER = gql`
   query AllContactsExceptByUser($searchByName: String) {
     allContactsExceptByUser(searchByName: $searchByName) {
-      id
-      username
-      name
-      about
+      ...UserDetails
     }
   }
+
+  ${USER_DETAILS}
 `;
 
 export const GET_CHAT_BY_ID = gql`
