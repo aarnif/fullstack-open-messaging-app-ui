@@ -133,7 +133,7 @@ const EditProfileModal = ({
 }) => {
   const [mutate] = useMutation(EDIT_PROFILE);
   const [showUploadPictureModal, setShowUploadPictureModal] = useState(false);
-  const [image, setImage] = useState(`${baseUrl}/images/contacts/${user.id}`);
+  const [image, setImage] = useState(user.profilePicture);
   const initialValues = {
     name: user.name,
     about: user.about,

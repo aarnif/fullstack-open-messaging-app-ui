@@ -27,7 +27,7 @@ const MessageByAnotherUser = ({ message }) => {
       </View>
       <Image
         source={{
-          uri: `${baseUrl}/images/contacts/${message.sender.id}`,
+          uri: message.sender.profilePicture,
         }}
         style={{
           width: 32,

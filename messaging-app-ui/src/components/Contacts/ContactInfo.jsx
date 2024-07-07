@@ -102,7 +102,7 @@ const ContactInfo = ({
         <View className="w-full py-4 flex justify-center items-center bg-white">
           <Image
             source={{
-              uri: `${baseUrl}/images/contacts/${contact.id}`,
+              uri: contact.profilePicture,
             }}
             style={{ width: 120, height: 120, borderRadius: 9999 }}
           />

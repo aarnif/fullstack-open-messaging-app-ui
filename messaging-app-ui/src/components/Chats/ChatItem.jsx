@@ -38,7 +38,7 @@ const ChatItem = ({ user, item }) => {
           <View className="mr-4">
             <Image
               source={{
-                uri: `${baseUrl}/images/chats/${item.id}`,
+                uri: item.image,
               }}
               style={{ width: 48, height: 48, borderRadius: 9999 }}
             />
@@ -59,7 +59,7 @@ const ChatItem = ({ user, item }) => {
           <Image
             className="w-12 h-12 rounded-full"
             source={{
-              uri: `${baseUrl}/images/chats/${item.id}`,
+              uri: item.image,
             }}
           />
         </View>
