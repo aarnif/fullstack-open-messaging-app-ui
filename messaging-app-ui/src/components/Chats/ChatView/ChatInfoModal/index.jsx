@@ -90,7 +90,7 @@ const ChatInfoModal = ({
         <View className="w-full py-4 flex justify-center items-center bg-white">
           <Image
             source={{
-              uri: `${baseUrl}/images/chats/${chat.id}`,
+              uri: chat.image,
             }}
             style={{ width: 100, height: 100, borderRadius: 9999 }}
           />

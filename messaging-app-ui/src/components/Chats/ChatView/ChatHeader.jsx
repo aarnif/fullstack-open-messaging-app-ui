@@ -73,7 +73,7 @@ const ChatHeader = ({ user, chat, setShowChatInfoModal }) => {
             <View className="mr-2">
               <Image
                 source={{
-                  uri: `${baseUrl}/images/chats/${chat.id}`,
+                  uri: chat.image,
                 }}
                 style={{ width: 48, height: 48, borderRadius: 9999 }}
               />
