@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client";
-import { CHAT_DETAILS } from "./queries";
+import { USER_DETAILS, CHAT_DETAILS } from "./queries";
 
 export const LOGIN = gql`
   mutation Login($username: String!, $password: String!) {
@@ -100,21 +100,20 @@ export const ADD_CONTACTS = gql`
       username
       name
       contacts {
-        id
-        username
-        name
+        ...UserDetails
       }
     }
   }
+
+  ${USER_DETAILS}
 `;
 
 export const EDIT_PROFILE = gql`
-  mutation EditProfile($name: String, $about: String) {
-    editProfile(name: $name, about: $about) {
-      id
-      username
-      name
-      about
+  mutation EditProfile($name: String, $about: String, $profilePicture: String) {
+    editProfile(name: $name, about: $about, profilePicture: $profilePicture) {
+      ...UserDetails
     }
   }
+
+  ${USER_DETAILS}
 `;

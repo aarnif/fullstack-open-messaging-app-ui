@@ -1,4 +1,4 @@
-import baseUrl from "../../../baseUrl";
+import imageService from "../../services/imageService";
 import { EDIT_PROFILE } from "../../graphql/mutations";
 import FormikFormField from "../FormikFormField";
 import UploadProfilePictureWindow from "./UploadProfilePictureWindow";
@@ -18,11 +18,7 @@ import { Formik, useField } from "formik";
 
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
-const UploadProfilePicture = ({
-  handlePressUploadPicture,
-  image,
-  setImage,
-}) => {
+const UploadProfilePicture = ({ handlePressUploadPicture, image }) => {
   return (
     <Pressable className="mb-[20px]" onPress={handlePressUploadPicture}>
       <Text className="text-md font-medium text-slate-700">
@@ -48,7 +44,6 @@ const EditProfileForm = ({
   onSubmit,
   handlePressUploadPicture,
   image,
-  setImage,
 }) => {
   const [nameField, nameMeta, nameHelpers] = useField("name");
   const [aboutField, aboutMeta, aboutHelpers] = useField("about");
@@ -82,7 +77,6 @@ const EditProfileForm = ({
         <UploadProfilePicture
           handlePressUploadPicture={handlePressUploadPicture}
           image={image}
-          setImage={setImage}
         />
 
         <FormikFormField
@@ -108,7 +102,6 @@ export const EditProfileContainer = ({
   onSubmit,
   handlePressUploadPicture,
   image,
-  setImage,
   initialValues,
 }) => {
   return (
@@ -119,7 +112,6 @@ export const EditProfileContainer = ({
           onSubmit={handleSubmit}
           handlePressUploadPicture={handlePressUploadPicture}
           image={image}
-          setImage={setImage}
         />
       )}
     </Formik>
@@ -131,9 +123,11 @@ const EditProfileModal = ({
   showEditProfileModal,
   setShowEditProfileModal,
 }) => {
-  const [mutate] = useMutation(EDIT_PROFILE);
+  const [editProfile] = useMutation(EDIT_PROFILE);
   const [showUploadPictureModal, setShowUploadPictureModal] = useState(false);
   const [image, setImage] = useState(user.profilePicture);
+  const [base64Image, setBase64Image] = useState(null); // Used in uploading image
+
   const initialValues = {
     name: user.name,
     about: user.about,
@@ -162,17 +156,23 @@ const EditProfileModal = ({
     console.log("About:", about);
 
     try {
-      const { data } = await mutate({
+      console.log("Uploading profile picture...");
+      const result = await imageService.uploadImage(user.username, base64Image);
+
+      console.log("Upload result:", result);
+
+      console.log("Editing profile...");
+      await editProfile({
         variables: {
           name,
           about,
+          profilePicture: result.data.thumb.url,
         },
       });
 
       setShowEditProfileModal(false);
 
       console.log("Edited profile successfully!");
-      console.log("Edited profile:", data);
     } catch (error) {
       console.error("Error editing profile:", error);
     }
@@ -186,13 +186,13 @@ const EditProfileModal = ({
           onSubmit={onSubmit}
           handlePressUploadPicture={handlePressUploadPicture}
           image={image}
-          setImage={setImage}
           initialValues={initialValues}
         />
         {showUploadPictureModal && (
           <UploadProfilePictureWindow
             image={image}
             setImage={setImage}
+            setBase64Image={setBase64Image}
             handleCloseUploadPicture={handleCloseUploadPicture}
           />
         )}

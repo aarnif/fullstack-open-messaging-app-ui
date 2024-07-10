@@ -7,6 +7,7 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 const UploadProfilePictureWindow = ({
   image,
   setImage,
+  setBase64Image,
   handleCloseUploadPicture,
 }) => {
   const [permission, requestPermission] = useCameraPermissions();
@@ -28,12 +29,12 @@ const UploadProfilePictureWindow = ({
       allowsEditing: true,
       aspect: [1, 1],
       quality: 1,
+      base64: true,
     });
-
-    console.log("Result:", result);
 
     if (!result.canceled) {
       setImage(result.assets[0].uri);
+      setBase64Image(result.assets[0].base64);
       handleCloseUploadPicture();
     }
 
@@ -46,12 +47,12 @@ const UploadProfilePictureWindow = ({
       allowsEditing: true,
       aspect: [1, 1],
       quality: 1,
+      base64: true,
     });
-
-    console.log("Result:", result);
 
     if (!result.canceled) {
       setImage(result.assets[0].uri);
+      setBase64Image(result.assets[0].base64);
       handleCloseUploadPicture();
     }
   };
