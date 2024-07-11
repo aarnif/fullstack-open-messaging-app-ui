@@ -1,3 +1,4 @@
+import useChangeImage from "../../hooks/useChangeImage";
 import imageService from "../../services/imageService";
 import { EDIT_PROFILE } from "../../graphql/mutations";
 import FormikFormField from "../FormikFormField";
@@ -127,8 +128,9 @@ const EditProfileModal = ({
   const [editProfile] = useMutation(EDIT_PROFILE);
   const [isUploading, setIsUploading] = useState(false);
   const [showUploadPictureModal, setShowUploadPictureModal] = useState(false);
-  const [image, setImage] = useState(user.profilePicture);
-  const [base64Image, setBase64Image] = useState(null); // Used in uploading image
+
+  const { image, base64Image, chooseImageFromCamera, chooseImageFromFiles } =
+    useChangeImage(user.profilePicture);
 
   const initialValues = {
     name: user.name,
@@ -200,11 +202,9 @@ const EditProfileModal = ({
         />
         {showUploadPictureModal && (
           <UploadProfilePictureWindow
-            image={image}
-            setImage={setImage}
-            setBase64Image={setBase64Image}
+            chooseImageFromCamera={chooseImageFromCamera}
+            chooseImageFromFiles={chooseImageFromFiles}
             handleCloseUploadPicture={handleCloseUploadPicture}
-            isUploading={isUploading}
           />
         )}
       </SafeAreaView>
