@@ -1,4 +1,4 @@
-import baseUrl from "../../../../../baseUrl";
+import Header from "../../../Header";
 import ContactsList from "./ContactsList";
 import { LEAVE_GROUP_CHAT } from "../../../../graphql/mutations";
 
@@ -20,6 +20,7 @@ const ChatInfoModal = ({
   chat,
   showChatInfoModal,
   setShowChatInfoModal,
+  setShowEditChat,
   setShowAddMembersModal,
   setShowRemoveMembersModal,
 }) => {
@@ -49,6 +50,12 @@ const ChatInfoModal = ({
       console.log("Error leaving chat:", error);
       console.log(error);
     }
+  };
+
+  const handlePressEditChat = () => {
+    console.log("Edit chat!");
+    setShowEditChat(true);
+    setShowChatInfoModal(false);
   };
 
   const handlePressAddMembers = () => {
@@ -84,7 +91,19 @@ const ChatInfoModal = ({
               </View>
             </View>
 
-            <View className="w-[50px] ml-4 flex-grow flex justify-center items-center"></View>
+            <View className="w-[50px] ml-4 flex-grow flex justify-center items-center">
+              {user.id === chatAdmin.id && (
+                <Pressable onPress={handlePressEditChat}>
+                  <View className="w-8 h-8 rounded-full flex justify-center items-center bg-green-700 shadow-xl">
+                    <MaterialCommunityIcons
+                      name={"plus"}
+                      size={24}
+                      color={"white"}
+                    />
+                  </View>
+                </Pressable>
+              )}
+            </View>
           </View>
         </View>
         <View className="w-full py-4 flex justify-center items-center bg-white">

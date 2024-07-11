@@ -3,6 +3,7 @@ import LoadingIcon from "../../LoadingIcon";
 import ChatHeader from "./ChatHeader";
 import Messages from "./Messages";
 import ChatInfoModal from "./ChatInfoModal/index.jsx";
+import EditChatModal from "./EditChatModal/index.jsx";
 import AddMembersModal from "./UpdateMembersModal/AddMembersModal.jsx";
 import RemoveMembersModal from "./UpdateMembersModal/RemoveMembersModal.jsx";
 
@@ -12,6 +13,7 @@ import { useMatch } from "react-router-native";
 
 const ChatView = ({ user }) => {
   const [showChatInfoModal, setShowChatInfoModal] = useState(false);
+  const [showEditChat, setShowEditChat] = useState(false);
   const [showAddMembersModal, setShowAddMembersModal] = useState(false);
   const [showRemoveMembersModal, setShowRemoveMembersModal] = useState(false);
   const match = useMatch("/chats/:chatId").params;
@@ -42,9 +44,17 @@ const ChatView = ({ user }) => {
           user={user}
           chat={data.findChatById}
           showChatInfoModal={showChatInfoModal}
+          setShowEditChat={setShowEditChat}
           setShowChatInfoModal={setShowChatInfoModal}
           setShowAddMembersModal={setShowAddMembersModal}
           setShowRemoveMembersModal={setShowRemoveMembersModal}
+        />
+      )}
+      {showEditChat && (
+        <EditChatModal
+          chat={data.findChatById}
+          showEditChat={showEditChat}
+          setShowEditChat={setShowEditChat}
         />
       )}
       {showAddMembersModal && (
