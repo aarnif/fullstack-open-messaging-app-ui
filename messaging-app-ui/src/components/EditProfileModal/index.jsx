@@ -2,6 +2,7 @@ import imageService from "../../services/imageService";
 import { EDIT_PROFILE } from "../../graphql/mutations";
 import FormikFormField from "../FormikFormField";
 import UploadProfilePictureWindow from "./UploadProfilePictureWindow";
+import LoadingIcon from "../LoadingIcon";
 
 import { useState } from "react";
 import { useMutation } from "@apollo/client";
@@ -124,6 +125,7 @@ const EditProfileModal = ({
   setShowEditProfileModal,
 }) => {
   const [editProfile] = useMutation(EDIT_PROFILE);
+  const [isUploading, setIsUploading] = useState(false);
   const [showUploadPictureModal, setShowUploadPictureModal] = useState(false);
   const [image, setImage] = useState(user.profilePicture);
   const [base64Image, setBase64Image] = useState(null); // Used in uploading image
@@ -156,20 +158,26 @@ const EditProfileModal = ({
     console.log("About:", about);
 
     try {
-      console.log("Uploading profile picture...");
-      const result = await imageService.uploadImage(user.username, base64Image);
+      let result;
 
-      console.log("Upload result:", result);
+      if (base64Image) {
+        setIsUploading(true);
+        console.log("Uploading profile picture...");
+        result = await imageService.uploadImage(user.username, base64Image);
+      }
 
       console.log("Editing profile...");
       await editProfile({
         variables: {
           name,
           about,
-          profilePicture: result.data.thumb.url,
+          profilePicture: base64Image
+            ? result.data.thumb.url
+            : user.profilePicture,
         },
       });
 
+      setIsUploading(false);
       setShowEditProfileModal(false);
 
       console.log("Edited profile successfully!");
@@ -177,6 +185,8 @@ const EditProfileModal = ({
       console.error("Error editing profile:", error);
     }
   };
+
+  console.log("Is uploading:", isUploading);
 
   return (
     <Modal animationType="slide" visible={showEditProfileModal}>
@@ -194,9 +204,23 @@ const EditProfileModal = ({
             setImage={setImage}
             setBase64Image={setBase64Image}
             handleCloseUploadPicture={handleCloseUploadPicture}
+            isUploading={isUploading}
           />
         )}
       </SafeAreaView>
+      {isUploading && (
+        <View
+          style={{
+            backgroundColor: "rgba(0,0,0,0.5)",
+          }}
+          className="absolute w-full h-full flex justify-center items-center"
+        >
+          <LoadingIcon />
+          <Text className="text-white text-lg font-semibold">
+            Editing profile
+          </Text>
+        </View>
+      )}
     </Modal>
   );
 };
