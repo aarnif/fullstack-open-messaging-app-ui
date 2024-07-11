@@ -7,11 +7,13 @@ import {
   PARTICIPANTS_REMOVED_FROM_GROUP_CHAT,
   LEFT_GROUP_CHAT,
   CONTACTS_ADDED,
+  CHAT_EDITED,
 } from "../graphql/subscriptions";
 
 import { GET_CHATS_BY_USER, GET_CONTACTS_BY_USER } from "../graphql/queries";
 
 import { useApolloClient, useSubscription } from "@apollo/client";
+import { EDIT_CHAT } from "../graphql/mutations";
 
 const useSubscriptions = (user) => {
   const client = useApolloClient();
@@ -99,6 +101,37 @@ const useSubscriptions = (user) => {
                 new Date(a.messages[0].createdAt)
               );
             }),
+          };
+        }
+      );
+    },
+  });
+
+  useSubscription(CHAT_EDITED, {
+    onData: ({ data }) => {
+      console.log("Use CHAT_EDITED-subscription:");
+      const updatedChat = data.data.groupChatUpdated;
+      client.cache.updateQuery(
+        {
+          query: GET_CHATS_BY_USER,
+          variables: { userId: user.id, searchByTitle: "" },
+        },
+        ({ allChatsByUser }) => {
+          return {
+            allChatsByUser: allChatsByUser
+              .map((chat) => {
+                return chat.id === updatedChat.id ? { ...updatedChat } : chat;
+              })
+              .sort((a, b) => {
+                if (!a.messages.length) return 1;
+
+                if (!b.messages.length) return -1;
+
+                return (
+                  new Date(b.messages[0].createdAt) -
+                  new Date(a.messages[0].createdAt)
+                );
+              }),
           };
         }
       );

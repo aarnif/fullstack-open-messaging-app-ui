@@ -74,3 +74,13 @@ export const CONTACTS_ADDED = gql`
     }
   }
 `;
+
+export const CHAT_EDITED = gql`
+  subscription GroupChatUpdated {
+    groupChatUpdated {
+      ...ChatDetails
+    }
+  }
+
+  ${CHAT_DETAILS}
+`;
