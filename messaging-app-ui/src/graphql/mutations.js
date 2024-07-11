@@ -117,3 +117,23 @@ export const EDIT_PROFILE = gql`
 
   ${USER_DETAILS}
 `;
+
+export const EDIT_CHAT = gql`
+  mutation UpdateGroupChat(
+    $chatId: ID!
+    $title: String
+    $description: String
+    $image: String
+  ) {
+    updateGroupChat(
+      chatId: $chatId
+      title: $title
+      description: $description
+      image: $image
+    ) {
+      ...ChatDetails
+    }
+  }
+
+  ${CHAT_DETAILS}
+`;
