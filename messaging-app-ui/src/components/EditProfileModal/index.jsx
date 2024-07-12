@@ -165,7 +165,7 @@ const EditProfileModal = ({
       if (base64Image) {
         setIsUploading(true);
         console.log("Uploading profile picture...");
-        result = await imageService.uploadImage(user.username, base64Image);
+        result = await imageService.uploadImage(user.id, base64Image);
       }
 
       console.log("Editing profile...");

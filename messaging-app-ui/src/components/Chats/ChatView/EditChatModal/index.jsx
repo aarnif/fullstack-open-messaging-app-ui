@@ -160,7 +160,7 @@ const EditChatModal = ({ chat, showEditChat, setShowEditChat }) => {
       if (base64Image) {
         setIsUploading(true);
         console.log("Uploading chat picture...");
-        result = await imageService.uploadImage(chat.title, base64Image);
+        result = await imageService.uploadImage(chat.id, base64Image);
       }
 
       console.log("Editing chat...");
