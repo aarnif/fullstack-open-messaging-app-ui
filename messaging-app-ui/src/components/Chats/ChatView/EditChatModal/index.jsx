@@ -2,7 +2,7 @@ import useChangeImage from "../../../../hooks/useChangeImage";
 import imageService from "../../../../services/imageService";
 import { EDIT_CHAT } from "../../../../graphql/mutations";
 import FormikFormField from "../../../FormikFormField";
-import UploadChatPictureWindow from "./UploadChatPictureWindow";
+import UploadImageWindow from "../../../UploadImageWindow";
 import LoadingIcon from "../../../LoadingIcon";
 
 import { useState } from "react";
@@ -124,8 +124,13 @@ const EditChatModal = ({ chat, showEditChat, setShowEditChat }) => {
   const [isUploading, setIsUploading] = useState(false);
   const [showUploadPictureModal, setShowUploadPictureModal] = useState(false);
 
+  const handleCloseUploadPicture = () => {
+    console.log("Close edit chat picture window!");
+    setShowUploadPictureModal(false);
+  };
+
   const { image, base64Image, chooseImageFromCamera, chooseImageFromFiles } =
-    useChangeImage(chat.image);
+    useChangeImage(chat.image, (onChange = handleCloseUploadPicture));
 
   const initialValues = {
     title: chat.title,
@@ -133,18 +138,13 @@ const EditChatModal = ({ chat, showEditChat, setShowEditChat }) => {
   };
 
   const goBack = () => {
-    console.log("Go back to profile page!");
+    console.log("Go back to chat page!");
     setShowEditChat(false);
   };
 
   const handlePressUploadPicture = () => {
-    console.log("Press edit profile picture button!");
+    console.log("Press edit chat picture button!");
     setShowUploadPictureModal(true);
-  };
-
-  const handleCloseUploadPicture = () => {
-    console.log("Close edit profile picture window!");
-    setShowUploadPictureModal(false);
   };
 
   const onSubmit = async (values) => {
@@ -195,10 +195,11 @@ const EditChatModal = ({ chat, showEditChat, setShowEditChat }) => {
           initialValues={initialValues}
         />
         {showUploadPictureModal && (
-          <UploadChatPictureWindow
+          <UploadImageWindow
+            title={"Edit Chat Picture"}
             chooseImageFromCamera={chooseImageFromCamera}
             chooseImageFromFiles={chooseImageFromFiles}
-            handleCloseUploadPicture={handleCloseUploadPicture}
+            handleClose={handleCloseUploadPicture}
           />
         )}
       </SafeAreaView>

@@ -2,7 +2,7 @@ import useChangeImage from "../../hooks/useChangeImage";
 import imageService from "../../services/imageService";
 import { EDIT_PROFILE } from "../../graphql/mutations";
 import FormikFormField from "../FormikFormField";
-import UploadProfilePictureWindow from "./UploadProfilePictureWindow";
+import UploadImageWindow from "../UploadImageWindow";
 import LoadingIcon from "../LoadingIcon";
 
 import { useState } from "react";
@@ -129,8 +129,13 @@ const EditProfileModal = ({
   const [isUploading, setIsUploading] = useState(false);
   const [showUploadPictureModal, setShowUploadPictureModal] = useState(false);
 
+  const handleCloseUploadPicture = () => {
+    console.log("Close edit profile picture window!");
+    setShowUploadPictureModal(false);
+  };
+
   const { image, base64Image, chooseImageFromCamera, chooseImageFromFiles } =
-    useChangeImage(user.profilePicture);
+    useChangeImage(user.profilePicture, (onChange = handleCloseUploadPicture));
 
   const initialValues = {
     name: user.name,
@@ -145,11 +150,6 @@ const EditProfileModal = ({
   const handlePressUploadPicture = () => {
     console.log("Press edit profile picture button!");
     setShowUploadPictureModal(true);
-  };
-
-  const handleCloseUploadPicture = () => {
-    console.log("Close edit profile picture window!");
-    setShowUploadPictureModal(false);
   };
 
   const onSubmit = async (values) => {
@@ -201,10 +201,11 @@ const EditProfileModal = ({
           initialValues={initialValues}
         />
         {showUploadPictureModal && (
-          <UploadProfilePictureWindow
+          <UploadImageWindow
+            title={"Edit Profile Picture"}
             chooseImageFromCamera={chooseImageFromCamera}
             chooseImageFromFiles={chooseImageFromFiles}
-            handleCloseUploadPicture={handleCloseUploadPicture}
+            handleClose={handleCloseUploadPicture}
           />
         )}
       </SafeAreaView>
