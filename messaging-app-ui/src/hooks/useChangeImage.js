@@ -51,7 +51,18 @@ const useChangeImage = (currentImage, onChange) => {
     }
   };
 
-  return { image, base64Image, chooseImageFromCamera, chooseImageFromFiles };
+  const reset = () => {
+    setImage(null);
+    setBase64Image(null);
+  };
+
+  return {
+    image,
+    base64Image,
+    reset,
+    chooseImageFromCamera,
+    chooseImageFromFiles,
+  };
 };
 
 export default useChangeImage;
