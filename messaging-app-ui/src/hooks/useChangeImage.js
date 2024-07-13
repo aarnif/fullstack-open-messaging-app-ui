@@ -3,7 +3,7 @@ import { useState } from "react";
 import * as ImagePicker from "expo-image-picker";
 import { useCameraPermissions } from "expo-camera";
 
-const useChangeImage = (currentImage) => {
+const useChangeImage = (currentImage, onChange) => {
   const [image, setImage] = useState(currentImage);
   const [base64Image, setBase64Image] = useState(null); // Base64 image required in uploading image to server
 
@@ -31,6 +31,7 @@ const useChangeImage = (currentImage) => {
     if (!result.canceled) {
       setImage(result.assets[0].uri);
       setBase64Image(result.assets[0].base64);
+      onChange();
     }
   };
 
@@ -46,6 +47,7 @@ const useChangeImage = (currentImage) => {
     if (!result.canceled) {
       setImage(result.assets[0].uri);
       setBase64Image(result.assets[0].base64);
+      onChange();
     }
   };
 
