@@ -30,7 +30,10 @@ export const CHAT_DETAILS = gql`
       id
       type
       content
-      image
+      image {
+        thumbnail
+        original
+      }
       sender {
         ...UserDetails
       }

@@ -99,7 +99,10 @@ const NewMessage = ({ chatId, user }) => {
         variables: {
           chatId: chatId,
           content: message,
-          image: base64Image ? result.data.thumb.url : "",
+          input: {
+            thumbnail: base64Image ? result.data.thumb.url : null,
+            original: base64Image ? result.data.image.url : null,
+          },
         },
       });
       setMessage("");

@@ -40,13 +40,13 @@ export const ADD_MESSAGE_TO_CHAT = gql`
     $chatId: ID!
     $type: String
     $content: String!
-    $image: String
+    $input: ImageInput
   ) {
     addMessageToChat(
       chatId: $chatId
       type: $type
       content: $content
-      image: $image
+      input: $input
     ) {
       ...ChatDetails
     }
