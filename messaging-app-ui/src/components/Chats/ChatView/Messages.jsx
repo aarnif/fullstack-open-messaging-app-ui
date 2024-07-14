@@ -1,7 +1,9 @@
 import Message from "./Message";
 import NewMessage from "./NewMessage";
 import helpers from "../../../utils/helpers";
+import ImageViewModal from "./ImageViewModal";
 
+import { useState } from "react";
 import { View, Text, FlatList } from "react-native";
 
 const NewMessages = ({ newMessagesCount }) => {
@@ -16,7 +18,13 @@ const NewMessages = ({ newMessagesCount }) => {
   );
 };
 
-const RenderMessages = ({ user, item, index, newMessagesCount }) => {
+const RenderMessages = ({
+  user,
+  item,
+  index,
+  newMessagesCount,
+  handlePressImage,
+}) => {
   const newMessagesAfterIndex = index === newMessagesCount;
   const senderIsCurrentUser = item.sender.id === user.id;
 
@@ -25,13 +33,27 @@ const RenderMessages = ({ user, item, index, newMessagesCount }) => {
       {newMessagesCount > 0 && newMessagesAfterIndex && senderIsCurrentUser && (
         <NewMessages newMessagesCount={newMessagesCount} />
       )}
-      <Message user={user} message={item} index={index} />
+      <Message
+        user={user}
+        message={item}
+        index={index}
+        handlePressImage={handlePressImage}
+      />
     </>
   );
 };
 
 const Messages = ({ user, chatId, messages }) => {
+  const [showImageViewModal, setShowImageViewModal] = useState(false);
+  const [chosenMessage, setChosenMessage] = useState(null);
   const newMessagesCount = helpers.newMessagesCount(user, messages);
+
+  const handlePressImage = (message) => {
+    console.log("Message image pressed:");
+    setChosenMessage(message);
+    setShowImageViewModal(true);
+  };
+
   console.log("New messages count:", newMessagesCount);
   return (
     <>
@@ -55,6 +77,7 @@ const Messages = ({ user, chatId, messages }) => {
                 item={item}
                 index={index}
                 newMessagesCount={newMessagesCount}
+                handlePressImage={() => handlePressImage(item)}
               />
             );
           }}
@@ -63,6 +86,13 @@ const Messages = ({ user, chatId, messages }) => {
         />
       )}
       <NewMessage chatId={chatId} user={user} />
+      {showImageViewModal && (
+        <ImageViewModal
+          chosenMessage={chosenMessage}
+          showImageViewModal={showImageViewModal}
+          setShowImageViewModal={setShowImageViewModal}
+        />
+      )}
     </>
   );
 };

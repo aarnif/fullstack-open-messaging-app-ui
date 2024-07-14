@@ -13,7 +13,7 @@ const NotificationMessage = ({ message }) => {
   );
 };
 
-const MessageByAnotherUser = ({ message }) => {
+const MessageByAnotherUser = ({ message, handlePressImage }) => {
   return (
     <View className="ml-4 mt-2">
       <View className="min-w-[80px] max-w-[300px] self-start ml-8 p-2 bg-gray-300 rounded-lg">
@@ -22,10 +22,12 @@ const MessageByAnotherUser = ({ message }) => {
         </Text>
         {message.image.thumbnail && (
           <View>
-            <Image
-              source={{ uri: message.image.thumbnail }}
-              style={{ width: 100, height: 100 }}
-            />
+            <Pressable onPress={handlePressImage}>
+              <Image
+                source={{ uri: message.image.thumbnail }}
+                style={{ width: 100, height: 100 }}
+              />
+            </Pressable>
           </View>
         )}
         {message.content && (
@@ -57,16 +59,18 @@ const MessageByAnotherUser = ({ message }) => {
   );
 };
 
-const MessageByCurrentUser = ({ message }) => {
+const MessageByCurrentUser = ({ message, handlePressImage }) => {
   return (
     <View className="mr-2 my-2">
       <View className="min-w-[80px] max-w-[300px] self-end mr-8 pt-2 px-2 pb-1 bg-green-300 rounded-lg">
         {message.image.thumbnail && (
           <View>
-            <Image
-              source={{ uri: message.image.thumbnail }}
-              style={{ width: 100, height: 100 }}
-            />
+            <Pressable onPress={handlePressImage}>
+              <Image
+                source={{ uri: message.image.thumbnail }}
+                style={{ width: 100, height: 100 }}
+              />
+            </Pressable>
           </View>
         )}
         {message.content && (
@@ -88,7 +92,7 @@ const MessageByCurrentUser = ({ message }) => {
   );
 };
 
-const Message = ({ user, message }) => {
+const Message = ({ user, message, handlePressImage }) => {
   if (message.type === "notification") {
     return <NotificationMessage message={message} />;
   }
@@ -96,9 +100,15 @@ const Message = ({ user, message }) => {
   return (
     <>
       {message.sender.id === user.id ? (
-        <MessageByCurrentUser message={message} />
+        <MessageByCurrentUser
+          message={message}
+          handlePressImage={handlePressImage}
+        />
       ) : (
-        <MessageByAnotherUser message={message} />
+        <MessageByAnotherUser
+          message={message}
+          handlePressImage={handlePressImage}
+        />
       )}
     </>
   );
