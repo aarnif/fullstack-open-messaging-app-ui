@@ -28,7 +28,7 @@ const ContactItem = ({ user, item, chosenUsersIds, setChosenUsersIds }) => {
         <View className="mr-4">
           <Image
             source={{
-              uri: item.profilePicture,
+              uri: item.profilePicture.thumbnail,
             }}
             style={{ width: 48, height: 48, borderRadius: 9999 }}
           />

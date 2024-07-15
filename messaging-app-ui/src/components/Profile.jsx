@@ -13,7 +13,7 @@ const Profile = ({ user, handleEditProfilePress }) => {
       <View className="w-full py-4 flex justify-center items-center bg-white">
         <Image
           source={{
-            uri: user.profilePicture,
+            uri: user.profilePicture.thumbnail,
           }}
           style={{ width: 120, height: 120, borderRadius: 9999 }}
         />

@@ -47,7 +47,7 @@ const MessageByAnotherUser = ({ message, handlePressImage }) => {
       </View>
       <Image
         source={{
-          uri: message.sender.profilePicture,
+          uri: message.sender.profilePicture.thumbnail,
         }}
         style={{
           width: 32,

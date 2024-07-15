@@ -130,7 +130,7 @@ const EditChatModal = ({ chat, showEditChat, setShowEditChat }) => {
   };
 
   const { image, base64Image, chooseImageFromCamera, chooseImageFromFiles } =
-    useChangeImage(chat.image, (onChange = handleCloseUploadPicture));
+    useChangeImage(chat.image.thumbnail, (onChange = handleCloseUploadPicture));
 
   const initialValues = {
     title: chat.title,
@@ -162,14 +162,20 @@ const EditChatModal = ({ chat, showEditChat, setShowEditChat }) => {
         console.log("Uploading chat picture...");
         result = await imageService.uploadImage(chat.id, base64Image);
       }
-
       console.log("Editing chat...");
+      const newChatImage = base64Image
+        ? {
+            thumbnail: result.data.thumb.url,
+            original: result.data.image.url,
+          }
+        : chat.image;
+      console.log("New chat image:", newChatImage);
       await editChat({
         variables: {
           chatId: chat.id,
           title,
           description,
-          image: base64Image ? result.data.thumb.url : chat.image,
+          input: newChatImage,
         },
       });
 

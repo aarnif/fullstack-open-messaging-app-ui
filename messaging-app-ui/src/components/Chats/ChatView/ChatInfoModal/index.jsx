@@ -1,7 +1,9 @@
 import Header from "../../../Header";
 import ContactsList from "./ContactsList";
 import { LEAVE_GROUP_CHAT } from "../../../../graphql/mutations";
+import ChatImageViewModal from "./ChatImageViewModal";
 
+import { useState } from "react";
 import {
   Modal,
   SafeAreaView,
@@ -109,7 +111,7 @@ const ChatInfoModal = ({
         <View className="w-full py-4 flex justify-center items-center bg-white">
           <Image
             source={{
-              uri: chat.image,
+              uri: chat.image.thumbnail,
             }}
             style={{ width: 100, height: 100, borderRadius: 9999 }}
           />

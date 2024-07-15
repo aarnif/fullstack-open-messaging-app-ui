@@ -1,7 +1,7 @@
 import Message from "./Message";
 import NewMessage from "./NewMessage";
 import helpers from "../../../utils/helpers";
-import ImageViewModal from "./ImageViewModal";
+import MessageImageViewModal from "./MessageImageViewModal";
 
 import { useState } from "react";
 import { View, Text, FlatList } from "react-native";
@@ -87,7 +87,7 @@ const Messages = ({ user, chatId, messages }) => {
       )}
       <NewMessage chatId={chatId} user={user} />
       {showImageViewModal && (
-        <ImageViewModal
+        <MessageImageViewModal
           chosenMessage={chosenMessage}
           showImageViewModal={showImageViewModal}
           setShowImageViewModal={setShowImageViewModal}

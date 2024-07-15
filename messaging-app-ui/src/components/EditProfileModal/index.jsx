@@ -135,7 +135,10 @@ const EditProfileModal = ({
   };
 
   const { image, base64Image, chooseImageFromCamera, chooseImageFromFiles } =
-    useChangeImage(user.profilePicture, (onChange = handleCloseUploadPicture));
+    useChangeImage(
+      user.profilePicture.thumbnail,
+      (onChange = handleCloseUploadPicture)
+    );
 
   const initialValues = {
     name: user.name,
@@ -166,16 +169,21 @@ const EditProfileModal = ({
         setIsUploading(true);
         console.log("Uploading profile picture...");
         result = await imageService.uploadImage(user.id, base64Image);
+        console.log("Result:", result);
       }
 
       console.log("Editing profile...");
+      const newProfilePicture = base64Image
+        ? {
+            thumbnail: result.data.thumb.url,
+            original: result.data.image.url,
+          }
+        : user.profilePicture;
       await editProfile({
         variables: {
           name,
           about,
-          profilePicture: base64Image
-            ? result.data.thumb.url
-            : user.profilePicture,
+          input: newProfilePicture,
         },
       });
 
