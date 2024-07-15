@@ -119,8 +119,8 @@ export const ADD_CONTACTS = gql`
 `;
 
 export const EDIT_PROFILE = gql`
-  mutation EditProfile($name: String, $about: String, $profilePicture: String) {
-    editProfile(name: $name, about: $about, profilePicture: $profilePicture) {
+  mutation EditProfile($name: String, $about: String, $input: ImageInput) {
+    editProfile(name: $name, about: $about, input: $input) {
       ...UserDetails
     }
   }
@@ -133,13 +133,13 @@ export const EDIT_CHAT = gql`
     $chatId: ID!
     $title: String
     $description: String
-    $image: String
+    $input: ImageInput
   ) {
     updateGroupChat(
       chatId: $chatId
       title: $title
       description: $description
-      image: $image
+      input: $input
     ) {
       ...ChatDetails
     }
