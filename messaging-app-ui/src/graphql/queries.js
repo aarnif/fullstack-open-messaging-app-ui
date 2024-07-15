@@ -6,7 +6,10 @@ export const USER_DETAILS = gql`
     username
     name
     about
-    profilePicture
+    profilePicture {
+      thumbnail
+      original
+    }
   }
 `;
 
@@ -14,7 +17,10 @@ export const CHAT_DETAILS = gql`
   fragment ChatDetails on Chat {
     id
     title
-    image
+    image {
+      thumbnail
+      original
+    }
     description
     isGroupChat
     admin {
