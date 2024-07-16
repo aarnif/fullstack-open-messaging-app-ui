@@ -4,7 +4,7 @@ import ChatView from "./Chats/ChatView/index";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import Contacts from "./Contacts/index";
-import Profile from "./Profile";
+import Profile from "./Profile/index";
 import LoadingIcon from "./LoadingIcon";
 import NewChatModal from "./NewChatModal";
 import NewContactModal from "./NewContactModal";
