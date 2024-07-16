@@ -1,7 +1,8 @@
-import baseUrl from "../../../baseUrl";
 import { CREATE_CHAT } from "../../graphql/mutations";
 import { GET_CHAT_BY_PARTICIPANTS } from "../../graphql/queries";
+import ProfileImageViewModal from "../Profile/ProfileImageViewModal";
 
+import { useState } from "react";
 import {
   Modal,
   SafeAreaView,
@@ -22,6 +23,7 @@ const ContactInfo = ({
   showContactInfoModal,
   setShowContactInfoModal,
 }) => {
+  const [showImageViewModal, setShowImageViewModal] = useState(false);
   const navigate = useNavigate();
 
   const result = useQuery(GET_CHAT_BY_PARTICIPANTS, {
@@ -73,6 +75,16 @@ const ContactInfo = ({
     }
   };
 
+  if (showImageViewModal) {
+    return (
+      <ProfileImageViewModal
+        user={contact}
+        showImageViewModal={showImageViewModal}
+        setShowImageViewModal={setShowImageViewModal}
+      />
+    );
+  }
+
   return (
     <Modal animationType="slide" visible={showContactInfoModal}>
       <SafeAreaView style={{ flex: 1 }} className="bg-green-600">
@@ -100,12 +112,14 @@ const ContactInfo = ({
           </View>
         </View>
         <View className="w-full py-4 flex justify-center items-center bg-white">
-          <Image
-            source={{
-              uri: contact.profilePicture,
-            }}
-            style={{ width: 120, height: 120, borderRadius: 9999 }}
-          />
+          <Pressable onPress={() => setShowImageViewModal(true)}>
+            <Image
+              source={{
+                uri: contact.profilePicture.thumbnail,
+              }}
+              style={{ width: 120, height: 120, borderRadius: 9999 }}
+            />
+          </Pressable>
           <Text className="mt-4 text-xl text-slate-800 font-bold">
             {contact.name}
           </Text>
