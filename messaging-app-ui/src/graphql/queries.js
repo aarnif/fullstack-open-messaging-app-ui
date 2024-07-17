@@ -10,6 +10,7 @@ export const USER_DETAILS = gql`
       thumbnail
       original
     }
+    blockedContacts
   }
 `;
 
