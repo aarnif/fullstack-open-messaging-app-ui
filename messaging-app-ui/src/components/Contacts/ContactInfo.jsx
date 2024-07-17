@@ -1,4 +1,4 @@
-import { CREATE_CHAT } from "../../graphql/mutations";
+import { CREATE_CHAT, BLOCK_OR_UNBLOCK_CONTACT } from "../../graphql/mutations";
 import { GET_CHAT_BY_PARTICIPANTS } from "../../graphql/queries";
 import ProfileImageViewModal from "../Profile/ProfileImageViewModal";
 
@@ -23,7 +23,15 @@ const ContactInfo = ({
   showContactInfoModal,
   setShowContactInfoModal,
 }) => {
+  console.log("Contact:", contact);
   const [showImageViewModal, setShowImageViewModal] = useState(false);
+  const [isBlocked, setIsBlocked] = useState(
+    user.blockedContacts.includes(contact.id)
+  );
+  const [haveContactBlockedYou, setHaveContactBlockedYou] = useState(
+    contact.blockedContacts.includes(user.id)
+  );
+
   const navigate = useNavigate();
 
   const result = useQuery(GET_CHAT_BY_PARTICIPANTS, {
@@ -32,11 +40,17 @@ const ContactInfo = ({
     },
   });
 
-  const [mutate] = useMutation(CREATE_CHAT, {
+  const [createChat] = useMutation(CREATE_CHAT, {
     onError: (error) => {
       console.log("Error creating chat mutation:");
       console.log(error.graphQLErrors[0].message);
-      notify.show({ content: error.graphQLErrors[0].message, isError: true });
+    },
+  });
+
+  const [blockOrUnBlockContact] = useMutation(BLOCK_OR_UNBLOCK_CONTACT, {
+    onError: (error) => {
+      console.log("Error blocking contact mutation:");
+      console.log(error.graphQLErrors[0].message);
     },
   });
 
@@ -45,7 +59,7 @@ const ContactInfo = ({
     setShowContactInfoModal(false);
   };
 
-  const handlePress = async () => {
+  const handleChat = async () => {
     console.log("Press chat button!");
 
     // Check if user already has a chat with this contact and navigate to it
@@ -57,7 +71,7 @@ const ContactInfo = ({
     }
 
     try {
-      const { data, error } = await mutate({
+      const { data, error } = await createChat({
         variables: {
           participants: [user.id, contact.id],
         },
@@ -75,6 +89,30 @@ const ContactInfo = ({
     }
   };
 
+  const handleBlockContact = async () => {
+    console.log("Press block/unblock contact button!");
+
+    try {
+      const { data, error } = await blockOrUnBlockContact({
+        variables: {
+          contactId: contact.id,
+        },
+      });
+
+      const isContactBlocked = data.blockOrUnBlockContact;
+
+      if (isContactBlocked) {
+        console.log("Blocked contact:", contact.id);
+      } else {
+        console.log("Unblocked contact:", contact.id);
+      }
+      setIsBlocked(isContactBlocked);
+    } catch (error) {
+      console.log("Error blocking contact:", error);
+      console.log(error.message);
+    }
+  };
+
   if (showImageViewModal) {
     return (
       <ProfileImageViewModal
@@ -84,6 +122,9 @@ const ContactInfo = ({
       />
     );
   }
+
+  console.log("Is blocked:", isBlocked);
+  console.log("Have contact blocked you:", haveContactBlockedYou);
 
   return (
     <Modal animationType="slide" visible={showContactInfoModal}>
@@ -130,12 +171,36 @@ const ContactInfo = ({
         </View>
 
         <View className="w-full p-4 flex-1 justify-end items-start bg-white">
-          <Pressable
-            onPress={handlePress}
-            className="w-full flex-grow max-h-[60px] p-2 flex justify-center items-center border-2 border-green-400 bg-green-400 rounded-xl"
-          >
-            <Text className="text-xl font-bold text-slate-200">Chat</Text>
-          </Pressable>
+          {haveContactBlockedYou ? (
+            <View className="w-full flex-grow max-h-[60px] flex flex-row justify-center items-center bg-red-400 p-2 rounded-xl">
+              <Text className="text-xl text-slate-200 font-bold">
+                This contact has blocked you!
+              </Text>
+            </View>
+          ) : (
+            <Pressable
+              onPress={handleChat}
+              className="w-full flex-grow max-h-[60px] p-2 flex justify-center items-center border-2 border-green-400 bg-green-400 rounded-xl"
+            >
+              <Text className="text-xl font-bold text-slate-200">Chat</Text>
+            </Pressable>
+          )}
+
+          {isBlocked ? (
+            <Pressable
+              onPress={handleBlockContact}
+              className="w-full flex-grow max-h-[60px] mt-2 p-2 flex justify-center items-center border-2 border-yellow-400 bg-yellow-400 rounded-xl"
+            >
+              <Text className="text-xl font-bold text-slate-400">Unblock</Text>
+            </Pressable>
+          ) : (
+            <Pressable
+              onPress={handleBlockContact}
+              className="w-full flex-grow max-h-[60px] mt-2 p-2 flex justify-center items-center border-2 border-red-400 bg-red-400 rounded-xl"
+            >
+              <Text className="text-xl font-bold text-slate-200">Block</Text>
+            </Pressable>
+          )}
         </View>
       </SafeAreaView>
     </Modal>

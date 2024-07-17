@@ -147,3 +147,9 @@ export const EDIT_CHAT = gql`
 
   ${CHAT_DETAILS}
 `;
+
+export const BLOCK_OR_UNBLOCK_CONTACT = gql`
+  mutation BlockOrUnBlockContact($contactId: ID!) {
+    blockOrUnBlockContact(contactId: $contactId)
+  }
+`;
