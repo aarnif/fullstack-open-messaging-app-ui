@@ -80,7 +80,7 @@ const ChatHeader = ({ user, chat, setShowChatInfoModal }) => {
             </View>
             <View>
               <Text className="text-base text-white font-bold">
-                {chat.title}
+                {chat.displayChatTitle}
               </Text>
               <Text className="text-sm text-white">
                 {chatParticipantsString}

@@ -44,7 +44,7 @@ const ChatItem = ({ user, item }) => {
             />
           </View>
           <View className="flex-1">
-            <Text className="text-md font-bold">{item.title}</Text>
+            <Text className="text-md font-bold">{item.displayChatTitle}</Text>
             <Text className="text-gray-600">No messages</Text>
           </View>
         </View>
@@ -64,7 +64,7 @@ const ChatItem = ({ user, item }) => {
           />
         </View>
         <View className="flex-1">
-          <Text className="text-md font-bold">{item.title}</Text>
+          <Text className="text-md font-bold">{item.displayChatTitle}</Text>
 
           <LatestMessage user={user} latestMessage={latestMessage} />
         </View>
