@@ -1,5 +1,3 @@
-import baseUrl from "../../../../../baseUrl";
-
 import { View, Text, Image } from "react-native";
 
 const ContactItem = ({ user, item, admin }) => {

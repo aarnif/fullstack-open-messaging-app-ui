@@ -1,6 +1,7 @@
 import Header from "./Header";
 import Chats from "./Chats/index";
 import ChatView from "./Chats/ChatView/index";
+import ContactView from "./Contacts/ContactView";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import Contacts from "./Contacts/index";
@@ -87,6 +88,10 @@ const Main = () => {
             }
           />
           <Route path="/chats/:id" element={<ChatView user={data?.me} />} />
+          <Route
+            path="/contacts/:id"
+            element={<ContactView user={data?.me} />}
+          />
           <Route path="/signin" element={<SignIn notify={notify} />} />
           <Route path="/signup" element={<SignUp notify={notify} />} />
           <Route

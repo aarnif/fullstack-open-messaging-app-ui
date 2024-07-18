@@ -5,7 +5,7 @@ import SearchBar from "../SearchBar";
 import ContactItem from "./ContactItem";
 import LoadingIcon from "../LoadingIcon";
 import Menu from "../Menu";
-import ContactInfo from "./ContactInfo";
+import ContactView from "./ContactView";
 
 import { useState } from "react";
 import { View, Text, FlatList } from "react-native";
@@ -25,7 +25,7 @@ const ContactsHeader = ({ searchByTitle, handleChange }) => {
   );
 };
 
-const ContactsList = ({ data, handleShowContactInfoModal }) => {
+const ContactsList = ({ data }) => {
   if (!data.length) {
     return (
       <View className="flex justify-start items-center">
@@ -41,12 +41,7 @@ const ContactsList = ({ data, handleShowContactInfoModal }) => {
       className="w-full"
       data={data}
       renderItem={({ item }) => {
-        return (
-          <ContactItem
-            item={item}
-            handleShowContactInfoModal={handleShowContactInfoModal}
-          />
-        );
+        return <ContactItem item={item} />;
       }}
       keyExtractor={({ id }) => id}
     />
@@ -54,8 +49,6 @@ const ContactsList = ({ data, handleShowContactInfoModal }) => {
 };
 
 const Contacts = ({ user, handleNewContactPress }) => {
-  const [showContactInfoModal, setShowContactInfoModal] = useState(false);
-  const [chosenContact, setChosenContact] = useState(null);
   const [searchByName, setSearchByName] = useState("");
   const [debouncedSearchByName, setDebouncedSearchByName] = useDebounce(
     searchByName,
@@ -68,15 +61,6 @@ const Contacts = ({ user, handleNewContactPress }) => {
   });
 
   useSubscriptions(user);
-
-  const handleShowContactInfoModal = (id) => {
-    console.log("Show contact info modal!");
-    setShowContactInfoModal(true);
-    const contact = data?.allContactsByUser.contacts.find(
-      (contact) => contact.id === id
-    );
-    setChosenContact(contact);
-  };
 
   const handleChange = (text) => {
     console.log("Search value:", text);
@@ -95,20 +79,9 @@ const Contacts = ({ user, handleNewContactPress }) => {
           <LoadingIcon />
         </View>
       ) : (
-        <ContactsList
-          data={data?.allContactsByUser.contacts}
-          handleShowContactInfoModal={handleShowContactInfoModal}
-        />
+        <ContactsList data={data?.allContactsByUser.contacts} />
       )}
       {user && <Menu />}
-      {showContactInfoModal && (
-        <ContactInfo
-          user={user}
-          contact={chosenContact}
-          showContactInfoModal={showContactInfoModal}
-          setShowContactInfoModal={setShowContactInfoModal}
-        />
-      )}
     </>
   );
 };

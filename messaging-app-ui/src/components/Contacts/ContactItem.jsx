@@ -1,9 +1,12 @@
-import { View, Text, Image, Pressable } from "react-native";
-import baseUrl from "../../../baseUrl";
+import { useNavigate } from "react-router-native";
 
-const ContactItem = ({ item, handleShowContactInfoModal }) => {
+import { View, Text, Image, Pressable } from "react-native";
+
+const ContactItem = ({ item }) => {
+  const navigate = useNavigate();
+
   return (
-    <Pressable onPress={() => handleShowContactInfoModal(item.id)}>
+    <Pressable onPress={() => navigate(`/contacts/${item.id}`)}>
       <View className="flex flex-row items-center my-2 mx-4">
         <View className="mr-4">
           <Image

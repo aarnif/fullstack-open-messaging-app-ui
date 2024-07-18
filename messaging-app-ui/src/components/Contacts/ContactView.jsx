@@ -1,42 +1,47 @@
 import { CREATE_CHAT, BLOCK_OR_UNBLOCK_CONTACT } from "../../graphql/mutations";
-import { GET_CHAT_BY_PARTICIPANTS } from "../../graphql/queries";
+import {
+  GET_USER_BY_ID,
+  GET_CHAT_BY_PARTICIPANTS,
+} from "../../graphql/queries";
 import ProfileImageViewModal from "../Profile/ProfileImageViewModal";
 
-import { useState } from "react";
-import {
-  Modal,
-  SafeAreaView,
-  View,
-  Text,
-  Pressable,
-  Image,
-} from "react-native";
+import { useMatch } from "react-router-native";
+import { useState, useEffect } from "react";
+import { SafeAreaView, View, Text, Pressable, Image } from "react-native";
 
 import { useQuery, useMutation } from "@apollo/client";
 import { useNavigate } from "react-router-native";
 
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
-const ContactInfo = ({
-  user,
-  contact,
-  showContactInfoModal,
-  setShowContactInfoModal,
-}) => {
-  console.log("Contact:", contact);
+const ContactView = ({ user }) => {
+  const [contact, setContact] = useState(null);
+  const [isBlocked, setIsBlocked] = useState(false);
   const [showImageViewModal, setShowImageViewModal] = useState(false);
-  const [isBlocked, setIsBlocked] = useState(
-    user.blockedContacts.includes(contact.id)
-  );
-  const [haveContactBlockedYou, setHaveContactBlockedYou] = useState(
-    contact.blockedContacts.includes(user.id)
-  );
 
+  const match = useMatch("/contacts/:id").params;
   const navigate = useNavigate();
 
-  const result = useQuery(GET_CHAT_BY_PARTICIPANTS, {
+  const getUserById = useQuery(GET_USER_BY_ID, {
     variables: {
-      participants: [user.id, contact.id],
+      id: match.id,
+    },
+  });
+
+  useEffect(() => {
+    if (getUserById.data) {
+      setContact(getUserById.data.findUserById);
+      setIsBlocked(
+        user.blockedContacts.includes(getUserById.data.findUserById.id)
+      );
+    }
+  }, [getUserById.data]);
+
+  console.log("Contact:", contact);
+
+  const chatByParticipants = useQuery(GET_CHAT_BY_PARTICIPANTS, {
+    variables: {
+      participants: [user.id, contact?.id],
     },
   });
 
@@ -54,19 +59,23 @@ const ContactInfo = ({
     },
   });
 
+  const haveContactBlockedYou = contact?.blockedContacts.includes(user.id);
+
   const goBack = () => {
     console.log("Go back to contacts page!");
-    setShowContactInfoModal(false);
+    navigate(`/contacts`);
   };
 
   const handleChat = async () => {
     console.log("Press chat button!");
 
     // Check if user already has a chat with this contact and navigate to it
-    if (result.data?.findChatByParticipants) {
-      console.log("Chat exists:", result.data.findChatByParticipants);
-      navigate(`/chats/${result.data.findChatByParticipants.id}`);
-      setShowContactInfoModal(false);
+    if (chatByParticipants.data?.findChatByParticipants) {
+      console.log(
+        "Chat exists:",
+        chatByParticipants.data.findChatByParticipants
+      );
+      navigate(`/chats/${chatByParticipants.data.findChatByParticipants.id}`);
       return;
     }
 
@@ -126,91 +135,91 @@ const ContactInfo = ({
   console.log("Is blocked:", isBlocked);
   console.log("Have contact blocked you:", haveContactBlockedYou);
 
+  if (!contact) {
+    return null;
+  }
+
   return (
-    <Modal animationType="slide" visible={showContactInfoModal}>
-      <SafeAreaView style={{ flex: 1 }} className="bg-green-600">
-        <View className="w-full flex flex-row justify-center items-center py-2 bg-green-600 shadow-lg">
-          <View className="flex flex-row">
-            <View className="w-[50px] mr-4 flex-grow flex justify-center items-center">
-              <Pressable onPress={goBack}>
-                <MaterialCommunityIcons
-                  name={"chevron-left"}
-                  size={36}
-                  color={"white"}
-                />
-              </Pressable>
-            </View>
-
-            <View className="max-w-[250px] flex-grow flex flex-row justify-center items-center">
-              <View>
-                <Text className="text-xl text-white font-bold">
-                  Contact Info
-                </Text>
-              </View>
-            </View>
-
-            <View className="w-[50px] mr-4 flex-grow flex justify-center items-center"></View>
+    <SafeAreaView style={{ flex: 1 }} className="bg-green-600">
+      <View className="w-full flex flex-row justify-center items-center py-2 bg-green-600 shadow-lg">
+        <View className="flex flex-row">
+          <View className="w-[50px] mr-4 flex-grow flex justify-center items-center">
+            <Pressable onPress={goBack}>
+              <MaterialCommunityIcons
+                name={"chevron-left"}
+                size={36}
+                color={"white"}
+              />
+            </Pressable>
           </View>
+
+          <View className="max-w-[250px] flex-grow flex flex-row justify-center items-center">
+            <View>
+              <Text className="text-xl text-white font-bold">Contact Info</Text>
+            </View>
+          </View>
+
+          <View className="w-[50px] mr-4 flex-grow flex justify-center items-center"></View>
         </View>
-        <View className="w-full py-4 flex justify-center items-center bg-white">
-          <Pressable onPress={() => setShowImageViewModal(true)}>
-            <Image
-              source={{
-                uri: contact.profilePicture.thumbnail,
-              }}
-              style={{ width: 120, height: 120, borderRadius: 9999 }}
-            />
+      </View>
+      <View className="w-full py-4 flex justify-center items-center bg-white">
+        <Pressable onPress={() => setShowImageViewModal(true)}>
+          <Image
+            source={{
+              uri: contact.profilePicture.thumbnail,
+            }}
+            style={{ width: 120, height: 120, borderRadius: 9999 }}
+          />
+        </Pressable>
+        <Text className="mt-4 text-xl text-slate-800 font-bold">
+          {contact.name}
+        </Text>
+        <Text className="text-md text-slate-500 font-bold">
+          @{contact.username}
+        </Text>
+        <Text className="mt-4 text-base text-slate-700">{contact.about}</Text>
+      </View>
+
+      <View className="w-full p-4 flex-1 justify-end items-start bg-white">
+        {haveContactBlockedYou ? (
+          <View className="w-full flex-grow max-h-[60px] flex flex-row justify-center items-center bg-red-400 p-2 rounded-xl">
+            <Text className="text-xl text-slate-200 font-bold">
+              This contact has blocked you!
+            </Text>
+          </View>
+        ) : isBlocked ? (
+          <View className="w-full flex-grow max-h-[60px] flex flex-row justify-center items-center bg-red-400 p-2 rounded-xl">
+            <Text className="text-xl text-slate-200 font-bold">
+              You have blocked this contact!
+            </Text>
+          </View>
+        ) : (
+          <Pressable
+            onPress={handleChat}
+            className="w-full flex-grow max-h-[60px] p-2 flex justify-center items-center border-2 border-green-400 bg-green-400 rounded-xl"
+          >
+            <Text className="text-xl font-bold text-slate-200">Chat</Text>
           </Pressable>
-          <Text className="mt-4 text-xl text-slate-800 font-bold">
-            {contact.name}
-          </Text>
-          <Text className="text-md text-slate-500 font-bold">
-            @{contact.username}
-          </Text>
-          <Text className="mt-4 text-base text-slate-700">{contact.about}</Text>
-        </View>
+        )}
 
-        <View className="w-full p-4 flex-1 justify-end items-start bg-white">
-          {haveContactBlockedYou ? (
-            <View className="w-full flex-grow max-h-[60px] flex flex-row justify-center items-center bg-red-400 p-2 rounded-xl">
-              <Text className="text-xl text-slate-200 font-bold">
-                This contact has blocked you!
-              </Text>
-            </View>
-          ) : isBlocked ? (
-            <View className="w-full flex-grow max-h-[60px] flex flex-row justify-center items-center bg-red-400 p-2 rounded-xl">
-              <Text className="text-xl text-slate-200 font-bold">
-                You have blocked this contact!
-              </Text>
-            </View>
-          ) : (
-            <Pressable
-              onPress={handleChat}
-              className="w-full flex-grow max-h-[60px] p-2 flex justify-center items-center border-2 border-green-400 bg-green-400 rounded-xl"
-            >
-              <Text className="text-xl font-bold text-slate-200">Chat</Text>
-            </Pressable>
-          )}
-
-          {isBlocked ? (
-            <Pressable
-              onPress={handleBlockContact}
-              className="w-full flex-grow max-h-[60px] mt-2 p-2 flex justify-center items-center border-2 border-yellow-400 bg-yellow-400 rounded-xl"
-            >
-              <Text className="text-xl font-bold text-slate-400">Unblock</Text>
-            </Pressable>
-          ) : (
-            <Pressable
-              onPress={handleBlockContact}
-              className="w-full flex-grow max-h-[60px] mt-2 p-2 flex justify-center items-center border-2 border-red-400 bg-red-400 rounded-xl"
-            >
-              <Text className="text-xl font-bold text-slate-200">Block</Text>
-            </Pressable>
-          )}
-        </View>
-      </SafeAreaView>
-    </Modal>
+        {isBlocked ? (
+          <Pressable
+            onPress={handleBlockContact}
+            className="w-full flex-grow max-h-[60px] mt-2 p-2 flex justify-center items-center border-2 border-yellow-400 bg-yellow-400 rounded-xl"
+          >
+            <Text className="text-xl font-bold text-slate-400">Unblock</Text>
+          </Pressable>
+        ) : (
+          <Pressable
+            onPress={handleBlockContact}
+            className="w-full flex-grow max-h-[60px] mt-2 p-2 flex justify-center items-center border-2 border-red-400 bg-red-400 rounded-xl"
+          >
+            <Text className="text-xl font-bold text-slate-200">Block</Text>
+          </Pressable>
+        )}
+      </View>
+    </SafeAreaView>
   );
 };
 
-export default ContactInfo;
+export default ContactView;
