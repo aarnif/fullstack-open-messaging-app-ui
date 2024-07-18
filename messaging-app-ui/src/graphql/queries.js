@@ -79,6 +79,16 @@ export const GET_CURRENT_USER = gql`
   ${USER_DETAILS}
 `;
 
+export const GET_USER_BY_ID = gql`
+  query FindUserById($id: ID!) {
+    findUserById(id: $id) {
+      ...UserDetails
+    }
+  }
+
+  ${USER_DETAILS}
+`;
+
 export const GET_CHATS_BY_USER = gql`
   query AllChatsByUser($userId: ID!, $searchByTitle: String) {
     allChatsByUser(userId: $userId, searchByTitle: $searchByTitle) {
