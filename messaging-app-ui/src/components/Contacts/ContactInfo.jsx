@@ -177,6 +177,12 @@ const ContactInfo = ({
                 This contact has blocked you!
               </Text>
             </View>
+          ) : isBlocked ? (
+            <View className="w-full flex-grow max-h-[60px] flex flex-row justify-center items-center bg-red-400 p-2 rounded-xl">
+              <Text className="text-xl text-slate-200 font-bold">
+                You have blocked this contact!
+              </Text>
+            </View>
           ) : (
             <Pressable
               onPress={handleChat}
