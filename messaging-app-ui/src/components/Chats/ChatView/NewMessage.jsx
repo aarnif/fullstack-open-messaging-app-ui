@@ -2,6 +2,8 @@ import useSubscriptions from "../../../hooks/useSubscriptions";
 import useChangeImage from "../../../hooks/useChangeImage";
 import imageService from "../../../services/imageService";
 import UploadImageWindow from "../../UploadImageWindow";
+import useNotify from "../../../hooks/useNotify";
+import Notify from "../../Notify";
 
 import { useState } from "react";
 import {
@@ -53,6 +55,7 @@ const MessageImage = ({ source, reset }) => {
 const NewMessage = ({ chatId, user }) => {
   const [message, setMessage] = useState("");
   const [showUploadPictureModal, setShowUploadPictureModal] = useState(false);
+  const notify = useNotify();
 
   const handleCloseUploadPicture = () => {
     console.log("Close edit profile picture window!");
@@ -119,6 +122,7 @@ const NewMessage = ({ chatId, user }) => {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       keyboardVerticalOffset={Platform.OS === "ios" ? 20 : 0}
     >
+      <Notify notify={notify} />
       {image && <MessageImage source={image} reset={reset} />}
 
       {showUploadPictureModal && (
