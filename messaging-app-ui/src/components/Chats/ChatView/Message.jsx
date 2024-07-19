@@ -32,7 +32,11 @@ const MessageByAnotherUser = ({ message, handlePressImage }) => {
         )}
         {message.content && (
           <Text
-            style={{ marginTop: message.image.thumbnail && 2 }}
+            style={{
+              marginTop: message.image.thumbnail && 2,
+              fontSize: message.type === "singleEmoji" && 32,
+              textAlign: message.type === "singleEmoji" && "center",
+            }}
             className="text-gray-800"
           >
             {message.content}
@@ -75,7 +79,11 @@ const MessageByCurrentUser = ({ message, handlePressImage }) => {
         )}
         {message.content && (
           <Text
-            style={{ marginTop: message.image.thumbnail && 2 }}
+            style={{
+              marginTop: message.image.thumbnail && 2,
+              fontSize: message.type === "singleEmoji" && 32,
+              textAlign: message.type === "singleEmoji" && "center",
+            }}
             className="text-gray-800"
           >
             {message.content}
