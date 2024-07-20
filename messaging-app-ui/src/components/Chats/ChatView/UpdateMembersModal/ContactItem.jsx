@@ -1,10 +1,11 @@
-import { Pressable, View, Text, Image, TextInput } from "react-native";
-import baseUrl from "../../../../../baseUrl";
+import { Pressable, View, Text, Image } from "react-native";
 
+import { useColorScheme } from "nativewind";
 import { useState, useEffect } from "react";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
-const ContactItem = ({ user, item, chosenUsersIds, setChosenUsersIds }) => {
+const ContactItem = ({ item, chosenUsersIds, setChosenUsersIds }) => {
+  const { colorScheme } = useColorScheme();
   const [isChosen, setIsChosen] = useState(false);
 
   useEffect(() => {
@@ -35,14 +36,16 @@ const ContactItem = ({ user, item, chosenUsersIds, setChosenUsersIds }) => {
         </View>
         <View className="flex-1">
           <View className="flex flex-row">
-            <Text className="text-md text-slate-700 font-bold">
+            <Text className="text-md text-slate-700 font-bold dark:text-slate-100">
               {item.name}
             </Text>
-            <Text className="ml-1 text-md text-slate-500 font-bold">
+            <Text className="ml-1 text-md text-slate-500 font-bold dark:text-slate-300">
               @{item.username}
             </Text>
           </View>
-          <Text className="text-sm text-slate-700">{item.about}</Text>
+          <Text className="text-sm text-slate-700 dark:text-slate-100">
+            {item.about}
+          </Text>
         </View>
 
         {isChosen ? (
@@ -51,7 +54,11 @@ const ContactItem = ({ user, item, chosenUsersIds, setChosenUsersIds }) => {
           </View>
         ) : (
           <View className="mr-4 w-6 h-6 flex justify-center items-center border border-slate-300 rounded-full">
-            <MaterialCommunityIcons name="check" size={20} color="white" />
+            <MaterialCommunityIcons
+              name="check"
+              size={20}
+              color={colorScheme === "dark" ? "#334155" : "white"}
+            />
           </View>
         )}
       </View>

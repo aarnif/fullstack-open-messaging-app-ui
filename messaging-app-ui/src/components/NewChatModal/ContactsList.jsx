@@ -11,7 +11,7 @@ const ContactsList = ({
 }) => {
   if (!data.length) {
     return (
-      <View className="flex-1 justify-start items-center bg-white">
+      <View className="flex-1 justify-start items-center bg-white dark:bg-slate-700">
         <Text className="mt-8 text-2xl font-bold text-slate-200">
           No contacts found
         </Text>
@@ -21,12 +21,11 @@ const ContactsList = ({
 
   return (
     <FlatList
-      className="w-full bg-white"
+      className="w-full bg-white dark:bg-slate-700"
       data={data}
       renderItem={({ item }) => {
         return (
           <ContactItem
-            user={user}
             item={item}
             chosenUsersIds={chosenUsersIds}
             setChosenUsersIds={setChosenUsersIds}

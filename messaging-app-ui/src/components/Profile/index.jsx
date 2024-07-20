@@ -10,8 +10,10 @@ const Profile = ({ user, handleEditProfilePress }) => {
   return (
     <>
       <Header user={user} handlePress={handleEditProfilePress} />
-      <Text className="text-2xl font-bold mt-4 mx-4 mb-2">Profile</Text>
-      <View className="w-full py-4 flex justify-center items-center bg-white">
+      <Text className="text-2xl font-bold mt-4 mx-4 mb-2 dark:text-slate-200">
+        Profile
+      </Text>
+      <View className="w-full py-4 flex justify-center items-center bg-white dark:bg-slate-700">
         <Pressable onPress={() => setShowImageViewModal(true)}>
           <Image
             source={{
@@ -20,13 +22,15 @@ const Profile = ({ user, handleEditProfilePress }) => {
             style={{ width: 120, height: 120, borderRadius: 9999 }}
           />
         </Pressable>
-        <Text className="mt-4 text-xl text-slate-800 font-bold">
+        <Text className="mt-4 text-xl text-slate-800 font-bold dark:text-slate-200">
           {user.name}
         </Text>
-        <Text className="text-md text-slate-500 font-bold">
+        <Text className="text-md text-slate-500 font-bold dark:text-slate-300">
           @{user.username}
         </Text>
-        <Text className="mt-4 text-base text-slate-700">{user.about}</Text>
+        <Text className="mt-4 text-base text-slate-700 dark:text-slate-200">
+          {user.about}
+        </Text>
       </View>
       {showImageViewModal && (
         <ProfileImageViewModal

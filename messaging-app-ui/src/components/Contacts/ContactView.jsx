@@ -162,7 +162,7 @@ const ContactView = ({ user }) => {
           <View className="w-[50px] mr-4 flex-grow flex justify-center items-center"></View>
         </View>
       </View>
-      <View className="w-full py-4 flex justify-center items-center bg-white">
+      <View className="w-full py-4 flex justify-center items-center bg-white dark:bg-slate-700">
         <Pressable onPress={() => setShowImageViewModal(true)}>
           <Image
             source={{
@@ -171,16 +171,18 @@ const ContactView = ({ user }) => {
             style={{ width: 120, height: 120, borderRadius: 9999 }}
           />
         </Pressable>
-        <Text className="mt-4 text-xl text-slate-800 font-bold">
+        <Text className="mt-4 text-xl text-slate-800 font-bold dark:text-slate-100">
           {contact.name}
         </Text>
-        <Text className="text-md text-slate-500 font-bold">
+        <Text className="text-md text-slate-500 font-bold dark:text-slate-300">
           @{contact.username}
         </Text>
-        <Text className="mt-4 text-base text-slate-700">{contact.about}</Text>
+        <Text className="mt-4 text-base text-slate-700 dark:text-slate-100">
+          {contact.about}
+        </Text>
       </View>
 
-      <View className="w-full p-4 flex-1 justify-end items-start bg-white">
+      <View className="w-full p-4 flex-1 justify-end items-start bg-white dark:bg-slate-700">
         {haveContactBlockedYou ? (
           <View className="w-full flex-grow max-h-[60px] flex flex-row justify-center items-center bg-red-400 p-2 rounded-xl">
             <Text className="text-xl text-slate-200 font-bold">

@@ -23,17 +23,17 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 const UploadProfilePicture = ({ handlePressUploadPicture, image }) => {
   return (
     <Pressable className="mb-[20px]" onPress={handlePressUploadPicture}>
-      <Text className="text-md font-medium text-slate-700">
+      <Text className="text-md font-medium text-slate-700 dark:text-slate-200">
         PROFILE PICTURE:
       </Text>
-      <View className="w-full p-2 flex justify-center items-center rounded-lg bg-slate-200 text-slate-800">
+      <View className="w-full p-2 flex justify-center items-center rounded-lg bg-slate-200 dark:bg-slate-600">
         <Image
           source={{
             uri: image,
           }}
           style={{ width: 80, height: 80, borderRadius: 9999 }}
         />
-        <Text className="my-2 text-md font-semibold text-slate-700">
+        <Text className="my-2 text-md font-semibold text-slate-700 dark:text-slate-100">
           Change profile picture
         </Text>
       </View>
@@ -75,7 +75,7 @@ const EditProfileForm = ({
           </View>
         </View>
       </View>
-      <View className="w-full p-8 flex-grow flex flex-col bg-white">
+      <View className="w-full p-8 flex-grow flex flex-col bg-white dark:bg-slate-700">
         <UploadProfilePicture
           handlePressUploadPicture={handlePressUploadPicture}
           image={image}

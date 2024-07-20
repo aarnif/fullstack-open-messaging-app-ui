@@ -10,13 +10,15 @@ import useSubscriptions from "../../hooks/useSubscriptions";
 
 import { useState } from "react";
 import { View, Text, FlatList } from "react-native";
-import { useQuery, useSubscription, useApolloClient } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { useDebounce } from "use-debounce";
 
 const ChatsHeader = ({ searchByTitle, handleChange }) => {
   return (
-    <View className="w-full bg-white">
-      <Text className="text-2xl font-bold mt-4 mx-4 mb-2">Chats</Text>
+    <View className="w-full bg-white dark:bg-slate-700">
+      <Text className="text-2xl font-bold mt-4 mx-4 mb-2 dark:text-slate-200">
+        Chats
+      </Text>
       <SearchBar
         placeholder={"Search by title..."}
         searchByTitle={searchByTitle}

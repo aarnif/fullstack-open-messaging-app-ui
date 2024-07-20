@@ -71,7 +71,7 @@ const Main = () => {
 
   return (
     <SafeAreaView style={{ flex: 1 }} className="bg-green-600">
-      <View style={{ flex: 1 }} className="bg-white">
+      <View style={{ flex: 1 }} className="bg-white dark:bg-slate-700">
         <StatusBar style="light" />
         <Routes>
           <Route path="/" element={<Navigate to="/chats" replace />} />

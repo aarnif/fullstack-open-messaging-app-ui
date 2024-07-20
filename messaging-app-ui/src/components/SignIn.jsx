@@ -54,7 +54,9 @@ const SignInForm = ({ onSubmit }) => {
       </Pressable>
 
       <View className="mt-4 flex justify-center items-center">
-        <Text className="font-semibold">Don't have an account?</Text>
+        <Text className="font-semibold dark:text-slate-200">
+          Don't have an account?
+        </Text>
       </View>
 
       <Pressable
@@ -70,7 +72,7 @@ const SignInForm = ({ onSubmit }) => {
 
 export const SignInContainer = ({ onSubmit, notify }) => {
   return (
-    <View className="w-full flex-grow flex justify-center items-center bg-white">
+    <View className="w-full flex-grow flex justify-center items-center bg-white dark:bg-slate-700">
       <Notify notify={notify} />
       <Formik
         initialValues={initialValues}

@@ -14,14 +14,16 @@ const ContactItem = ({ user, item, admin }) => {
       </View>
       <View className="flex-1">
         <View className="flex flex-row">
-          <Text className="text-md text-slate-700 font-bold">
+          <Text className="text-md text-slate-700 font-bold dark:text-slate-100">
             {item.id === user.id ? "You" : item.name}
           </Text>
-          <Text className="ml-1 text-md text-slate-500 font-bold">
+          <Text className="ml-1 text-md text-slate-500 font-bold dark:text-slate-300">
             @{item.username}
           </Text>
         </View>
-        <Text className="text-sm text-slate-700">{item.about}</Text>
+        <Text className="text-sm text-slate-700 dark:text-slate-100">
+          {item.about}
+        </Text>
       </View>
       {admin.id === item.id && (
         <Text className="text-md text-slate-700 font-semibold">Admin</Text>

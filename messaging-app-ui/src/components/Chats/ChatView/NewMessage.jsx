@@ -5,6 +5,7 @@ import UploadImageWindow from "../../UploadImageWindow";
 import useNotify from "../../../hooks/useNotify";
 import Notify from "../../Notify";
 
+import { useColorScheme } from "nativewind";
 import { useState } from "react";
 import {
   View,
@@ -25,7 +26,7 @@ import { ADD_MESSAGE_TO_CHAT } from "../../../graphql/mutations";
 
 const MessageImage = ({ source, reset }) => {
   return (
-    <View className="w-full flex justify-center items-center bg-slate-300">
+    <View className="w-full flex justify-center items-center bg-slate-300 dark:bg-slate-500">
       <View className="w-full flex flex-row justify-center items-center pt-2">
         <View className="w-[70px] flex justify-center items-center">
           <View className="w-8 h-8 rounded-full flex justify-center items-center"></View>
@@ -41,7 +42,7 @@ const MessageImage = ({ source, reset }) => {
         </View>
 
         <View className="w-[70px] h-full flex justify-start items-center">
-          <View className="w-8 h-8 rounded-full flex justify-center items-center bg-slate-400 shadow-xl">
+          <View className="w-8 h-8 rounded-full flex justify-center items-center bg-slate-400 shadow-xl dark:bg-slate-500">
             <Pressable onPress={reset}>
               <MaterialCommunityIcons name="close" size={24} color="white" />
             </Pressable>
@@ -53,6 +54,7 @@ const MessageImage = ({ source, reset }) => {
 };
 
 const NewMessage = ({ chatId, user }) => {
+  const { colorScheme } = useColorScheme();
   const [message, setMessage] = useState("");
   const [showUploadPictureModal, setShowUploadPictureModal] = useState(false);
   const notify = useNotify();
@@ -133,11 +135,14 @@ const NewMessage = ({ chatId, user }) => {
         />
       )}
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View className="w-full flex-row h-[50px] p-2 bg-slate-200 text-slate-800">
+        <View className="w-full flex-row h-[50px] p-2 bg-slate-200 text-slate-800 dark:bg-slate-600">
           <View className="flex-grow">
             <TextInput
-              className="w-full p-2 bg-slate-300 rounded-xl"
+              className="w-full p-2 bg-slate-300 rounded-xl dark:bg-slate-500 dark:text-slate-100"
               placeholder={"New Message..."}
+              placeholderTextColor={
+                colorScheme === "dark" ? "white" : "#475569"
+              }
               value={message}
               onChangeText={(text) => setMessage(text)}
             />

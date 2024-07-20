@@ -15,12 +15,11 @@ const ContactsList = ({ user, data, chosenUsersIds, setChosenUsersIds }) => {
 
   return (
     <FlatList
-      className="w-full bg-white"
+      className="w-full bg-white dark:bg-slate-700"
       data={data}
       renderItem={({ item }) => {
         return (
           <ContactItem
-            user={user}
             item={item}
             chosenUsersIds={chosenUsersIds}
             setChosenUsersIds={setChosenUsersIds}

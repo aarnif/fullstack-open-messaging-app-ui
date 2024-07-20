@@ -14,8 +14,10 @@ import { useDebounce } from "use-debounce";
 
 const ContactsHeader = ({ searchByTitle, handleChange }) => {
   return (
-    <View className="w-full bg-white">
-      <Text className="text-2xl font-bold mt-4 mx-4 mb-2">Contacts</Text>
+    <View className="w-full bg-white dark:bg-slate-700">
+      <Text className="text-2xl font-bold mt-4 mx-4 mb-2 dark:text-slate-200">
+        Contacts
+      </Text>
       <SearchBar
         placeholder={"Search by name..."}
         searchByTitle={searchByTitle}

@@ -21,7 +21,7 @@ import { useNavigate } from "react-router-native";
 
 const SearchBarContainer = ({ searchByTitle, handleChange }) => {
   return (
-    <View className="py-2 w-full bg-white">
+    <View className="py-2 w-full bg-white dark:bg-slate-700">
       <SearchBar
         placeholder={"Search by name..."}
         searchByTitle={searchByTitle}
@@ -121,7 +121,7 @@ const NewContactModal = ({
           handleChange={handleChange}
         />
         {loading ? (
-          <View className="flex-grow flex justify-start items-center bg-white">
+          <View className="flex-grow flex justify-start items-center bg-white dark:bg-slate-700">
             <LoadingIcon />
           </View>
         ) : (

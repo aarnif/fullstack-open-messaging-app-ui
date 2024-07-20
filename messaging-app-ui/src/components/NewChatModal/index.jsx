@@ -15,6 +15,7 @@ import useNewChatModalHeaderAnimation from "../../hooks/useNewChatModalHeaderAni
 import { Modal, SafeAreaView, View, Text, TextInput } from "react-native";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
+import { useColorScheme } from "nativewind";
 import { useState } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { useDebounce } from "use-debounce";
@@ -23,10 +24,12 @@ import { useNavigate } from "react-router-native";
 import { animated } from "@react-spring/native";
 
 const SearchBarContainer = ({ searchByTitle, handleChange }) => {
+  const { colorScheme } = useColorScheme();
   return (
-    <View className="py-2 w-full bg-white">
+    <View className="py-2 w-full bg-white dark:bg-slate-700">
       <SearchBar
         placeholder={"Search by name..."}
+        placeholderTextColor={colorScheme === "dark" ? "white" : "#475569"}
         searchByTitle={searchByTitle}
         handleChange={handleChange}
       />
@@ -135,7 +138,7 @@ const NewChatModal = ({
           handleChange={handleChange}
         />
         {res1.loading ? (
-          <View className="flex-grow flex justify-start items-center bg-white">
+          <View className="flex-grow flex justify-start items-center bg-white dark:bg-slate-700">
             <LoadingIcon />
           </View>
         ) : (
@@ -158,7 +161,7 @@ const NewChatModal = ({
               },
             ],
           }}
-          className="w-full bg-white shadow-lg"
+          className="w-full bg-white shadow-lg dark:bg-slate-700"
         >
           <Notify notify={notify} />
           <View className="mx-4 my-4">
@@ -167,7 +170,7 @@ const NewChatModal = ({
                 {`${chosenUsersIds.length} contacts selected`}
               </Text>
             </View>
-            <View className="w-full flex-grow flex-row max-h-[50px] p-2 mb-2 rounded-lg bg-slate-200 text-slate-800">
+            <View className="w-full flex-grow flex-row max-h-[50px] p-2 mb-2 rounded-lg bg-slate-200 text-slate-800 dark:bg-slate-700">
               <MaterialCommunityIcons
                 size={24}
                 color={"#475569"}
@@ -182,7 +185,7 @@ const NewChatModal = ({
                 onChangeText={(text) => setGroupChatTitle(text)}
               />
             </View>
-            <View className="w-full flex-grow flex-row max-h-[50px] p-2 rounded-lg bg-slate-200 text-slate-800">
+            <View className="w-full flex-grow flex-row max-h-[50px] p-2 rounded-lg bg-slate-200 text-slate-800 dark:bg-slate-700">
               <MaterialCommunityIcons
                 size={24}
                 color={"#475569"}
