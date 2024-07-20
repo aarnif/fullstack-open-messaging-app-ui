@@ -10,6 +10,7 @@ import RemoveMembersModal from "./UpdateMembersModal/RemoveMembersModal.jsx";
 import { useState } from "react";
 import { useQuery } from "@apollo/client";
 import { useMatch } from "react-router-native";
+import { View } from "react-native";
 
 const ChatView = ({ user }) => {
   const [showChatInfoModal, setShowChatInfoModal] = useState(false);
@@ -24,7 +25,11 @@ const ChatView = ({ user }) => {
   });
 
   if (loading) {
-    return <LoadingIcon />;
+    return (
+      <View className="absolute w-full h-full flex justify-center items-center">
+        <LoadingIcon />
+      </View>
+    );
   }
 
   return (
