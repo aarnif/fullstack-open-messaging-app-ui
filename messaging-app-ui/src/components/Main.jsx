@@ -6,6 +6,7 @@ import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import Contacts from "./Contacts/index";
 import Profile from "./Profile/index";
+import Settings from "./Settings/index";
 import LoadingIcon from "./LoadingIcon";
 import NewChatModal from "./NewChatModal";
 import NewContactModal from "./NewContactModal";
@@ -112,6 +113,7 @@ const Main = () => {
               />
             }
           />
+          <Route path="/settings" element={<Settings user={data?.me} />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
         {showNewChatModal && (

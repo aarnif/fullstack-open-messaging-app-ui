@@ -84,7 +84,12 @@ const Menu = () => {
       icon: (
         <MaterialCommunityIcons name="cog" size={iconSize} color={iconColor} />
       ),
-      handlePress: () => console.log("Settings"),
+      handlePress: () => {
+        setShowMenu(false);
+        setTimeout(() => {
+          navigate("/settings");
+        }, menuAnimationWaitTime);
+      },
     },
     {
       id: "5",
