@@ -49,6 +49,7 @@ const NewChatModal = ({
   const [groupChatDescription, setGroupChatDescription] = useState("");
   const [searchByName, setSearchByName] = useState("");
   const [debouncedSearchByName] = useDebounce(searchByName, 500);
+  const { colorScheme } = useColorScheme();
 
   console.log("Is group chat:", isChatTypeGroup);
   console.log("Chosen users:", chosenUsersIds);
@@ -166,37 +167,43 @@ const NewChatModal = ({
           <Notify notify={notify} />
           <View className="mx-4 my-4">
             <View className="w-full flex justify-center items-center pb-2">
-              <Text className="text-sm text-slate-800 font-bold">
+              <Text className="text-sm text-slate-800 font-bold dark:text-slate-100">
                 {`${chosenUsersIds.length} contacts selected`}
               </Text>
             </View>
-            <View className="w-full flex-grow flex-row max-h-[50px] p-2 mb-2 rounded-lg bg-slate-200 text-slate-800 dark:bg-slate-700">
+            <View className="w-full flex-grow flex-row max-h-[50px] p-2 mb-2 rounded-lg bg-slate-200 text-slate-800 dark:bg-slate-600 dark:text-slate-100">
               <MaterialCommunityIcons
                 size={24}
-                color={"#475569"}
+                color={colorScheme === "dark" ? "white" : "#475569"}
                 name="chat-outline"
               />
               <TextInput
-                className="w-full pl-2"
+                className="w-full pl-2 dark:text-slate-100"
                 editable={chosenUsersIds.length > 1}
                 selectTextOnFocus={chosenUsersIds.length > 1}
                 value={groupChatTitle}
                 placeholder={"Enter group chat title..."}
+                placeholderTextColor={
+                  colorScheme === "dark" ? "white" : "#475569"
+                }
                 onChangeText={(text) => setGroupChatTitle(text)}
               />
             </View>
-            <View className="w-full flex-grow flex-row max-h-[50px] p-2 rounded-lg bg-slate-200 text-slate-800 dark:bg-slate-700">
+            <View className="w-full flex-grow flex-row max-h-[50px] p-2 rounded-lg bg-slate-200 text-slate-800 dark:bg-slate-600 dark:text-slate-100">
               <MaterialCommunityIcons
                 size={24}
-                color={"#475569"}
+                color={colorScheme === "dark" ? "white" : "#475569"}
                 name="text-box-outline"
               />
               <TextInput
-                className="w-full pl-2"
+                className="w-full pl-2 dark:text-slate-100"
                 editable={chosenUsersIds.length > 1}
                 selectTextOnFocus={chosenUsersIds.length > 1}
                 value={groupChatDescription}
                 placeholder={"Enter group chat description..."}
+                placeholderTextColor={
+                  colorScheme === "dark" ? "white" : "#475569"
+                }
                 onChangeText={(text) => setGroupChatDescription(text)}
               />
             </View>
