@@ -13,8 +13,10 @@ import NewContactModal from "./NewContactModal";
 import EditProfileModal from "./EditProfileModal";
 
 import useAuthStorage from "../hooks/useAuthStorage";
+import useTheme from "../hooks/useTheme";
 import useNotify from "../hooks/useNotify";
 
+import { useColorScheme } from "nativewind";
 import { StatusBar } from "expo-status-bar";
 import { useState, useEffect } from "react";
 import { SafeAreaView, View } from "react-native";
@@ -27,7 +29,10 @@ const Main = () => {
   const [showNewChatModal, setShowNewChatModal] = useState(false);
   const [showNewContactModal, setShowNewContactModal] = useState(false);
   const [showEditProfileModal, setShowEditProfileModal] = useState(false);
+  const { colorScheme, toggleColorScheme } = useColorScheme();
+
   const authStorage = useAuthStorage();
+  const theme = useTheme();
   const notify = useNotify();
 
   const { data, error, loading } = useQuery(GET_CURRENT_USER);
@@ -38,7 +43,16 @@ const Main = () => {
       const accessToken = await authStorage.getAccessToken();
       console.log("Access token:", accessToken);
     };
+    const fetchTheme = async () => {
+      console.log("Fetching theme...");
+      const currentTheme = await theme.getTheme();
+      if (colorScheme !== currentTheme) {
+        console.log("Setting theme to:", currentTheme);
+        toggleColorScheme();
+      }
+    };
     fetchToken();
+    fetchTheme();
   }, []);
 
   const handleNewChatPress = () => {
