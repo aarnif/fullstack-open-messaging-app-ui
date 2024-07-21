@@ -23,6 +23,10 @@ export const CHAT_DETAILS = gql`
       thumbnail
       original
     }
+    displayChatImage {
+      thumbnail
+      original
+    }
     description
     isGroupChat
     admin {
