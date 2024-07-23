@@ -15,22 +15,29 @@ const httpLink = createHttpLink({
   uri: Constants.expoConfig.extra.apolloUri,
 });
 
-const wsLink = new GraphQLWsLink(
-  createClient({
-    url: "ws://localhost:4000",
-  })
-);
+const getContext = async (authStorage) => {
+  const accessToken = await authStorage.getAccessToken();
+  return {
+    headers: {
+      authorization: accessToken ? `Bearer ${accessToken}` : "",
+    },
+  };
+};
+
+const createWsLink = (authStorage) =>
+  new GraphQLWsLink(
+    createClient({
+      url: "ws://localhost:4000",
+      connectionParams: async () => {
+        return await getContext(authStorage);
+      },
+    })
+  );
 
 const createApolloClient = (authStorage) => {
   const authLink = setContext(async (_, { headers }) => {
     try {
-      const accessToken = await authStorage.getAccessToken();
-      return {
-        headers: {
-          ...headers,
-          authorization: accessToken ? `Bearer ${accessToken}` : "",
-        },
-      };
+      return await getContext(authStorage);
     } catch (e) {
       console.log(e);
       return {
@@ -47,7 +54,7 @@ const createApolloClient = (authStorage) => {
         definition.operation === "subscription"
       );
     },
-    wsLink,
+    createWsLink(authStorage),
     authLink.concat(httpLink)
   );
 
