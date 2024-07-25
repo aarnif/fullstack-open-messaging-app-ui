@@ -13,7 +13,7 @@ import NewContactModal from "./NewContactModal";
 import EditProfileModal from "./EditProfileModal";
 
 import useAuthStorage from "../hooks/useAuthStorage";
-import useTheme from "../hooks/useTheme";
+import useThemeStorage from "../hooks/useThemeStorage";
 import useNotify from "../hooks/useNotify";
 
 import { useColorScheme } from "nativewind";
@@ -32,7 +32,7 @@ const Main = () => {
   const { colorScheme, toggleColorScheme } = useColorScheme();
 
   const authStorage = useAuthStorage();
-  const theme = useTheme();
+  const themeStorage = useThemeStorage();
   const notify = useNotify();
 
   const { data, error, loading } = useQuery(GET_CURRENT_USER);
@@ -45,7 +45,7 @@ const Main = () => {
     };
     const fetchTheme = async () => {
       console.log("Fetching theme...");
-      const currentTheme = await theme.getTheme();
+      const currentTheme = await themeStorage.getTheme();
       if (colorScheme !== currentTheme) {
         console.log("Setting theme to:", currentTheme);
         toggleColorScheme();
@@ -54,6 +54,18 @@ const Main = () => {
     fetchToken();
     fetchTheme();
   }, []);
+
+  useEffect(() => {
+    const setTheme = async () => {
+      if (colorScheme !== data?.me.settings.theme) {
+        console.log("Setting theme to:", data?.me.settings.theme);
+        toggleColorScheme();
+      }
+    };
+    if (data?.me) {
+      setTheme();
+    }
+  }, [data]);
 
   const handleNewChatPress = () => {
     console.log("New Chat modal button pressed!");

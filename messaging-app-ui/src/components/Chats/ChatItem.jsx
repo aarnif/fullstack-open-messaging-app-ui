@@ -24,7 +24,7 @@ const LatestMessage = ({ user, latestMessage }) => {
 };
 
 const ChatItem = ({ user, item }) => {
-  const { colorScheme, toggleColorScheme } = useColorScheme();
+  const { colorScheme } = useColorScheme();
   const navigate = useNavigate();
   // console.log("Chat item:", item);
   const latestMessage = item.messages[0];
@@ -78,7 +78,10 @@ const ChatItem = ({ user, item }) => {
         <View className="w-[100px] flex justify-start items-center">
           <View className="w-full flex justify-center items-center">
             <Text className="text-gray-400 dark:text-slate-200">
-              {helpers.formatMessageTime(latestMessage?.createdAt)}
+              {helpers.formatMessageTime(
+                latestMessage?.createdAt,
+                user.settings.time === "24h"
+              )}
             </Text>
           </View>
           <View className="w-full flex justify-center items-center">
