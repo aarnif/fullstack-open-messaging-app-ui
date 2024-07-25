@@ -128,6 +128,16 @@ export const EDIT_PROFILE = gql`
   ${USER_DETAILS}
 `;
 
+export const EDIT_SETTINGS = gql`
+  mutation EditSettings($theme: String, $time: String) {
+    editSettings(theme: $theme, time: $time) {
+      ...UserDetails
+    }
+  }
+
+  ${USER_DETAILS}
+`;
+
 export const EDIT_CHAT = gql`
   mutation UpdateGroupChat(
     $chatId: ID!
