@@ -1,10 +1,13 @@
 import { format, isToday, isThisWeek } from "date-fns";
 
-const formatMessageTime = (latestMessageTime) => {
+const formatMessageTime = (latestMessageTime, is24HourClock = true) => {
   if (!latestMessageTime) {
     return null;
   } else if (isToday(new Date(latestMessageTime))) {
-    return format(new Date(latestMessageTime), "HH:mm");
+    return format(
+      new Date(latestMessageTime),
+      is24HourClock ? "HH:mm" : "HH:mm aaa"
+    );
   } else if (isThisWeek(new Date(latestMessageTime))) {
     return format(new Date(latestMessageTime), "EEEE");
   } else {
