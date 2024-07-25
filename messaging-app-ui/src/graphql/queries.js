@@ -10,6 +10,10 @@ export const USER_DETAILS = gql`
       thumbnail
       original
     }
+    settings {
+      theme
+      time
+    }
     blockedContacts
   }
 `;

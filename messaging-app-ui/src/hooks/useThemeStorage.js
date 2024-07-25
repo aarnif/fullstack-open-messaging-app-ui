@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const useTheme = () => {
+const useThemeStorage = () => {
   const getTheme = async () => {
     return await AsyncStorage.getItem("theme");
   };
@@ -12,4 +12,4 @@ const useTheme = () => {
   return { getTheme, setTheme };
 };
 
-export default useTheme;
+export default useThemeStorage;
