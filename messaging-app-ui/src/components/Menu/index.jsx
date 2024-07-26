@@ -105,10 +105,12 @@ const Menu = () => {
       ),
       handlePress: () => {
         console.log("Sign out!");
-        navigate("/");
         setShowMenu(false);
-        authStorage.removeAccessToken();
-        client.resetStore();
+        setTimeout(() => {
+          navigate("/signin");
+          authStorage.removeAccessToken();
+          client.resetStore();
+        }, menuAnimationWaitTime);
       },
     },
   ];
