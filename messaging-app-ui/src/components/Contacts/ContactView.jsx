@@ -4,6 +4,7 @@ import {
   GET_CHAT_BY_PARTICIPANTS,
 } from "../../graphql/queries";
 import ProfileImageViewModal from "../Profile/ProfileImageViewModal";
+import useSubscriptions from "../../hooks/useSubscriptions";
 
 import { useMatch } from "react-router-native";
 import { useState, useEffect } from "react";
@@ -18,6 +19,8 @@ const ContactView = ({ user }) => {
   const [contact, setContact] = useState(null);
   const [isBlocked, setIsBlocked] = useState(false);
   const [showImageViewModal, setShowImageViewModal] = useState(false);
+
+  useSubscriptions(user);
 
   const match = useMatch("/contacts/:id").params;
   const navigate = useNavigate();
@@ -90,7 +93,6 @@ const ContactView = ({ user }) => {
       if (data) {
         console.log("Created chat:", data);
         navigate(`/chats/${data.createChat.id}`);
-        setShowNewChatModal(false);
       }
     } catch (error) {
       console.log("Error creating chat:", error);
