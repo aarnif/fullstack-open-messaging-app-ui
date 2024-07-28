@@ -139,7 +139,7 @@ const ChatInfoModal = ({
             {`${chat.participants.length} members`}
           </Text>
         </View>
-        <ContactsList user={user} data={chat.participants} admin={chatAdmin} />
+        <ContactsList data={chat.participants} admin={chatAdmin} />
         {user.id !== chatAdmin.id && (
           <View className="w-full p-4 flex justify-center items-start bg-white dark:bg-slate-700">
             <Pressable
