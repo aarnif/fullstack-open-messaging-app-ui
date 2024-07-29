@@ -1,6 +1,6 @@
-import ContactCard from "../../../ContactCard";
+import ContactCard from "../../ContactCard";
 
-import { Pressable, View, Text, Image } from "react-native";
+import { Pressable, View } from "react-native";
 
 import { useColorScheme } from "nativewind";
 import { useState, useEffect } from "react";

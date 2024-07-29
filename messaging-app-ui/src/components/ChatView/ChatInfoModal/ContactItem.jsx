@@ -1,4 +1,4 @@
-import ContactCard from "../../../ContactCard";
+import ContactCard from "../../ContactCard";
 
 import { View, Text } from "react-native";
 

@@ -1,6 +1,5 @@
-import Header from "../../../Header";
 import ContactsList from "./ContactsList";
-import { LEAVE_GROUP_CHAT } from "../../../../graphql/mutations";
+import { LEAVE_GROUP_CHAT } from "../../../graphql/mutations";
 import ChatImageViewModal from "./ChatImageViewModal";
 
 import { useState } from "react";

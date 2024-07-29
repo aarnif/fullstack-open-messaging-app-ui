@@ -1,10 +1,8 @@
-import baseUrl from "../../../../baseUrl";
 import {
   DELETE_CHAT,
   MARK_MESSAGES_IN_CHAT_READ,
-} from "../../../graphql/mutations";
+} from "../../graphql/mutations";
 
-import { useState } from "react";
 import { View, Text, Image, Pressable } from "react-native";
 import { useNavigate } from "react-router-native";
 import { useMutation } from "@apollo/client";

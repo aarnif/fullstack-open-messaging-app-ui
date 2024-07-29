@@ -1,6 +1,6 @@
 import Message from "./Message";
 import NewMessage from "./NewMessage";
-import helpers from "../../../utils/helpers";
+import helpers from "../../utils/helpers";
 import MessageImageViewModal from "./MessageImageViewModal";
 
 import { useState } from "react";

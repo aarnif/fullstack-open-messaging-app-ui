@@ -1,6 +1,6 @@
 import Header from "./Header";
 import Chats from "./Chats/index";
-import ChatView from "./Chats/ChatView/index";
+import ChatView from "./ChatView/index";
 import ContactView from "./Contacts/ContactView";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";

@@ -1,5 +1,5 @@
-import { GET_CHAT_BY_ID } from "../../../graphql/queries";
-import LoadingIcon from "../../LoadingIcon";
+import { GET_CHAT_BY_ID } from "../../graphql/queries";
+import LoadingIcon from "../LoadingIcon.jsx";
 import ChatHeader from "./ChatHeader";
 import Messages from "./Messages";
 import ChatInfoModal from "./ChatInfoModal/index.jsx";

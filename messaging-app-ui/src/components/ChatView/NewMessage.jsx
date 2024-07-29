@@ -1,9 +1,9 @@
-import useSubscriptions from "../../../hooks/useSubscriptions";
-import useChangeImage from "../../../hooks/useChangeImage";
-import imageService from "../../../services/imageService";
-import UploadImageWindow from "../../UploadImageWindow";
-import useNotify from "../../../hooks/useNotify";
-import Notify from "../../Notify";
+import useSubscriptions from "../../hooks/useSubscriptions";
+import useChangeImage from "../../hooks/useChangeImage";
+import imageService from "../../services/imageService";
+import UploadImageWindow from "../UploadImageWindow";
+import useNotify from "../../hooks/useNotify";
+import Notify from "../Notify";
 
 import { useColorScheme } from "nativewind";
 import { useState } from "react";
@@ -21,8 +21,8 @@ import {
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { useMutation } from "@apollo/client";
-import { GET_CHAT_BY_ID } from "../../../graphql/queries";
-import { ADD_MESSAGE_TO_CHAT } from "../../../graphql/mutations";
+import { GET_CHAT_BY_ID } from "../../graphql/queries";
+import { ADD_MESSAGE_TO_CHAT } from "../../graphql/mutations";
 
 const MessageImage = ({ source, reset }) => {
   return (

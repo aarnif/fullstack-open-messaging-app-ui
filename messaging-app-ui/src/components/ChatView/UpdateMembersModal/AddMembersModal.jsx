@@ -1,7 +1,7 @@
-import { GET_CONTACTS_BY_USER } from "../../../../graphql/queries";
-import { REMOVE_CHAT_MEMBERS } from "../../../../graphql/mutations";
-import LoadingIcon from "../../../LoadingIcon";
-import SearchBar from "../../../SearchBar";
+import { GET_CONTACTS_BY_USER } from "../../../graphql/queries";
+import { ADD_NEW_CHAT_MEMBERS } from "../../../graphql/mutations";
+import LoadingIcon from "../../LoadingIcon";
+import SearchBar from "../../SearchBar";
 import ContactsList from "./ContactsList";
 
 import { Modal, SafeAreaView, View, Text, Pressable } from "react-native";
@@ -24,11 +24,11 @@ const SearchBarContainer = ({ searchByTitle, handleChange }) => {
   );
 };
 
-const RemoveMembersModal = ({
+const AddMembersModal = ({
   user,
   chat,
-  showRemoveMembersModal,
-  setShowRemoveMembersModal,
+  showAddMembersModal,
+  setShowAddMembersModal,
 }) => {
   const [chosenUsersIds, setChosenUsersIds] = useState([]);
   const [searchByName, setSearchByName] = useState("");
@@ -42,7 +42,7 @@ const RemoveMembersModal = ({
     },
   });
 
-  const [mutate] = useMutation(REMOVE_CHAT_MEMBERS, {
+  const [mutate] = useMutation(ADD_NEW_CHAT_MEMBERS, {
     onError: (error) => {
       console.log(error.graphQLErrors[0].message);
     },
@@ -52,11 +52,11 @@ const RemoveMembersModal = ({
 
   const goBack = () => {
     console.log("Go back to chats page!");
-    setShowRemoveMembersModal(false);
+    setShowAddMembersModal(false);
   };
 
   const handlePress = async () => {
-    console.log("Press remove members from the chat!");
+    console.log("Press add new members to the chat!");
     console.log("Chosen users:", chosenUsersIds);
 
     try {
@@ -66,11 +66,11 @@ const RemoveMembersModal = ({
           participants: chosenUsersIds,
         },
       });
-      console.log("Remove members from the chat!");
-      setShowRemoveMembersModal(false);
+      console.log("Added new members to the chat!");
+      setShowAddMembersModal(false);
       navigate(`/chats/${chat.id}`);
     } catch (error) {
-      console.log("Error removing members from the chat:", error);
+      console.log("Error adding new members to the chat:", error);
     }
   };
 
@@ -80,7 +80,7 @@ const RemoveMembersModal = ({
   };
 
   return (
-    <Modal animationType="slide" visible={showRemoveMembersModal}>
+    <Modal animationType="slide" visible={showAddMembersModal}>
       <SafeAreaView style={{ flex: 1 }} className="bg-green-600">
         <View className="w-full flex flex-row justify-center items-center py-2 bg-green-600 shadow-lg">
           <View className="w-[70px] flex justify-center items-center">
@@ -91,7 +91,7 @@ const RemoveMembersModal = ({
             </View>
           </View>
           <View className="flex-grow flex justify-center items-center">
-            <Text className="text-xl text-white font-bold">Remove Members</Text>
+            <Text className="text-xl text-white font-bold">Add Members</Text>
           </View>
           <View className="w-[70px] flex justify-center items-center">
             <View className="w-8 h-8 rounded-full flex justify-center items-center bg-green-700 shadow-xl">
@@ -110,7 +110,7 @@ const RemoveMembersModal = ({
           handleChange={handleChange}
         />
         {data.loading ? (
-          <View className="flex-grow flex justify-start items-center bg-white">
+          <View className="flex-grow flex justify-start items-center bg-white dark:bg-slate-700">
             <LoadingIcon />
           </View>
         ) : (
@@ -122,14 +122,14 @@ const RemoveMembersModal = ({
                   (participant) => participant.id === contact.id
                 );
 
-                if (checkIfUserAlreadyInChat) return contact;
+                if (checkIfUserAlreadyInChat) return null;
 
-                return null;
+                return contact;
               })
               .filter((contact) => contact !== null)}
             chosenUsersIds={chosenUsersIds}
             setChosenUsersIds={setChosenUsersIds}
-            setShowRemoveMembersModal={setShowRemoveMembersModal}
+            setShowAddMembersModal={setShowAddMembersModal}
           />
         )}
       </SafeAreaView>
@@ -137,4 +137,4 @@ const RemoveMembersModal = ({
   );
 };
 
-export default RemoveMembersModal;
+export default AddMembersModal;

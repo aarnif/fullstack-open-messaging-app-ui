@@ -1,9 +1,9 @@
-import useChangeImage from "../../../../hooks/useChangeImage";
-import imageService from "../../../../services/imageService";
-import { EDIT_CHAT } from "../../../../graphql/mutations";
-import FormikFormField from "../../../FormikFormField";
-import UploadImageWindow from "../../../UploadImageWindow";
-import LoadingIcon from "../../../LoadingIcon";
+import useChangeImage from "../../../hooks/useChangeImage";
+import imageService from "../../../services/imageService";
+import { EDIT_CHAT } from "../../../graphql/mutations";
+import FormikFormField from "../../FormikFormField";
+import UploadImageWindow from "../../UploadImageWindow";
+import LoadingIcon from "../../LoadingIcon";
 
 import { useState } from "react";
 import { useMutation } from "@apollo/client";

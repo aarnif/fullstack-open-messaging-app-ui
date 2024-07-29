@@ -1,4 +1,3 @@
-import helpers from "../../../utils/helpers";
 import useDownloadImage from "../../../hooks/useDownloadImage";
 import LoadingIcon from "../../LoadingIcon";
 import ImageView from "../../ImageView";
@@ -8,13 +7,13 @@ import { Modal, SafeAreaView, Pressable, View, Text } from "react-native";
 
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
-const MessageImageViewModal = ({
-  chosenMessage,
+const ChatImageViewModal = ({
+  chat,
   showImageViewModal,
   setShowImageViewModal,
 }) => {
   const [fullScreen, setFullScreen] = useState(false);
-  const { saveFile, loading } = useDownloadImage(chosenMessage.image.original);
+  const { saveFile, loading } = useDownloadImage(chat.image.original);
 
   const handleDownloadImage = async () => {
     console.log("Download image pressed.");
@@ -41,10 +40,7 @@ const MessageImageViewModal = ({
                 <Pressable>
                   <View className="max-w-[250px] flex-grow flex justify-center items-center">
                     <Text className="text-base text-white font-bold">
-                      {chosenMessage.sender.name}
-                    </Text>
-                    <Text className="text-sm text-white">
-                      {helpers.formatMessageTime(chosenMessage.createdAt)}
+                      {chat.title}
                     </Text>
                   </View>
                 </Pressable>
@@ -60,7 +56,7 @@ const MessageImageViewModal = ({
               </View>
             </View>
           )}
-          <ImageView ImageUri={chosenMessage.image.original} />
+          <ImageView ImageUri={chat.image.original} />
         </Pressable>
         {loading && (
           <View
@@ -80,4 +76,4 @@ const MessageImageViewModal = ({
   );
 };
 
-export default MessageImageViewModal;
+export default ChatImageViewModal;
