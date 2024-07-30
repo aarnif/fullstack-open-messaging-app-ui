@@ -6,7 +6,7 @@ export const USER_DETAILS = gql`
     username
     name
     about
-    profilePicture {
+    image {
       thumbnail
       original
     }

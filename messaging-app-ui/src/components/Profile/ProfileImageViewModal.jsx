@@ -13,7 +13,7 @@ const ProfileImageViewModal = ({
   setShowImageViewModal,
 }) => {
   const [fullScreen, setFullScreen] = useState(false);
-  const { saveFile, loading } = useDownloadImage(user.profilePicture.original);
+  const { saveFile, loading } = useDownloadImage(user.image.original);
 
   const handleDownloadImage = async () => {
     console.log("Download image pressed.");
@@ -56,7 +56,7 @@ const ProfileImageViewModal = ({
               </View>
             </View>
           )}
-          <ImageView ImageUri={user.profilePicture.original} />
+          <ImageView ImageUri={user.image.original} />
         </Pressable>
         {loading && (
           <View

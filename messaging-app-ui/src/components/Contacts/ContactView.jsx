@@ -168,7 +168,7 @@ const ContactView = ({ user }) => {
         <Pressable onPress={() => setShowImageViewModal(true)}>
           <Image
             source={{
-              uri: contact.profilePicture.thumbnail,
+              uri: contact.image.thumbnail,
             }}
             style={{ width: 120, height: 120, borderRadius: 9999 }}
           />

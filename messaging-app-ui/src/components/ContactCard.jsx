@@ -6,7 +6,7 @@ const ContactCard = ({ item }) => {
       <View className="mr-4">
         <Image
           source={{
-            uri: item.profilePicture.thumbnail,
+            uri: item.image.thumbnail,
           }}
           style={{ width: 48, height: 48, borderRadius: 9999 }}
         />
