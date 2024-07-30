@@ -8,9 +8,9 @@ import Contacts from "./Contacts/index";
 import Profile from "./Profile/index";
 import Settings from "./Settings/index";
 import LoadingIcon from "./LoadingIcon";
-import NewChatModal from "./NewChatModal";
-import NewContactModal from "./NewContactModal";
-import EditProfileModal from "./EditProfileModal";
+import NewChatModal from "./Modals/NewChatModal";
+import NewContactModal from "./Modals/NewContactModal";
+import EditProfileModal from "./Modals/EditProfileModal";
 
 import useAuthStorage from "../hooks/useAuthStorage";
 import useThemeStorage from "../hooks/useThemeStorage";

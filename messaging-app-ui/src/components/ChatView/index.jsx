@@ -2,10 +2,10 @@ import { GET_CHAT_BY_ID } from "../../graphql/queries";
 import LoadingIcon from "../LoadingIcon.jsx";
 import ChatHeader from "./ChatHeader";
 import Messages from "./Messages";
-import ChatInfoModal from "./ChatInfoModal/index.jsx";
-import EditChatModal from "./EditChatModal/index.jsx";
-import AddMembersModal from "./UpdateMembersModal/AddMembersModal.jsx";
-import RemoveMembersModal from "./UpdateMembersModal/RemoveMembersModal.jsx";
+import ChatInfoModal from "../Modals/ChatInfoModal/index.jsx";
+import EditChatModal from "../Modals/EditChatModal/index.jsx";
+import AddMembersModal from "../Modals/UpdateMembersModal/AddMembersModal.jsx";
+import RemoveMembersModal from "../Modals/UpdateMembersModal/RemoveMembersModal.jsx";
 
 import { useState } from "react";
 import { useQuery } from "@apollo/client";

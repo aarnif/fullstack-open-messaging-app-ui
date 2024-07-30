@@ -1,16 +1,16 @@
 import {
   GET_CONTACTS_BY_USER,
   GET_CHAT_BY_PARTICIPANTS,
-} from "../../graphql/queries";
-import { CREATE_CHAT } from "../../graphql/mutations";
-import LoadingIcon from "../LoadingIcon";
+} from "../../../graphql/queries";
+import { CREATE_CHAT } from "../../../graphql/mutations";
+import LoadingIcon from "../../LoadingIcon";
 import Header from "./Header";
-import SearchBar from "../SearchBar";
+import SearchBar from "../../SearchBar";
 import ContactsList from "./ContactsList";
 
-import Notify from "../Notify";
+import Notify from "../../Notify";
 
-import useNewChatModalHeaderAnimation from "../../hooks/useNewChatModalHeaderAnimation";
+import useNewChatModalHeaderAnimation from "../../../hooks/useNewChatModalHeaderAnimation";
 
 import { Modal, SafeAreaView, View, Text, TextInput } from "react-native";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
