@@ -1,20 +1,51 @@
-import helpers from "../../utils/helpers";
-import useDownloadImage from "../../hooks/useDownloadImage";
-import LoadingIcon from "../LoadingIcon";
-import ImageView from "../ImageView";
+import helpers from "../../../utils/helpers";
+import useDownloadImage from "../../../hooks/useDownloadImage";
+import LoadingIcon from "../../LoadingIcon";
+import ImageView from "../../ImageView";
 
 import { useState } from "react";
 import { Modal, SafeAreaView, Pressable, View, Text } from "react-native";
 
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
-const MessageImageViewModal = ({
-  chosenMessage,
+const HeaderText = ({ type, data }) => {
+  switch (type) {
+    case "chat":
+      return (
+        <View className="max-w-[250px] flex-grow flex justify-center items-center">
+          <Text className="text-base text-white font-bold">{data.title}</Text>
+        </View>
+      );
+    case "message":
+      return (
+        <View className="max-w-[250px] flex-grow flex justify-center items-center">
+          <Text className="text-base text-white font-bold">
+            {data.sender.name}
+          </Text>
+          <Text className="text-sm text-white">
+            {helpers.formatMessageTime(data.createdAt)}
+          </Text>
+        </View>
+      );
+    case "profile":
+      return (
+        <View className="max-w-[250px] flex-grow flex justify-center items-center">
+          <Text className="text-base text-white font-bold">{data.name}</Text>
+        </View>
+      );
+    default:
+      return null;
+  }
+};
+
+const ImageViewModal = ({
+  type,
+  data,
   showImageViewModal,
   setShowImageViewModal,
 }) => {
   const [fullScreen, setFullScreen] = useState(false);
-  const { saveFile, loading } = useDownloadImage(chosenMessage.image.original);
+  const { saveFile, loading } = useDownloadImage(data.image.original);
 
   const handleDownloadImage = async () => {
     console.log("Download image pressed.");
@@ -39,14 +70,7 @@ const MessageImageViewModal = ({
                   </Pressable>
                 </View>
                 <Pressable>
-                  <View className="max-w-[250px] flex-grow flex justify-center items-center">
-                    <Text className="text-base text-white font-bold">
-                      {chosenMessage.sender.name}
-                    </Text>
-                    <Text className="text-sm text-white">
-                      {helpers.formatMessageTime(chosenMessage.createdAt)}
-                    </Text>
-                  </View>
+                  <HeaderText type={type} data={data} />
                 </Pressable>
                 <View className="w-[50px] ml-4 flex-grow flex justify-center items-center">
                   <Pressable onPress={handleDownloadImage}>
@@ -60,7 +84,7 @@ const MessageImageViewModal = ({
               </View>
             </View>
           )}
-          <ImageView ImageUri={chosenMessage.image.original} />
+          <ImageView ImageUri={data.image.original} />
         </Pressable>
         {loading && (
           <View
@@ -80,4 +104,4 @@ const MessageImageViewModal = ({
   );
 };
 
-export default MessageImageViewModal;
+export default ImageViewModal;

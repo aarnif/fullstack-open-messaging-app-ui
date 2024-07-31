@@ -1,6 +1,6 @@
 import ContactsList from "./ContactsList";
 import { LEAVE_GROUP_CHAT } from "../../../graphql/mutations";
-import ChatImageViewModal from "./ChatImageViewModal";
+import ImageViewModal from "../ImageViewModal/index.jsx";
 
 import { useState } from "react";
 import {
@@ -71,15 +71,6 @@ const ChatInfoModal = ({
     setShowRemoveMembersModal(true);
     setShowChatInfoModal(false);
   };
-
-  if (showImageViewModal) {
-    return (
-      <ChatImageViewModal
-        chat={chat}
-        setShowImageViewModal={setShowImageViewModal}
-      />
-    );
-  }
 
   return (
     <Modal animationType="slide" visible={showChatInfoModal}>
@@ -176,6 +167,13 @@ const ChatInfoModal = ({
           </>
         )}
       </SafeAreaView>
+      {showImageViewModal && (
+        <ImageViewModal
+          type={"chat"}
+          data={chat}
+          setShowImageViewModal={setShowImageViewModal}
+        />
+      )}
     </Modal>
   );
 };

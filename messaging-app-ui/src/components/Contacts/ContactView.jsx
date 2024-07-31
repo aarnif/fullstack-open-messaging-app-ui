@@ -3,8 +3,8 @@ import {
   GET_USER_BY_ID,
   GET_CHAT_BY_PARTICIPANTS,
 } from "../../graphql/queries";
-import ProfileImageViewModal from "../Profile/ProfileImageViewModal";
 import useSubscriptions from "../../hooks/useSubscriptions";
+import ImageViewModal from "../Modals/ImageViewModal";
 
 import { useMatch } from "react-router-native";
 import { useState, useEffect } from "react";
@@ -124,16 +124,6 @@ const ContactView = ({ user }) => {
     }
   };
 
-  if (showImageViewModal) {
-    return (
-      <ProfileImageViewModal
-        user={contact}
-        showImageViewModal={showImageViewModal}
-        setShowImageViewModal={setShowImageViewModal}
-      />
-    );
-  }
-
   console.log("Is blocked:", isBlocked);
   console.log("Have contact blocked you:", haveContactBlockedYou);
 
@@ -222,6 +212,13 @@ const ContactView = ({ user }) => {
           </Pressable>
         )}
       </View>
+      {showImageViewModal && (
+        <ImageViewModal
+          type={"profile"}
+          data={contact}
+          setShowImageViewModal={setShowImageViewModal}
+        />
+      )}
     </SafeAreaView>
   );
 };

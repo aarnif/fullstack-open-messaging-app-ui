@@ -1,6 +1,6 @@
 import Header from "../Header";
 import Menu from "../Menu";
-import ProfileImageViewModal from "./ProfileImageViewModal";
+import ImageViewModal from "../Modals/ImageViewModal";
 
 import { useState } from "react";
 import { View, Text, Pressable, Image } from "react-native";
@@ -17,7 +17,7 @@ const Profile = ({ user, handleEditProfilePress }) => {
         <Pressable onPress={() => setShowImageViewModal(true)}>
           <Image
             source={{
-              uri: user.profilePicture.thumbnail,
+              uri: user.image.thumbnail,
             }}
             style={{ width: 120, height: 120, borderRadius: 9999 }}
           />
@@ -33,9 +33,9 @@ const Profile = ({ user, handleEditProfilePress }) => {
         </Text>
       </View>
       {showImageViewModal && (
-        <ProfileImageViewModal
-          user={user}
-          showImageViewModal={showImageViewModal}
+        <ImageViewModal
+          type={"profile"}
+          data={user}
           setShowImageViewModal={setShowImageViewModal}
         />
       )}
