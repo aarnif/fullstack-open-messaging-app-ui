@@ -170,7 +170,10 @@ const EditChatModal = ({ chat, showEditChat, setShowEditChat }) => {
             thumbnail: result.data.thumb.url,
             original: result.data.image.url,
           }
-        : chat.image;
+        : {
+            thumbnail: chat.image.thumbnail,
+            original: chat.image.original,
+          };
       console.log("New chat image:", newChatImage);
       await editChat({
         variables: {
