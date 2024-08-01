@@ -3,9 +3,6 @@ import LoadingIcon from "../LoadingIcon.jsx";
 import ChatHeader from "./ChatHeader";
 import Messages from "./Messages";
 import ChatInfoModal from "../Modals/ChatInfoModal/index.jsx";
-import EditChatModal from "../Modals/EditChatModal/index.jsx";
-import AddMembersModal from "../Modals/UpdateMembersModal/AddMembersModal.jsx";
-import RemoveMembersModal from "../Modals/UpdateMembersModal/RemoveMembersModal.jsx";
 
 import { useState } from "react";
 import { useQuery } from "@apollo/client";
@@ -14,9 +11,6 @@ import { View } from "react-native";
 
 const ChatView = ({ user }) => {
   const [showChatInfoModal, setShowChatInfoModal] = useState(false);
-  const [showEditChat, setShowEditChat] = useState(false);
-  const [showAddMembersModal, setShowAddMembersModal] = useState(false);
-  const [showRemoveMembersModal, setShowRemoveMembersModal] = useState(false);
   const match = useMatch("/chats/:chatId").params;
   const { data, loading } = useQuery(GET_CHAT_BY_ID, {
     variables: {
@@ -49,33 +43,7 @@ const ChatView = ({ user }) => {
           user={user}
           chat={data.findChatById}
           showChatInfoModal={showChatInfoModal}
-          setShowEditChat={setShowEditChat}
           setShowChatInfoModal={setShowChatInfoModal}
-          setShowAddMembersModal={setShowAddMembersModal}
-          setShowRemoveMembersModal={setShowRemoveMembersModal}
-        />
-      )}
-      {showEditChat && (
-        <EditChatModal
-          chat={data.findChatById}
-          showEditChat={showEditChat}
-          setShowEditChat={setShowEditChat}
-        />
-      )}
-      {showAddMembersModal && (
-        <AddMembersModal
-          user={user}
-          chat={data.findChatById}
-          showAddMembersModal={showAddMembersModal}
-          setShowAddMembersModal={setShowAddMembersModal}
-        />
-      )}
-      {showRemoveMembersModal && (
-        <RemoveMembersModal
-          user={user}
-          chat={data.findChatById}
-          showRemoveMembersModal={showRemoveMembersModal}
-          setShowRemoveMembersModal={setShowRemoveMembersModal}
         />
       )}
     </>
