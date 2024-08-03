@@ -135,10 +135,7 @@ const EditProfileModal = ({
   };
 
   const { image, base64Image, chooseImageFromCamera, chooseImageFromFiles } =
-    useChangeImage(
-      user.profilePicture.thumbnail,
-      (onChange = handleCloseUploadPicture)
-    );
+    useChangeImage(user.image.thumbnail, (onChange = handleCloseUploadPicture));
 
   const initialValues = {
     name: user.name,
@@ -173,17 +170,17 @@ const EditProfileModal = ({
       }
 
       console.log("Editing profile...");
-      const newProfilePicture = base64Image
+      const newProfileImage = base64Image
         ? {
             thumbnail: result.data.thumb.url,
             original: result.data.image.url,
           }
-        : user.profilePicture;
+        : user.image;
       await editProfile({
         variables: {
           name,
           about,
-          input: newProfilePicture,
+          input: newProfileImage,
         },
       });
 
