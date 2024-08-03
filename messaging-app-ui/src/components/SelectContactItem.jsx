@@ -6,7 +6,7 @@ import { useColorScheme } from "nativewind";
 import { useState, useEffect } from "react";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
-const ContactItem = ({ item, chosenUsersIds, setChosenUsersIds }) => {
+const SelectContactItem = ({ item, chosenUsersIds, setChosenUsersIds }) => {
   const { colorScheme } = useColorScheme();
   const [isChosen, setIsChosen] = useState(false);
 
@@ -48,4 +48,4 @@ const ContactItem = ({ item, chosenUsersIds, setChosenUsersIds }) => {
   );
 };
 
-export default ContactItem;
+export default SelectContactItem;

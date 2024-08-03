@@ -1,4 +1,4 @@
-import ContactsList from "./ContactsList";
+import ChatMembersList from "./ChatMembersList";
 
 import { View, Text, Pressable, Image } from "react-native";
 
@@ -34,7 +34,7 @@ const GroupChatInfo = ({
           {`${chat.participants.length} members`}
         </Text>
       </View>
-      <ContactsList data={chat.participants} admin={chatAdmin} />
+      <ChatMembersList data={chat.participants} admin={chatAdmin} />
       {user.id !== chatAdmin.id && (
         <View className="w-full p-4 flex justify-center items-start bg-white dark:bg-slate-700">
           <Pressable

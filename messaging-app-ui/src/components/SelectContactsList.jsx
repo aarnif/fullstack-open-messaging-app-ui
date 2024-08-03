@@ -1,8 +1,8 @@
-import ContactItem from "./ContactItem";
+import SelectContactItem from "./SelectContactItem";
 
 import { View, Text, FlatList } from "react-native";
 
-const ContactsList = ({ data, chosenUsersIds, setChosenUsersIds }) => {
+const SelectContactsList = ({ data, chosenUsersIds, setChosenUsersIds }) => {
   if (!data.length) {
     return (
       <View className="flex-1 justify-start items-center bg-white">
@@ -19,7 +19,7 @@ const ContactsList = ({ data, chosenUsersIds, setChosenUsersIds }) => {
       data={data}
       renderItem={({ item }) => {
         return (
-          <ContactItem
+          <SelectContactItem
             item={item}
             chosenUsersIds={chosenUsersIds}
             setChosenUsersIds={setChosenUsersIds}
@@ -31,4 +31,4 @@ const ContactsList = ({ data, chosenUsersIds, setChosenUsersIds }) => {
   );
 };
 
-export default ContactsList;
+export default SelectContactsList;

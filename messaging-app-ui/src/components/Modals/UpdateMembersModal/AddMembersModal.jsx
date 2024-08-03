@@ -2,7 +2,7 @@ import { GET_CONTACTS_BY_USER } from "../../../graphql/queries";
 import { ADD_NEW_CHAT_MEMBERS } from "../../../graphql/mutations";
 import LoadingIcon from "../../LoadingIcon";
 import SearchBar from "../../SearchBar";
-import ContactsList from "../../ContactsList";
+import SelectContactsList from "../../SelectContactsList";
 
 import { Modal, SafeAreaView, View, Text, Pressable } from "react-native";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
@@ -114,7 +114,7 @@ const AddMembersModal = ({
             <LoadingIcon />
           </View>
         ) : (
-          <ContactsList
+          <SelectContactsList
             user={user}
             data={data.data?.allContactsByUser.contacts
               .map((contact) => {

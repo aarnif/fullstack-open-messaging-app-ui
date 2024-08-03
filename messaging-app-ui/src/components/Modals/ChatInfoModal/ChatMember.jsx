@@ -2,7 +2,7 @@ import ContactCard from "../../ContactCard";
 
 import { View, Text } from "react-native";
 
-const ContactItem = ({ item, admin }) => {
+const ChatMember = ({ item, admin }) => {
   console.log("Contact item:", item);
   return (
     <View className="flex flex-row items-center py-2 px-4 rounded-lg">
@@ -14,4 +14,4 @@ const ContactItem = ({ item, admin }) => {
   );
 };
 
-export default ContactItem;
+export default ChatMember;
