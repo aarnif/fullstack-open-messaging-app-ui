@@ -106,10 +106,14 @@ const Menu = () => {
       handlePress: () => {
         console.log("Sign out!");
         setShowMenu(false);
-        setTimeout(() => {
+        setTimeout(async () => {
           navigate("/signin");
-          authStorage.removeAccessToken();
-          client.resetStore();
+          try {
+            await client.resetStore();
+            await authStorage.removeAccessToken();
+          } catch (error) {
+            console.log("Error signing out:", error.message);
+          }
         }, menuAnimationWaitTime);
       },
     },
