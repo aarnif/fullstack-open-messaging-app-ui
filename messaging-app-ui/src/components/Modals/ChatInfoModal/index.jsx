@@ -1,9 +1,10 @@
-import ContactsList from "./ContactsList";
 import { LEAVE_GROUP_CHAT } from "../../../graphql/mutations";
 import ImageViewModal from "../ImageViewModal/index.jsx";
 import EditChatModal from "../EditChatModal/index.jsx";
 import AddMembersModal from "../UpdateMembersModal/AddMembersModal.jsx";
 import RemoveMembersModal from "../UpdateMembersModal/RemoveMembersModal.jsx";
+import IndividualChatInfo from "./IndividualChatInfo.jsx";
+import GroupChatInfo from "./GroupChatInfo.jsx";
 
 import { useState } from "react";
 import {
@@ -96,7 +97,7 @@ const ChatInfoModal = ({
             </View>
 
             <View className="w-[50px] ml-4 flex-grow flex justify-center items-center">
-              {user.id === chatAdmin.id && (
+              {user.id === chatAdmin.id && chat.isGroupChat && (
                 <Pressable onPress={handlePressEditChat}>
                   <View className="w-8 h-8 rounded-full flex justify-center items-center bg-green-700 shadow-xl">
                     <MaterialCommunityIcons
@@ -110,63 +111,24 @@ const ChatInfoModal = ({
             </View>
           </View>
         </View>
-        <View className="w-full py-4 flex justify-center items-center bg-white dark:bg-slate-700">
-          <Pressable onPress={() => setShowImageViewModal(true)}>
-            <Image
-              source={{
-                uri: chat.image.thumbnail,
-              }}
-              style={{ width: 100, height: 100, borderRadius: 9999 }}
-            />
-          </Pressable>
-          <Text className="pt-4 text-xl text-slate-800 font-bold dark:text-slate-100">
-            {chat.title}
-          </Text>
-          <Text className="mx-8 text-sm text-slate-800 text-center dark:text-slate-200">
-            {!chat.description.length ? "No description" : chat.description}
-          </Text>
-        </View>
-        <View className="w-full py-2 flex justify-center items-start bg-white dark:bg-slate-700">
-          <Text className="mx-4 text-xl text-slate-800 font-bold dark:text-slate-100">
-            {`${chat.participants.length} members`}
-          </Text>
-        </View>
-        <ContactsList data={chat.participants} admin={chatAdmin} />
-        {user.id !== chatAdmin.id && (
-          <View className="w-full p-4 flex justify-center items-start bg-white dark:bg-slate-700">
-            <Pressable
-              onPress={leaveChat}
-              className="mb-8 w-full flex-grow max-h-[60px] p-2 flex justify-center items-center border-2 border-red-400 bg-red-400 rounded-xl"
-            >
-              <Text className="text-xl font-bold text-slate-200">
-                Leave Chat
-              </Text>
-            </Pressable>
-          </View>
-        )}
-        {user.id === chatAdmin.id && (
-          <>
-            <View className="w-full px-4 py-2 flex justify-center items-start bg-white dark:bg-slate-700">
-              <Pressable
-                onPress={handlePressAddMembers}
-                className="w-full flex-grow max-h-[60px] p-2 flex justify-center items-center border-2 border-green-400 bg-green-400 rounded-xl"
-              >
-                <Text className="text-xl font-bold text-slate-200">
-                  Add Members
-                </Text>
-              </Pressable>
-            </View>
-            <View className="w-full px-4 py-2 flex justify-center items-start bg-white dark:bg-slate-700">
-              <Pressable
-                onPress={handlePressRemoveMembers}
-                className="w-full flex-grow max-h-[60px] p-2 flex justify-center items-center border-2 border-red-400 bg-red-400 rounded-xl"
-              >
-                <Text className="text-xl font-bold text-slate-200">
-                  Remove Members
-                </Text>
-              </Pressable>
-            </View>
-          </>
+        {chat.isGroupChat ? (
+          <GroupChatInfo
+            user={user}
+            chat={chat}
+            chatAdmin={chatAdmin}
+            leaveChat={leaveChat}
+            handlePressAddMembers={handlePressAddMembers}
+            handlePressRemoveMembers={handlePressRemoveMembers}
+            setShowImageViewModal={setShowImageViewModal}
+          />
+        ) : (
+          <IndividualChatInfo
+            user={user}
+            chat={chat}
+            chatAdmin={chatAdmin}
+            setShowImageViewModal={setShowImageViewModal}
+            setShowChatInfoModal={setShowChatInfoModal}
+          />
         )}
       </SafeAreaView>
       {showImageViewModal && (
