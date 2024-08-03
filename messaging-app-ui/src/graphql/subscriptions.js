@@ -75,6 +75,12 @@ export const CONTACTS_ADDED = gql`
   }
 `;
 
+export const CONTACT_BLOCKED = gql`
+  subscription ContactBlocked {
+    contactBlocked
+  }
+`;
+
 export const CHAT_EDITED = gql`
   subscription GroupChatUpdated {
     groupChatUpdated {

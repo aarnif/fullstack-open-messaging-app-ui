@@ -7,10 +7,15 @@ import {
   PARTICIPANTS_REMOVED_FROM_GROUP_CHAT,
   LEFT_GROUP_CHAT,
   CONTACTS_ADDED,
+  CONTACT_BLOCKED,
   CHAT_EDITED,
 } from "../graphql/subscriptions";
 
-import { GET_CHATS_BY_USER, GET_CONTACTS_BY_USER } from "../graphql/queries";
+import {
+  GET_CHATS_BY_USER,
+  GET_CONTACTS_BY_USER,
+  GET_CURRENT_USER,
+} from "../graphql/queries";
 
 import { useApolloClient, useSubscription } from "@apollo/client";
 import { EDIT_CHAT } from "../graphql/mutations";
@@ -329,6 +334,33 @@ const useSubscriptions = (user) => {
             allContactsByUser: {
               ...allContactsByUser,
               contacts: allContactsByUser.contacts.concat(addedContacts),
+            },
+          };
+        }
+      );
+    },
+  });
+
+  useSubscription(CONTACT_BLOCKED, {
+    onData: ({ data }) => {
+      console.log("Use CONTACT_BLOCKED-subscription:");
+      const blockedContact = data.data.contactBlocked;
+      console.log("Blocked contact:", blockedContact);
+      client.cache.updateQuery(
+        {
+          query: GET_CURRENT_USER,
+          variables: { searchByName: "" },
+        },
+        ({ me }) => {
+          console.log("Current user:", me);
+          return {
+            me: {
+              ...me,
+              blockedContacts: me.blockedContacts.includes(blockedContact)
+                ? me.blockedContacts.filter(
+                    (contact) => contact.id === blockedContact
+                  )
+                : me.blockedContacts.concat(blockedContact),
             },
           };
         }
