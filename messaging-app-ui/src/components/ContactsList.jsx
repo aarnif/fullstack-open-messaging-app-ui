@@ -2,10 +2,10 @@ import ContactItem from "./ContactItem";
 
 import { View, Text, FlatList } from "react-native";
 
-const ContactsList = ({ user, data, chosenUsersIds, setChosenUsersIds }) => {
+const ContactsList = ({ data, chosenUsersIds, setChosenUsersIds }) => {
   if (!data.length) {
     return (
-      <View className="flex-1 justify-start items-center bg-white dark:bg-slate-700">
+      <View className="flex-1 justify-start items-center bg-white">
         <Text className="mt-8 text-2xl font-bold text-slate-200">
           No contacts found
         </Text>

@@ -2,7 +2,7 @@ import { GET_CONTACTS_BY_USER } from "../../../graphql/queries";
 import { REMOVE_CHAT_MEMBERS } from "../../../graphql/mutations";
 import LoadingIcon from "../../LoadingIcon";
 import SearchBar from "../../SearchBar";
-import ContactsList from "./ContactsList";
+import ContactsList from "../../ContactsList";
 
 import { Modal, SafeAreaView, View, Text, Pressable } from "react-native";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";

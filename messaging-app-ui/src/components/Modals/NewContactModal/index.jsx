@@ -2,7 +2,7 @@ import { GET_ALL_CONTACTS_EXCEPT_BY_USER } from "../../../graphql/queries";
 import { ADD_CONTACTS } from "../../../graphql/mutations";
 import LoadingIcon from "../../LoadingIcon";
 import SearchBar from "../../SearchBar";
-import ContactsList from "./ContactsList";
+import ContactsList from "../../ContactsList";
 
 import {
   Modal,
