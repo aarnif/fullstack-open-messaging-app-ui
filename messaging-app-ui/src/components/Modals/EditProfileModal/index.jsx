@@ -4,42 +4,15 @@ import { EDIT_PROFILE } from "../../../graphql/mutations";
 import FormikFormField from "../../FormikFormField";
 import UploadImageWindow from "../../UploadImageWindow";
 import LoadingIcon from "../../LoadingIcon";
+import ChangeImage from "../../ChangeImage";
 
 import { useState } from "react";
 import { useMutation } from "@apollo/client";
 
-import {
-  Modal,
-  SafeAreaView,
-  Pressable,
-  View,
-  Text,
-  Image,
-} from "react-native";
+import { Modal, SafeAreaView, Pressable, View, Text } from "react-native";
 import { Formik, useField } from "formik";
 
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-
-const UploadProfilePicture = ({ handlePressUploadPicture, image }) => {
-  return (
-    <Pressable className="mb-[20px]" onPress={handlePressUploadPicture}>
-      <Text className="text-md font-medium text-slate-700 dark:text-slate-200">
-        PROFILE PICTURE:
-      </Text>
-      <View className="w-full p-2 flex justify-center items-center rounded-lg bg-slate-200 dark:bg-slate-600">
-        <Image
-          source={{
-            uri: image,
-          }}
-          style={{ width: 80, height: 80, borderRadius: 9999 }}
-        />
-        <Text className="my-2 text-md font-semibold text-slate-700 dark:text-slate-100">
-          Change profile picture
-        </Text>
-      </View>
-    </Pressable>
-  );
-};
 
 const EditProfileForm = ({
   goBack,
@@ -76,9 +49,10 @@ const EditProfileForm = ({
         </View>
       </View>
       <View className="w-full p-8 flex-grow flex flex-col bg-white dark:bg-slate-700">
-        <UploadProfilePicture
-          handlePressUploadPicture={handlePressUploadPicture}
-          image={image}
+        <ChangeImage
+          currentImage={image}
+          imageType={"profile"}
+          onPress={handlePressUploadPicture}
         />
 
         <FormikFormField
