@@ -188,6 +188,7 @@ const EditProfileModal = ({
             chooseImageFromCamera={chooseImageFromCamera}
             chooseImageFromFiles={chooseImageFromFiles}
             handleClose={handleCloseUploadPicture}
+            showUploadPictureModal={showUploadPictureModal}
           />
         )}
       </SafeAreaView>

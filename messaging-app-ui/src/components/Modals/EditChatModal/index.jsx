@@ -185,6 +185,7 @@ const EditChatModal = ({ chat, showEditChat, setShowEditChat }) => {
             chooseImageFromCamera={chooseImageFromCamera}
             chooseImageFromFiles={chooseImageFromFiles}
             handleClose={handleCloseUploadPicture}
+            setShowUploadPictureModal={setShowUploadPictureModal}
           />
         )}
       </SafeAreaView>
