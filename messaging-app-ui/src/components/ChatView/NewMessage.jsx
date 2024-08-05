@@ -2,6 +2,7 @@ import useSubscriptions from "../../hooks/useSubscriptions";
 import useChangeImage from "../../hooks/useChangeImage";
 import imageService from "../../services/imageService";
 import UploadImageWindow from "../UploadImageWindow";
+import LoadingIcon from "../LoadingIcon";
 import useNotify from "../../hooks/useNotify";
 import Notify from "../Notify";
 
@@ -9,6 +10,7 @@ import { useColorScheme } from "nativewind";
 import { useState } from "react";
 import {
   View,
+  Text,
   KeyboardAvoidingView,
   TextInput,
   Platform,
@@ -56,6 +58,7 @@ const MessageImage = ({ source, reset }) => {
 const NewMessage = ({ chatId, user }) => {
   const { colorScheme } = useColorScheme();
   const [message, setMessage] = useState("");
+  const [isUploading, setIsUploading] = useState(false);
   const [showUploadPictureModal, setShowUploadPictureModal] = useState(false);
   const notify = useNotify();
 
@@ -95,6 +98,8 @@ const NewMessage = ({ chatId, user }) => {
       return;
     }
 
+    setIsUploading(true);
+
     try {
       if (base64Image) {
         console.log("Uploading picture...");
@@ -112,6 +117,7 @@ const NewMessage = ({ chatId, user }) => {
       });
       setMessage("");
       reset();
+      setIsUploading(false);
       setShowUploadPictureModal(false);
     } catch (error) {
       console.log("Error creating new message:", error);
@@ -120,48 +126,67 @@ const NewMessage = ({ chatId, user }) => {
   };
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 20 : 0}
-    >
-      <Notify notify={notify} />
-      {image && <MessageImage source={image} reset={reset} />}
+    <>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 20 : 0}
+      >
+        <Notify notify={notify} />
+        {image && <MessageImage source={image} reset={reset} />}
 
-      {showUploadPictureModal && (
-        <UploadImageWindow
-          chooseImageFromCamera={chooseImageFromCamera}
-          chooseImageFromFiles={chooseImageFromFiles}
-          handleClose={handleCloseUploadPicture}
-        />
-      )}
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View className="w-full flex-row h-[50px] p-2 bg-slate-200 text-slate-800 dark:bg-slate-600">
-          <View className="flex-grow">
-            <TextInput
-              className="w-full p-2 bg-slate-300 rounded-xl dark:bg-slate-500 dark:text-slate-100"
-              placeholder={"New Message..."}
-              placeholderTextColor={
-                colorScheme === "dark" ? "white" : "#475569"
-              }
-              value={message}
-              onChangeText={(text) => setMessage(text)}
-            />
-          </View>
+        {showUploadPictureModal && (
+          <UploadImageWindow
+            chooseImageFromCamera={chooseImageFromCamera}
+            chooseImageFromFiles={chooseImageFromFiles}
+            handleClose={handleCloseUploadPicture}
+          />
+        )}
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View className="w-full flex-row h-[50px] p-2 bg-slate-200 text-slate-800 dark:bg-slate-600">
+            <View className="flex-grow">
+              <TextInput
+                className="w-full p-2 bg-slate-300 rounded-xl dark:bg-slate-500 dark:text-slate-100"
+                placeholder={"New Message..."}
+                placeholderTextColor={
+                  colorScheme === "dark" ? "white" : "#475569"
+                }
+                value={message}
+                onChangeText={(text) => setMessage(text)}
+              />
+            </View>
 
-          <View className="mx-2 flex justify-center items-center">
-            <Pressable onPress={handleAddImage}>
-              <MaterialCommunityIcons name="camera" size={26} color="#16a34a" />
-            </Pressable>
-          </View>
+            <View className="mx-2 flex justify-center items-center">
+              <Pressable onPress={handleAddImage}>
+                <MaterialCommunityIcons
+                  name="camera"
+                  size={26}
+                  color="#16a34a"
+                />
+              </Pressable>
+            </View>
 
-          <View className="mx-2 flex justify-center items-center">
-            <Pressable onPress={handleSendMessage}>
-              <MaterialCommunityIcons name="send" size={26} color="#16a34a" />
-            </Pressable>
+            <View className="mx-2 flex justify-center items-center">
+              <Pressable onPress={handleSendMessage}>
+                <MaterialCommunityIcons name="send" size={26} color="#16a34a" />
+              </Pressable>
+            </View>
           </View>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
+      {isUploading && (
+        <View
+          style={{
+            backgroundColor: "rgba(0,0,0,0.5)",
+          }}
+          className="absolute w-full h-full flex justify-center items-center"
+        >
+          <LoadingIcon />
+          <Text className="text-white text-lg font-semibold">
+            Sending message
+          </Text>
         </View>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+      )}
+    </>
   );
 };
 
