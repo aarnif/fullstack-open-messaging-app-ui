@@ -11,7 +11,7 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 const iconSize = 32;
 const iconColor = "white";
-const menuAnimationWaitTime = 900; // Swich routes after menu animation finishes, except when signing out
+const menuAnimationWaitTime = 900; // Swich routes after menu animation finishes
 
 const Menu = () => {
   const authStorage = useAuthStorage();
