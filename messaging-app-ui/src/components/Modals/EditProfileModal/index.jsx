@@ -161,9 +161,9 @@ const EditProfileModal = ({
 
     try {
       let result;
+      setIsUploading(true);
 
       if (base64Image) {
-        setIsUploading(true);
         console.log("Uploading profile picture...");
         result = await imageService.uploadImage(user.id, base64Image);
         console.log("Result:", result);
@@ -175,7 +175,10 @@ const EditProfileModal = ({
             thumbnail: result.data.thumb.url,
             original: result.data.image.url,
           }
-        : user.image;
+        : {
+            thumbnail: user.image.thumbnail,
+            original: user.image.original,
+          };
       await editProfile({
         variables: {
           name,
