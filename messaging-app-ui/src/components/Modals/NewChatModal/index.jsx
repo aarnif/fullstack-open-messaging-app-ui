@@ -6,7 +6,7 @@ import { CREATE_CHAT } from "../../../graphql/mutations";
 import LoadingIcon from "../../LoadingIcon";
 import Header from "./Header";
 import SearchBar from "../../SearchBar";
-import ContactsList from "./ContactsList";
+import SelectContactsList from "../../SelectContactsList";
 
 import Notify from "../../Notify";
 
@@ -143,12 +143,11 @@ const NewChatModal = ({
             <LoadingIcon />
           </View>
         ) : (
-          <ContactsList
+          <SelectContactsList
             user={user}
             data={res1.data?.allContactsByUser.contacts}
             chosenUsersIds={chosenUsersIds}
             setChosenUsersIds={setChosenUsersIds}
-            setShowNewChatModal={setShowNewChatModal}
           />
         )}
 
