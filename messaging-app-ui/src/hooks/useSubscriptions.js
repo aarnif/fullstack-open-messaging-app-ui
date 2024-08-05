@@ -318,6 +318,8 @@ const useSubscriptions = (user) => {
     },
   });
 
+  // When using this hook Apollo-client throws a console JSON Parse erros,
+  // fix this error later.
   useSubscription(CONTACTS_ADDED, {
     onData: ({ data }) => {
       console.log("Use CONTACTS_ADDED-subscription:");
