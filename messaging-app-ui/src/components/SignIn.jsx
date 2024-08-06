@@ -1,12 +1,14 @@
-import useSignIn from "../hooks/useSignIn";
 import Notify from "./Notify";
 import Header from "./Header";
+import useAuthStorage from "../hooks/useAuthStorage";
+import { LOGIN } from "../graphql/mutations";
 
 import { Pressable, View, Text } from "react-native";
 import { Formik, useField } from "formik";
 import FormikFormField from "./FormikFormField";
 import * as yup from "yup";
 import { useNavigate } from "react-router-native";
+import { useApolloClient, useMutation } from "@apollo/client";
 
 const initialValues = {
   username: "",
@@ -86,8 +88,24 @@ export const SignInContainer = ({ onSubmit, notify }) => {
 };
 
 const SignIn = ({ notify }) => {
+  const client = useApolloClient();
+  const authStorage = useAuthStorage();
   const navigate = useNavigate();
-  const [signIn, result] = useSignIn();
+
+  const [mutate] = useMutation(LOGIN, {
+    onError: (error) => {
+      console.log(error.graphQLErrors[0].message);
+      notify.show({ content: error.graphQLErrors[0].message, isError: true });
+    },
+  });
+
+  const signIn = async (token) => {
+    await authStorage.setAccessToken(token);
+    await client.resetStore();
+    navigate("/");
+    values.username = "";
+    values.password = "";
+  };
 
   const onSubmit = async (values) => {
     const { username, password } = values;
@@ -95,17 +113,12 @@ const SignIn = ({ notify }) => {
     console.log("Username:", username);
     console.log("Password:", password);
 
-    try {
-      const { data } = await signIn({
-        username: username.toLowerCase(),
-        password,
-      });
-      navigate("/");
-      values.username = "";
-      values.password = "";
-    } catch (error) {
-      console.log("Error signing in:", error);
-      notify.show({ content: result.error.message, isError: true });
+    const { data } = await mutate({
+      variables: { username: username.toLowerCase(), password },
+    });
+
+    if (data) {
+      await signIn(data.login.value);
     }
   };
 
