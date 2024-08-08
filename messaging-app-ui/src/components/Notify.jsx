@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { Modal, SafeAreaView, View, Text } from "react-native";
 
 const Notify = ({ notify }) => {
   console.log("Notify:", notify);
@@ -10,19 +10,33 @@ const Notify = ({ notify }) => {
   const { message, show } = notify;
 
   return (
-    <View className="w-full pt-4 px-8 flex justify-center items-center">
-      <View
-        style={{ backgroundColor: message.isError ? "#f87171" : "#4ade80" }}
-        className="w-full p-4 rounded-xl flex justify-center items-center"
-      >
-        <Text
-          style={{ color: message.isError ? "#dc2626" : "#16a34a" }}
-          className="text-md"
+    <Modal
+      visible={message ? true : false}
+      animationType="slide"
+      transparent={true}
+    >
+      <SafeAreaView style={{ flex: 1 }}>
+        <View
+          style={{
+            height: "10%",
+            marginTop: "auto",
+            backgroundColor: message.isError
+              ? "rgba(220, 38, 38, 0.5)"
+              : "rgba(22, 163, 74, 0.5)",
+          }}
+          className="w-full flex justify-center items-center"
         >
-          {message.content}
-        </Text>
-      </View>
-    </View>
+          <View className="w-full p-4 rounded-xl flex justify-center items-center">
+            <Text
+              style={{ color: message.isError ? "#dc2626" : "#16a34a" }}
+              className="text-2xl font-bold"
+            >
+              {message.content}
+            </Text>
+          </View>
+        </View>
+      </SafeAreaView>
+    </Modal>
   );
 };
 
