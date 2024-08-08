@@ -11,6 +11,7 @@ import LoadingIcon from "./LoadingIcon";
 import NewChatModal from "./Modals/NewChatModal";
 import NewContactModal from "./Modals/NewContactModal";
 import EditProfileModal from "./Modals/EditProfileModal";
+import Notify from "./Notify";
 
 import useAuthStorage from "../hooks/useAuthStorage";
 import useThemeStorage from "../hooks/useThemeStorage";
@@ -165,6 +166,7 @@ const Main = () => {
           />
         )}
       </View>
+      <Notify notify={notify} />
     </SafeAreaView>
   );
 };

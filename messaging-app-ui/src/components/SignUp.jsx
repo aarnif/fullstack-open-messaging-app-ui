@@ -1,4 +1,3 @@
-import Notify from "./Notify";
 import Header from "./Header";
 
 import { Pressable, View, Text } from "react-native";
@@ -89,10 +88,9 @@ const SignUpForm = ({ onSubmit }) => {
   );
 };
 
-export const SignUpContainer = ({ onSubmit, notify }) => {
+export const SignUpContainer = ({ onSubmit }) => {
   return (
     <View className="w-full flex-grow flex justify-center items-center bg-white dark:bg-slate-700">
-      <Notify notify={notify} />
       <Formik
         initialValues={initialValues}
         onSubmit={onSubmit}
@@ -130,7 +128,10 @@ const SignUp = ({ notify }) => {
         values.username = "";
         values.password = "";
         values.confirmPassword = "";
-        notify.show({ content: "User created successfully!", isError: false });
+        notify.show({
+          content: "New user created successfully!",
+          isError: false,
+        });
       }
     } catch (error) {
       console.log("Error creating user:", error);
@@ -141,7 +142,7 @@ const SignUp = ({ notify }) => {
   return (
     <>
       <Header />
-      <SignUpContainer onSubmit={onSubmit} notify={notify} />
+      <SignUpContainer onSubmit={onSubmit} />
     </>
   );
 };

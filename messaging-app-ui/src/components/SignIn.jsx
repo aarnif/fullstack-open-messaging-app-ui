@@ -1,4 +1,3 @@
-import Notify from "./Notify";
 import Header from "./Header";
 import useAuthStorage from "../hooks/useAuthStorage";
 import { LOGIN } from "../graphql/mutations";
@@ -72,10 +71,9 @@ const SignInForm = ({ onSubmit }) => {
   );
 };
 
-export const SignInContainer = ({ onSubmit, notify }) => {
+export const SignInContainer = ({ onSubmit }) => {
   return (
     <View className="w-full flex-grow flex justify-center items-center bg-white dark:bg-slate-700">
-      <Notify notify={notify} />
       <Formik
         initialValues={initialValues}
         onSubmit={onSubmit}
@@ -125,7 +123,7 @@ const SignIn = ({ notify }) => {
   return (
     <>
       <Header />
-      <SignInContainer onSubmit={onSubmit} notify={notify} />
+      <SignInContainer onSubmit={onSubmit} />
     </>
   );
 };
