@@ -81,6 +81,12 @@ export const CONTACT_BLOCKED = gql`
   }
 `;
 
+export const CONTACT_REMOVED = gql`
+  subscription ContactRemoved {
+    contactRemoved
+  }
+`;
+
 export const CHAT_EDITED = gql`
   subscription GroupChatUpdated {
     groupChatUpdated {
