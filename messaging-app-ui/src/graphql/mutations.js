@@ -118,6 +118,12 @@ export const ADD_CONTACTS = gql`
   ${USER_DETAILS}
 `;
 
+export const REMOVE_CONTACT = gql`
+  mutation RemoveContact($contactId: ID!) {
+    removeContact(contactId: $contactId)
+  }
+`;
+
 export const EDIT_PROFILE = gql`
   mutation EditProfile($name: String, $about: String, $input: ImageInput) {
     editProfile(name: $name, about: $about, input: $input) {
