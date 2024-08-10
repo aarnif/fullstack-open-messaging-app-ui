@@ -1,16 +1,16 @@
 import { useState } from "react";
 
 const useShowNotifyMessage = () => {
-  const [message, setMessage] = useState(null);
+  const [content, setContent] = useState(null);
 
   const show = (message) => {
-    setMessage(message);
+    setContent(message);
     setTimeout(() => {
-      setMessage(null);
+      setContent(null);
     }, 3000);
   };
 
-  return { message, show };
+  return { content, show };
 };
 
 export default useShowNotifyMessage;
