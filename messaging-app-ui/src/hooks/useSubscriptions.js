@@ -8,6 +8,7 @@ import {
   LEFT_GROUP_CHAT,
   CONTACTS_ADDED,
   CONTACT_BLOCKED,
+  CONTACT_REMOVED,
   CHAT_EDITED,
 } from "../graphql/subscriptions";
 
@@ -336,6 +337,31 @@ const useSubscriptions = (user) => {
             allContactsByUser: {
               ...allContactsByUser,
               contacts: allContactsByUser.contacts.concat(addedContacts),
+            },
+          };
+        }
+      );
+    },
+  });
+
+  useSubscription(CONTACT_REMOVED, {
+    onData: ({ data }) => {
+      console.log("Use CONTACT_REMOVED-subscription:");
+      const removedContact = data.data.contactRemoved;
+      console.log("Removed contact:", removedContact);
+      client.cache.updateQuery(
+        {
+          query: GET_CONTACTS_BY_USER,
+          variables: { searchByName: "" },
+        },
+        ({ allContactsByUser }) => {
+          console.log("All contacts by user:", allContactsByUser);
+          return {
+            allContactsByUser: {
+              ...allContactsByUser,
+              contacts: allContactsByUser.contacts.filter(
+                (contact) => contact.id !== removedContact
+              ),
             },
           };
         }

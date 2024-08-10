@@ -1,4 +1,8 @@
-import { CREATE_CHAT, BLOCK_OR_UNBLOCK_CONTACT } from "../../graphql/mutations";
+import {
+  CREATE_CHAT,
+  BLOCK_OR_UNBLOCK_CONTACT,
+  REMOVE_CONTACT,
+} from "../../graphql/mutations";
 import {
   GET_USER_BY_ID,
   GET_CHAT_BY_PARTICIPANTS,
@@ -62,6 +66,13 @@ const ContactView = ({ user }) => {
     },
   });
 
+  const [removeContact] = useMutation(REMOVE_CONTACT, {
+    onError: (error) => {
+      console.log("Error removing contact mutation:");
+      console.log(error.graphQLErrors[0].message);
+    },
+  });
+
   const haveContactBlockedYou = contact?.blockedContacts.includes(user.id);
 
   const goBack = () => {
@@ -120,6 +131,22 @@ const ContactView = ({ user }) => {
       setIsBlocked(isContactBlocked);
     } catch (error) {
       console.log("Error blocking contact:", error);
+      console.log(error.message);
+    }
+  };
+
+  const handleRemoveContact = () => {
+    console.log("Press remove contact button!");
+
+    try {
+      const { data, error } = removeContact({
+        variables: {
+          contactId: contact.id,
+        },
+      });
+      navigate(`/contacts`);
+    } catch (error) {
+      console.log("Error removing contact:", error);
       console.log(error.message);
     }
   };
@@ -206,11 +233,19 @@ const ContactView = ({ user }) => {
         ) : (
           <Pressable
             onPress={handleBlockContact}
-            className="w-full flex-grow max-h-[60px] mt-2 p-2 flex justify-center items-center border-2 border-red-400 bg-red-400 rounded-xl"
+            className="w-full flex-grow max-h-[60px] mt-2 p-2 flex justify-center items-center border-2 border-yellow-400 bg-yellow-400 rounded-xl"
           >
             <Text className="text-xl font-bold text-slate-200">Block</Text>
           </Pressable>
         )}
+        <Pressable
+          onPress={handleRemoveContact}
+          className="w-full flex-grow max-h-[60px] mt-2 p-2 flex justify-center items-center border-2 border-red-400 bg-red-400 rounded-xl"
+        >
+          <Text className="text-xl font-bold text-slate-200">
+            Remove Contact
+          </Text>
+        </Pressable>
       </View>
       {showImageViewModal && (
         <ImageViewModal
