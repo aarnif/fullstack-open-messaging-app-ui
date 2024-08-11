@@ -8,7 +8,9 @@ const ChatMember = ({ item, admin }) => {
     <View className="flex flex-row items-center py-2 px-4 rounded-lg">
       <ContactCard item={item} />
       {admin.id === item.id && (
-        <Text className="text-md text-slate-700 font-semibold">Admin</Text>
+        <Text className="text-md text-slate-700 font-semibold dark:text-slate-100">
+          Admin
+        </Text>
       )}
     </View>
   );
