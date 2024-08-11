@@ -1,17 +1,20 @@
+import useNotifyMessage from "../hooks/useNotifyMessage";
 import { Modal, SafeAreaView, View, Text } from "react-native";
 
-const Notify = ({ notify }) => {
-  console.log("Notify:", notify);
+const NotifyMessage = () => {
+  const notifyMessage = useNotifyMessage();
 
-  if (!notify || !notify.message) {
+  console.log("Notify:", notifyMessage);
+
+  if (!notifyMessage || !notifyMessage.content) {
     return null;
   }
 
-  const { message, show } = notify;
+  const { content, show } = notifyMessage;
 
   return (
     <Modal
-      visible={message ? true : false}
+      visible={content ? true : false}
       animationType="slide"
       transparent={true}
     >
@@ -20,7 +23,7 @@ const Notify = ({ notify }) => {
           style={{
             height: "10%",
             marginTop: "auto",
-            backgroundColor: message.isError
+            backgroundColor: content.isError
               ? "rgba(220, 38, 38, 0.5)"
               : "rgba(22, 163, 74, 0.5)",
           }}
@@ -28,10 +31,10 @@ const Notify = ({ notify }) => {
         >
           <View className="w-full p-4 rounded-xl flex justify-center items-center">
             <Text
-              style={{ color: message.isError ? "#dc2626" : "#16a34a" }}
+              style={{ color: content.isError ? "#dc2626" : "#16a34a" }}
               className="text-2xl font-bold"
             >
-              {message.content}
+              {content.content}
             </Text>
           </View>
         </View>
@@ -40,4 +43,4 @@ const Notify = ({ notify }) => {
   );
 };
 
-export default Notify;
+export default NotifyMessage;

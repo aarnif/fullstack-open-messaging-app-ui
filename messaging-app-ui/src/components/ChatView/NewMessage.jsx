@@ -3,8 +3,7 @@ import useChangeImage from "../../hooks/useChangeImage";
 import imageService from "../../services/imageService";
 import UploadImageWindow from "../UploadImageWindow";
 import LoadingIcon from "../LoadingIcon";
-import useNotify from "../../hooks/useNotify";
-import Notify from "../Notify";
+import useNotifyMessage from "../../hooks/useNotifyMessage";
 
 import { useColorScheme } from "nativewind";
 import { useState } from "react";
@@ -60,7 +59,7 @@ const NewMessage = ({ chatId, user }) => {
   const [message, setMessage] = useState("");
   const [isUploading, setIsUploading] = useState(false);
   const [showUploadPictureModal, setShowUploadPictureModal] = useState(false);
-  const notify = useNotify();
+  const notifyMessage = useNotifyMessage();
 
   const handleCloseUploadPicture = () => {
     console.log("Close edit profile picture window!");
@@ -80,7 +79,10 @@ const NewMessage = ({ chatId, user }) => {
   const [mutate] = useMutation(ADD_MESSAGE_TO_CHAT, {
     onError: (error) => {
       console.log(error.graphQLErrors[0].message);
-      notify.show({ content: error.graphQLErrors[0].message, isError: true });
+      notifyMessage.show({
+        content: error.graphQLErrors[0].message,
+        isError: true,
+      });
     },
     refetchQueries: [{ query: GET_CHAT_BY_ID, variables: { chatId: chatId } }],
   });
@@ -131,7 +133,6 @@ const NewMessage = ({ chatId, user }) => {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         keyboardVerticalOffset={Platform.OS === "ios" ? 20 : 0}
       >
-        <Notify notify={notify} />
         {image && <MessageImage source={image} reset={reset} />}
 
         {showUploadPictureModal && (

@@ -8,6 +8,7 @@ import FormikFormField from "./FormikFormField";
 import * as yup from "yup";
 import { useNavigate } from "react-router-native";
 import { useApolloClient, useMutation } from "@apollo/client";
+import useNotifyMessage from "../hooks/useNotifyMessage";
 
 const initialValues = {
   username: "",
@@ -85,15 +86,19 @@ export const SignInContainer = ({ onSubmit }) => {
   );
 };
 
-const SignIn = ({ notify }) => {
+const SignIn = () => {
   const client = useApolloClient();
   const authStorage = useAuthStorage();
+  const notifyMessage = useNotifyMessage();
   const navigate = useNavigate();
 
   const [mutate] = useMutation(LOGIN, {
     onError: (error) => {
       console.log(error.graphQLErrors[0].message);
-      notify.show({ content: error.graphQLErrors[0].message, isError: true });
+      notifyMessage.show({
+        content: error.graphQLErrors[0].message,
+        isError: true,
+      });
     },
   });
 

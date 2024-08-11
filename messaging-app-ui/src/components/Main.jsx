@@ -1,3 +1,9 @@
+import NotifyMessageContext from "../contexts/NotifyMessageContext";
+
+import useAuthStorage from "../hooks/useAuthStorage";
+import useThemeStorage from "../hooks/useThemeStorage";
+import useShowNotifyMessage from "../hooks/useShowNotifyMessage";
+
 import Header from "./Header";
 import Chats from "./Chats/index";
 import ChatView from "./ChatView/index";
@@ -11,11 +17,7 @@ import LoadingIcon from "./LoadingIcon";
 import NewChatModal from "./Modals/NewChatModal";
 import NewContactModal from "./Modals/NewContactModal";
 import EditProfileModal from "./Modals/EditProfileModal";
-import Notify from "./Notify";
-
-import useAuthStorage from "../hooks/useAuthStorage";
-import useThemeStorage from "../hooks/useThemeStorage";
-import useNotify from "../hooks/useNotify";
+import NotifyMessage from "./NotifyMessage";
 
 import { useColorScheme } from "nativewind";
 import { StatusBar } from "expo-status-bar";
@@ -34,7 +36,7 @@ const Main = () => {
 
   const authStorage = useAuthStorage();
   const themeStorage = useThemeStorage();
-  const notify = useNotify();
+  const showNotifyMessage = useShowNotifyMessage();
 
   const { data, error, loading } = useQuery(GET_CURRENT_USER);
 
@@ -97,77 +99,79 @@ const Main = () => {
   console.log("Current user: ", data?.me);
 
   return (
-    <SafeAreaView style={{ flex: 1 }} className="bg-green-600">
-      <View style={{ flex: 1 }} className="bg-white dark:bg-slate-700">
-        <StatusBar style="light" />
-        <Routes>
-          <Route path="/" element={<Navigate to="/chats" replace />} />
-          <Route
-            path="/chats"
-            element={
-              data?.me ? (
-                <Chats
+    <NotifyMessageContext.Provider value={showNotifyMessage}>
+      <SafeAreaView style={{ flex: 1 }} className="bg-green-600">
+        <View style={{ flex: 1 }} className="bg-white dark:bg-slate-700">
+          <StatusBar style="light" />
+          <Routes>
+            <Route path="/" element={<Navigate to="/chats" replace />} />
+            <Route
+              path="/chats"
+              element={
+                data?.me ? (
+                  <Chats
+                    user={data?.me}
+                    handleNewChatPress={handleNewChatPress}
+                  />
+                ) : (
+                  <SignIn />
+                )
+              }
+            />
+            <Route path="/chats/:id" element={<ChatView user={data?.me} />} />
+            <Route
+              path="/contacts/:id"
+              element={<ContactView user={data?.me} />}
+            />
+            <Route path="/signin" element={<SignIn />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route
+              path="/contacts"
+              element={
+                <Contacts
                   user={data?.me}
-                  handleNewChatPress={handleNewChatPress}
+                  handleNewContactPress={handleNewContactPress}
                 />
-              ) : (
-                <SignIn notify={notify} />
-              )
-            }
-          />
-          <Route path="/chats/:id" element={<ChatView user={data?.me} />} />
-          <Route
-            path="/contacts/:id"
-            element={<ContactView user={data?.me} />}
-          />
-          <Route path="/signin" element={<SignIn notify={notify} />} />
-          <Route path="/signup" element={<SignUp notify={notify} />} />
-          <Route
-            path="/contacts"
-            element={
-              <Contacts
-                user={data?.me}
-                handleNewContactPress={handleNewContactPress}
-              />
-            }
-          />
-          <Route
-            path="/profile"
-            element={
-              <Profile
-                user={data?.me}
-                handleEditProfilePress={handleEditProfilePress}
-              />
-            }
-          />
-          <Route path="/settings" element={<Settings user={data?.me} />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-        {showNewChatModal && (
-          <NewChatModal
-            user={data?.me}
-            notify={notify}
-            showNewChatModal={showNewChatModal}
-            setShowNewChatModal={setShowNewChatModal}
-          />
-        )}
-        {showNewContactModal && (
-          <NewContactModal
-            user={data?.me}
-            showNewContactModal={showNewContactModal}
-            setShowNewContactModal={setShowNewContactModal}
-          />
-        )}
-        {showEditProfileModal && (
-          <EditProfileModal
-            user={data?.me}
-            showEditProfileModal={showEditProfileModal}
-            setShowEditProfileModal={setShowEditProfileModal}
-          />
-        )}
-      </View>
-      <Notify notify={notify} />
-    </SafeAreaView>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <Profile
+                  user={data?.me}
+                  handleEditProfilePress={handleEditProfilePress}
+                />
+              }
+            />
+            <Route path="/settings" element={<Settings user={data?.me} />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+          {showNewChatModal && (
+            <NewChatModal
+              user={data?.me}
+              notify={showNotifyMessage}
+              showNewChatModal={showNewChatModal}
+              setShowNewChatModal={setShowNewChatModal}
+            />
+          )}
+          {showNewContactModal && (
+            <NewContactModal
+              user={data?.me}
+              showNewContactModal={showNewContactModal}
+              setShowNewContactModal={setShowNewContactModal}
+            />
+          )}
+          {showEditProfileModal && (
+            <EditProfileModal
+              user={data?.me}
+              showEditProfileModal={showEditProfileModal}
+              setShowEditProfileModal={setShowEditProfileModal}
+            />
+          )}
+        </View>
+        <NotifyMessage notify={showNotifyMessage} />
+      </SafeAreaView>
+    </NotifyMessageContext.Provider>
   );
 };
 

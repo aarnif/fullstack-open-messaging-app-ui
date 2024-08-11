@@ -2,6 +2,7 @@ import MenuButton from "./MenuButton";
 import MenuItems from "./MenuItems";
 import useAuthStorage from "../../hooks/useAuthStorage";
 import useMenuAnimation from "../../hooks/useMenuAnimation";
+import useNotifyMessage from "../../hooks/useNotifyMessage";
 
 import { useApolloClient } from "@apollo/client";
 import { useNavigate } from "react-router-native";
@@ -15,6 +16,7 @@ const menuAnimationWaitTime = 900; // Swich routes after menu animation finishes
 
 const Menu = () => {
   const authStorage = useAuthStorage();
+  const notifyMessage = useNotifyMessage();
   const navigate = useNavigate();
   const client = useApolloClient();
 
@@ -108,12 +110,12 @@ const Menu = () => {
         setShowMenu(false);
         setTimeout(async () => {
           navigate("/signin");
-          try {
-            await client.resetStore();
-            await authStorage.removeAccessToken();
-          } catch (error) {
-            console.log("Error signing out:", error.message);
-          }
+          notifyMessage.show({
+            content: "You have been signed out.",
+            isError: false,
+          });
+          await client.resetStore();
+          await authStorage.removeAccessToken();
         }, menuAnimationWaitTime);
       },
     },

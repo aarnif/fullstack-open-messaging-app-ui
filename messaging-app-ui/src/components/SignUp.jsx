@@ -1,4 +1,5 @@
 import Header from "./Header";
+import useNotifyMessage from "../hooks/useNotifyMessage";
 
 import { Pressable, View, Text } from "react-native";
 import { Formik, useField } from "formik";
@@ -102,11 +103,15 @@ export const SignUpContainer = ({ onSubmit }) => {
   );
 };
 
-const SignUp = ({ notify }) => {
+const SignUp = () => {
+  const notifyMessage = useNotifyMessage();
   const [mutate] = useMutation(CREATE_USER, {
     onError: (error) => {
       console.log(error.graphQLErrors[0].message);
-      notify.show({ content: error.graphQLErrors[0].message, isError: true });
+      notifyMessage.show({
+        content: error.graphQLErrors[0].message,
+        isError: true,
+      });
     },
   });
   const navigate = useNavigate();
@@ -128,7 +133,7 @@ const SignUp = ({ notify }) => {
         values.username = "";
         values.password = "";
         values.confirmPassword = "";
-        notify.show({
+        notifyMessage.show({
           content: "New user created successfully!",
           isError: false,
         });

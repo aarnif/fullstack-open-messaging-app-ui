@@ -1,3 +1,4 @@
+import useNotifyMessage from "../../../hooks/useNotifyMessage";
 import useChangeImage from "../../../hooks/useChangeImage";
 import imageService from "../../../services/imageService";
 import { EDIT_PROFILE } from "../../../graphql/mutations";
@@ -99,6 +100,7 @@ const EditProfileModal = ({
   showEditProfileModal,
   setShowEditProfileModal,
 }) => {
+  const notifyMessage = useNotifyMessage();
   const [editProfile] = useMutation(EDIT_PROFILE);
   const [isUploading, setIsUploading] = useState(false);
   const [showUploadPictureModal, setShowUploadPictureModal] = useState(false);
@@ -161,6 +163,10 @@ const EditProfileModal = ({
         },
       });
 
+      notifyMessage.show({
+        content: "Edited profile successfully!",
+        isError: false,
+      });
       setIsUploading(false);
       setShowEditProfileModal(false);
 

@@ -8,9 +8,8 @@ import Header from "./Header";
 import SearchBar from "../../SearchBar";
 import SelectContactsList from "../../SelectContactsList";
 
-import Notify from "../../Notify";
-
 import useNewChatModalHeaderAnimation from "../../../hooks/useNewChatModalHeaderAnimation";
+import useNotifyMessage from "../../../hooks/useNotifyMessage";
 
 import { Modal, SafeAreaView, View, Text, TextInput } from "react-native";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
@@ -37,12 +36,8 @@ const SearchBarContainer = ({ searchByTitle, handleChange }) => {
   );
 };
 
-const NewChatModal = ({
-  user,
-  notify,
-  showNewChatModal,
-  setShowNewChatModal,
-}) => {
+const NewChatModal = ({ user, showNewChatModal, setShowNewChatModal }) => {
+  const notifyMessage = useNotifyMessage();
   const [isChatTypeGroup, setChatType] = useState(false);
   const [chosenUsersIds, setChosenUsersIds] = useState([]);
   const [groupChatTitle, setGroupChatTitle] = useState("");
@@ -77,7 +72,10 @@ const NewChatModal = ({
     onError: (error) => {
       console.log("Error creating chat mutation:");
       console.log(error.graphQLErrors[0].message);
-      notify.show({ content: error.graphQLErrors[0].message, isError: true });
+      notifyMessage.show({
+        content: error.graphQLErrors[0].message,
+        isError: true,
+      });
     },
   });
 
@@ -163,7 +161,6 @@ const NewChatModal = ({
           }}
           className="w-full bg-white shadow-lg dark:bg-slate-700"
         >
-          <Notify notify={notify} />
           <View className="mx-4 my-4">
             <View className="w-full flex justify-center items-center pb-2">
               <Text className="text-sm text-slate-800 font-bold dark:text-slate-100">

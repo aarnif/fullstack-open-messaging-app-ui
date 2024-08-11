@@ -8,6 +8,7 @@ import {
   GET_CHAT_BY_PARTICIPANTS,
 } from "../../graphql/queries";
 import useSubscriptions from "../../hooks/useSubscriptions";
+import useNotifyMessage from "../../hooks/useNotifyMessage";
 import ImageViewModal from "../Modals/ImageViewModal";
 
 import { useMatch } from "react-router-native";
@@ -20,6 +21,7 @@ import { useNavigate } from "react-router-native";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 const ContactView = ({ user }) => {
+  const notifyMessage = useNotifyMessage();
   const [contact, setContact] = useState(null);
   const [isBlocked, setIsBlocked] = useState(false);
   const [showImageViewModal, setShowImageViewModal] = useState(false);
@@ -125,8 +127,16 @@ const ContactView = ({ user }) => {
 
       if (isContactBlocked) {
         console.log("Blocked contact:", contact.id);
+        notifyMessage.show({
+          content: "Contact blocked!",
+          isError: true,
+        });
       } else {
         console.log("Unblocked contact:", contact.id);
+        notifyMessage.show({
+          content: "Contact unblocked!",
+          isError: false,
+        });
       }
       setIsBlocked(isContactBlocked);
     } catch (error) {
@@ -145,6 +155,10 @@ const ContactView = ({ user }) => {
         },
       });
       navigate(`/contacts`);
+      notifyMessage.show({
+        content: "Contact removed!",
+        isError: false,
+      });
     } catch (error) {
       console.log("Error removing contact:", error);
       console.log(error.message);
