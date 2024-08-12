@@ -10,6 +10,7 @@ import {
 import useSubscriptions from "../../hooks/useSubscriptions";
 import useNotifyMessage from "../../hooks/useNotifyMessage";
 import ImageViewModal from "../Modals/ImageViewModal";
+import confirmAlert from "../confirmAlert";
 
 import { useMatch } from "react-router-native";
 import { useState, useEffect } from "react";
@@ -242,7 +243,15 @@ const ContactView = ({ user }) => {
         </Pressable>
 
         <Pressable
-          onPress={handleBlockContact}
+          onPress={() =>
+            confirmAlert(
+              isBlocked ? "Unblock Contact?" : "Block Contact?",
+              isBlocked
+                ? "Are you sure you want to unblock this contact?"
+                : "Are you sure you want to block this contact?",
+              handleBlockContact
+            )
+          }
           className="mb-2 w-full flex-grow max-h-[60px] p-2 flex justify-center items-center border-2 border-slate-200 bg-slate-200 rounded-xl 
             dark:border-slate-500 dark:bg-slate-500"
         >
@@ -257,7 +266,13 @@ const ContactView = ({ user }) => {
           )}
         </Pressable>
         <Pressable
-          onPress={handleRemoveContact}
+          onPress={() =>
+            confirmAlert(
+              "Remove Contact?",
+              "Are you sure you want to remove this contact?",
+              handleRemoveContact
+            )
+          }
           className="mb-2 w-full flex-grow max-h-[60px] p-2 flex justify-center items-center border-2 border-slate-200 bg-slate-200 rounded-xl 
             dark:border-slate-500 dark:bg-slate-500"
         >
