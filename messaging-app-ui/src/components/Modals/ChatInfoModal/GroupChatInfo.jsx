@@ -47,12 +47,13 @@ const GroupChatInfo = ({
       )}
       {user.id === chatAdmin.id && (
         <>
-          <View className="w-full px-4 py-2 flex justify-center items-start bg-white dark:bg-slate-700">
+          <View className="w-full px-4 pt-4 pb-2 flex justify-center items-start bg-white dark:bg-slate-700">
             <Pressable
               onPress={handlePressAddMembers}
-              className="w-full flex-grow max-h-[60px] p-2 flex justify-center items-center border-2 border-green-400 bg-green-400 rounded-xl"
+              className="mb-2 w-full flex-grow max-h-[60px] p-2 flex justify-center items-center border-2 border-slate-200 bg-slate-200 rounded-xl 
+        dark:border-slate-500 dark:bg-slate-500"
             >
-              <Text className="text-xl font-bold text-slate-200">
+              <Text className="text-xl font-bold text-slate-700 dark:text-slate-200">
                 Add Members
               </Text>
             </Pressable>
@@ -60,9 +61,10 @@ const GroupChatInfo = ({
           <View className="w-full px-4 py-2 flex justify-center items-start bg-white dark:bg-slate-700">
             <Pressable
               onPress={handlePressRemoveMembers}
-              className="w-full flex-grow max-h-[60px] p-2 flex justify-center items-center border-2 border-red-400 bg-red-400 rounded-xl"
+              className="mb-2 w-full flex-grow max-h-[60px] p-2 flex justify-center items-center border-2 border-slate-200 bg-slate-200 rounded-xl 
+        dark:border-slate-500 dark:bg-slate-500"
             >
-              <Text className="text-xl font-bold text-slate-200">
+              <Text className="text-xl font-bold text-slate-700 dark:text-slate-200">
                 Remove Members
               </Text>
             </Pressable>
