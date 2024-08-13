@@ -1,6 +1,5 @@
-import { GET_CONTACTS_BY_USER } from "../../../graphql/queries";
 import { REMOVE_CHAT_MEMBERS } from "../../../graphql/mutations";
-import LoadingIcon from "../../LoadingIcon";
+
 import SearchBar from "../../SearchBar";
 import SelectContactsList from "../../SelectContactsList";
 
@@ -8,8 +7,8 @@ import { Modal, SafeAreaView, View, Text, Pressable } from "react-native";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { useState } from "react";
-import { useQuery, useMutation } from "@apollo/client";
-import { useDebounce } from "use-debounce";
+import { useMutation } from "@apollo/client";
+
 import { useNavigate } from "react-router-native";
 
 const SearchBarContainer = ({ searchByTitle, handleChange }) => {
@@ -32,15 +31,8 @@ const RemoveMembersModal = ({
 }) => {
   const [chosenUsersIds, setChosenUsersIds] = useState([]);
   const [searchByName, setSearchByName] = useState("");
-  const [debouncedSearchByName] = useDebounce(searchByName, 500);
 
   console.log("Chosen users:", chosenUsersIds);
-
-  const data = useQuery(GET_CONTACTS_BY_USER, {
-    variables: {
-      searchByName: debouncedSearchByName,
-    },
-  });
 
   const [mutate] = useMutation(REMOVE_CHAT_MEMBERS, {
     onError: (error) => {
@@ -109,29 +101,16 @@ const RemoveMembersModal = ({
           searchByTitle={searchByName}
           handleChange={handleChange}
         />
-        {data.loading ? (
-          <View className="flex-grow flex justify-start items-center bg-white">
-            <LoadingIcon />
-          </View>
-        ) : (
-          <SelectContactsList
-            user={user}
-            data={data.data?.allContactsByUser.contacts
-              .map((contact) => {
-                const checkIfUserAlreadyInChat = chat.participants.find(
-                  (participant) => participant.id === contact.id
-                );
 
-                if (checkIfUserAlreadyInChat) return contact;
-
-                return null;
-              })
-              .filter((contact) => contact !== null)}
-            chosenUsersIds={chosenUsersIds}
-            setChosenUsersIds={setChosenUsersIds}
-            setShowRemoveMembersModal={setShowRemoveMembersModal}
-          />
-        )}
+        <SelectContactsList
+          user={user}
+          data={chat.participants.filter(
+            (participant) => participant.id !== user.id
+          )}
+          chosenUsersIds={chosenUsersIds}
+          setChosenUsersIds={setChosenUsersIds}
+          setShowRemoveMembersModal={setShowRemoveMembersModal}
+        />
       </SafeAreaView>
     </Modal>
   );
