@@ -169,7 +169,7 @@ const Main = () => {
             />
           )}
         </View>
-        <NotifyMessage notify={showNotifyMessage} />
+        <NotifyMessage />
       </SafeAreaView>
     </NotifyMessageContext.Provider>
   );
