@@ -4,13 +4,13 @@ import { Modal, SafeAreaView, View, Text } from "react-native";
 const NotifyMessage = () => {
   const notifyMessage = useNotifyMessage();
 
-  console.log("Notify:", notifyMessage);
-
   if (!notifyMessage || !notifyMessage.content) {
     return null;
   }
 
   const { content, show } = notifyMessage;
+
+  console.log("Show notify message:", notifyMessage.content);
 
   return (
     <Modal
