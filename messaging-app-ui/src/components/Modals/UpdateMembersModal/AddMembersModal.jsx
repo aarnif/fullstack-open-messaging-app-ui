@@ -54,7 +54,7 @@ const AddMembersModal = ({
   const navigate = useNavigate();
 
   const goBack = () => {
-    console.log("Go back to chats page!");
+    console.log("Go back to edit chat page!");
     setShowAddMembersModal(false);
   };
 
@@ -73,7 +73,7 @@ const AddMembersModal = ({
       setShowAddMembersModal(false);
       navigate(`/chats/${chat.id}`);
       notifyMessage.show({
-        content: "Members added to the chat!",
+        content: "Members added!",
         isError: false,
       });
     } catch (error) {

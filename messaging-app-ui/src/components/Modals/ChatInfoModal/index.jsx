@@ -1,8 +1,6 @@
 import { LEAVE_GROUP_CHAT } from "../../../graphql/mutations";
 import ImageViewModal from "../ImageViewModal/index.jsx";
 import EditChatModal from "../EditChatModal/index.jsx";
-import AddMembersModal from "../UpdateMembersModal/AddMembersModal.jsx";
-import RemoveMembersModal from "../UpdateMembersModal/RemoveMembersModal.jsx";
 import IndividualChatInfo from "./IndividualChatInfo.jsx";
 import GroupChatInfo from "./GroupChatInfo.jsx";
 import NotifyMessage from "../../NotifyMessage.jsx";
@@ -24,8 +22,6 @@ const ChatInfoModal = ({
   const chatAdmin = chat.admin;
 
   const [showEditChat, setShowEditChat] = useState(false);
-  const [showAddMembersModal, setShowAddMembersModal] = useState(false);
-  const [showRemoveMembersModal, setShowRemoveMembersModal] = useState(false);
 
   const [showImageViewModal, setShowImageViewModal] = useState(false);
   const [mutate] = useMutation(LEAVE_GROUP_CHAT, {
@@ -57,16 +53,6 @@ const ChatInfoModal = ({
   const handlePressEditChat = () => {
     console.log("Edit chat!");
     setShowEditChat(true);
-  };
-
-  const handlePressAddMembers = () => {
-    console.log("Add members to chat!");
-    setShowAddMembersModal(true);
-  };
-
-  const handlePressRemoveMembers = () => {
-    console.log("Remove members from chat!");
-    setShowRemoveMembersModal(true);
   };
 
   return (
@@ -111,8 +97,6 @@ const ChatInfoModal = ({
             chat={chat}
             chatAdmin={chatAdmin}
             leaveChat={leaveChat}
-            handlePressAddMembers={handlePressAddMembers}
-            handlePressRemoveMembers={handlePressRemoveMembers}
             setShowImageViewModal={setShowImageViewModal}
           />
         ) : (
@@ -136,25 +120,10 @@ const ChatInfoModal = ({
       )}
       {showEditChat && (
         <EditChatModal
+          user={user}
           chat={chat}
           showEditChat={showEditChat}
           setShowEditChat={setShowEditChat}
-        />
-      )}
-      {showAddMembersModal && (
-        <AddMembersModal
-          user={user}
-          chat={chat}
-          showAddMembersModal={showAddMembersModal}
-          setShowAddMembersModal={setShowAddMembersModal}
-        />
-      )}
-      {showRemoveMembersModal && (
-        <RemoveMembersModal
-          user={user}
-          chat={chat}
-          showRemoveMembersModal={showRemoveMembersModal}
-          setShowRemoveMembersModal={setShowRemoveMembersModal}
         />
       )}
     </Modal>

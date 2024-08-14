@@ -48,7 +48,7 @@ const RemoveMembersModal = ({
   const navigate = useNavigate();
 
   const goBack = () => {
-    console.log("Go back to chats page!");
+    console.log("Go back to edit chat page!");
     setShowRemoveMembersModal(false);
   };
 
@@ -67,7 +67,7 @@ const RemoveMembersModal = ({
       setShowRemoveMembersModal(false);
       navigate(`/chats/${chat.id}`);
       notifyMessage.show({
-        content: "Members removed from the chat!",
+        content: "Members removed!",
         isError: false,
       });
     } catch (error) {

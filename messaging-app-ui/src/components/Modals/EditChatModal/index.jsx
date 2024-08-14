@@ -5,6 +5,9 @@ import FormikFormField from "../../FormikFormField";
 import UploadImageWindow from "../../UploadImageWindow";
 import LoadingIconWithOverlay from "../../LoadingIconWithOverlay";
 import ChangeImage from "../../ChangeImage";
+import AddMembersModal from "../UpdateMembersModal/AddMembersModal";
+import RemoveMembersModal from "../UpdateMembersModal/RemoveMembersModal";
+import NotifyMessage from "../../NotifyMessage";
 
 import { useState } from "react";
 import { useMutation } from "@apollo/client";
@@ -14,7 +17,7 @@ import { Formik, useField } from "formik";
 
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
-const EditProfileForm = ({
+const EditChatForm = ({
   goBack,
   onSubmit,
   handlePressUploadPicture,
@@ -74,7 +77,7 @@ const EditProfileForm = ({
   );
 };
 
-export const EditProfileContainer = ({
+export const EditChatContainer = ({
   goBack,
   onSubmit,
   handlePressUploadPicture,
@@ -84,7 +87,7 @@ export const EditProfileContainer = ({
   return (
     <Formik initialValues={initialValues} onSubmit={onSubmit}>
       {({ handleSubmit }) => (
-        <EditProfileForm
+        <EditChatForm
           goBack={goBack}
           onSubmit={handleSubmit}
           handlePressUploadPicture={handlePressUploadPicture}
@@ -95,10 +98,12 @@ export const EditProfileContainer = ({
   );
 };
 
-const EditChatModal = ({ chat, showEditChat, setShowEditChat }) => {
+const EditChatModal = ({ user, chat, showEditChat, setShowEditChat }) => {
   const [editChat] = useMutation(EDIT_CHAT);
   const [isUploading, setIsUploading] = useState(false);
   const [showUploadPictureModal, setShowUploadPictureModal] = useState(false);
+  const [showAddMembersModal, setShowAddMembersModal] = useState(false);
+  const [showRemoveMembersModal, setShowRemoveMembersModal] = useState(false);
 
   const handleCloseUploadPicture = () => {
     console.log("Close edit chat picture window!");
@@ -167,12 +172,22 @@ const EditChatModal = ({ chat, showEditChat, setShowEditChat }) => {
     }
   };
 
+  const handlePressAddMembers = () => {
+    console.log("Add members to chat!");
+    setShowAddMembersModal(true);
+  };
+
+  const handlePressRemoveMembers = () => {
+    console.log("Remove members from chat!");
+    setShowRemoveMembersModal(true);
+  };
+
   console.log("Is uploading:", isUploading);
 
   return (
     <Modal animationType="slide" visible={showEditChat}>
       <SafeAreaView style={{ flex: 1 }} className="bg-green-600">
-        <EditProfileContainer
+        <EditChatContainer
           goBack={goBack}
           onSubmit={onSubmit}
           handlePressUploadPicture={handlePressUploadPicture}
@@ -188,7 +203,47 @@ const EditChatModal = ({ chat, showEditChat, setShowEditChat }) => {
             setShowUploadPictureModal={setShowUploadPictureModal}
           />
         )}
+        <View className="w-full px-4 pt-4 pb-2 flex justify-center items-start bg-white dark:bg-slate-700">
+          <Pressable
+            onPress={handlePressAddMembers}
+            className="mb-2 w-full flex-grow max-h-[60px] p-2 flex justify-center items-center border-2 border-slate-200 bg-slate-200 rounded-xl 
+        dark:border-slate-500 dark:bg-slate-500"
+          >
+            <Text className="text-lg font-bold text-slate-700 dark:text-slate-200">
+              Add Members
+            </Text>
+          </Pressable>
+        </View>
+        <View className="w-full px-4 py-2 flex justify-center items-start bg-white dark:bg-slate-700">
+          <Pressable
+            onPress={handlePressRemoveMembers}
+            className="mb-2 w-full flex-grow max-h-[60px] p-2 flex justify-center items-center border-2 border-slate-200 bg-slate-200 rounded-xl 
+        dark:border-slate-500 dark:bg-slate-500"
+          >
+            <Text className="text-lg font-bold text-slate-700 dark:text-slate-200">
+              Remove Members
+            </Text>
+          </Pressable>
+        </View>
+        {/* Will not currently show notification without adding the component here also */}
+        <NotifyMessage />
       </SafeAreaView>
+      {showAddMembersModal && (
+        <AddMembersModal
+          user={user}
+          chat={chat}
+          showAddMembersModal={showAddMembersModal}
+          setShowAddMembersModal={setShowAddMembersModal}
+        />
+      )}
+      {showRemoveMembersModal && (
+        <RemoveMembersModal
+          user={user}
+          chat={chat}
+          showRemoveMembersModal={showRemoveMembersModal}
+          setShowRemoveMembersModal={setShowRemoveMembersModal}
+        />
+      )}
       {isUploading && (
         <LoadingIconWithOverlay loadingMessage={"Editing chat..."} />
       )}
