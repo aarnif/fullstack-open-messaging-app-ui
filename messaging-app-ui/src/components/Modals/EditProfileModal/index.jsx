@@ -4,7 +4,7 @@ import imageService from "../../../services/imageService";
 import { EDIT_PROFILE } from "../../../graphql/mutations";
 import FormikFormField from "../../FormikFormField";
 import UploadImageWindow from "../../UploadImageWindow";
-import LoadingIcon from "../../LoadingIcon";
+import LoadingIconWithOverlay from "../../LoadingIconWithOverlay";
 import ChangeImage from "../../ChangeImage";
 
 import { useState } from "react";
@@ -199,17 +199,7 @@ const EditProfileModal = ({
         )}
       </SafeAreaView>
       {isUploading && (
-        <View
-          style={{
-            backgroundColor: "rgba(0,0,0,0.5)",
-          }}
-          className="absolute w-full h-full flex justify-center items-center"
-        >
-          <LoadingIcon />
-          <Text className="text-white text-lg font-semibold">
-            Editing profile
-          </Text>
-        </View>
+        <LoadingIconWithOverlay loadingMessage={"Editing profile..."} />
       )}
     </Modal>
   );

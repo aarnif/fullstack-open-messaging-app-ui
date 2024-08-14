@@ -3,6 +3,7 @@ import useNotifyMessage from "../../../hooks/useNotifyMessage";
 
 import SearchBar from "../../SearchBar";
 import SelectContactsList from "../../SelectContactsList";
+import LoadingIconWithOverlay from "../../LoadingIconWithOverlay";
 
 import { Modal, SafeAreaView, View, Text, Pressable } from "react-native";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
@@ -36,11 +37,13 @@ const RemoveMembersModal = ({
 
   console.log("Chosen users:", chosenUsersIds);
 
-  const [mutate] = useMutation(REMOVE_CHAT_MEMBERS, {
+  const [mutate, loading] = useMutation(REMOVE_CHAT_MEMBERS, {
     onError: (error) => {
       console.log(error.graphQLErrors[0].message);
     },
   });
+
+  console.log("Loading:", loading.loading);
 
   const navigate = useNavigate();
 
@@ -118,6 +121,9 @@ const RemoveMembersModal = ({
           setShowRemoveMembersModal={setShowRemoveMembersModal}
         />
       </SafeAreaView>
+      {loading.loading && (
+        <LoadingIconWithOverlay loadingMessage={"Removing members..."} />
+      )}
     </Modal>
   );
 };

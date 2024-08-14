@@ -1,9 +1,10 @@
 import { GET_CONTACTS_BY_USER } from "../../../graphql/queries";
 import { ADD_NEW_CHAT_MEMBERS } from "../../../graphql/mutations";
 import useNotifyMessage from "../../../hooks/useNotifyMessage";
-import LoadingIcon from "../../LoadingIcon";
 import SearchBar from "../../SearchBar";
 import SelectContactsList from "../../SelectContactsList";
+import LoadingIcon from "../../LoadingIcon";
+import LoadingIconWithOverlay from "../../LoadingIconWithOverlay";
 
 import { Modal, SafeAreaView, View, Text, Pressable } from "react-native";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
@@ -44,7 +45,7 @@ const AddMembersModal = ({
     },
   });
 
-  const [mutate] = useMutation(ADD_NEW_CHAT_MEMBERS, {
+  const [mutate, loading] = useMutation(ADD_NEW_CHAT_MEMBERS, {
     onError: (error) => {
       console.log(error.graphQLErrors[0].message);
     },
@@ -139,6 +140,9 @@ const AddMembersModal = ({
           />
         )}
       </SafeAreaView>
+      {loading.loading && (
+        <LoadingIconWithOverlay loadingMessage={"Adding members..."} />
+      )}
     </Modal>
   );
 };

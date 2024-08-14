@@ -2,7 +2,7 @@ import useSubscriptions from "../../hooks/useSubscriptions";
 import useChangeImage from "../../hooks/useChangeImage";
 import imageService from "../../services/imageService";
 import UploadImageWindow from "../UploadImageWindow";
-import LoadingIcon from "../LoadingIcon";
+import LoadingIconWithOverlay from "../LoadingIconWithOverlay";
 import useNotifyMessage from "../../hooks/useNotifyMessage";
 
 import { useColorScheme } from "nativewind";
@@ -175,17 +175,7 @@ const NewMessage = ({ chatId, user }) => {
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
       {isUploading && (
-        <View
-          style={{
-            backgroundColor: "rgba(0,0,0,0.5)",
-          }}
-          className="absolute w-full h-full flex justify-center items-center"
-        >
-          <LoadingIcon />
-          <Text className="text-white text-lg font-semibold">
-            Sending message
-          </Text>
-        </View>
+        <LoadingIconWithOverlay loadingMessage={"Sending message..."} />
       )}
     </>
   );
