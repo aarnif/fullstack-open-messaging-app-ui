@@ -1,5 +1,6 @@
 import { GET_CONTACTS_BY_USER } from "../../../graphql/queries";
 import { ADD_NEW_CHAT_MEMBERS } from "../../../graphql/mutations";
+import useNotifyMessage from "../../../hooks/useNotifyMessage";
 import LoadingIcon from "../../LoadingIcon";
 import SearchBar from "../../SearchBar";
 import SelectContactsList from "../../SelectContactsList";
@@ -30,6 +31,7 @@ const AddMembersModal = ({
   showAddMembersModal,
   setShowAddMembersModal,
 }) => {
+  const notifyMessage = useNotifyMessage();
   const [chosenUsersIds, setChosenUsersIds] = useState([]);
   const [searchByName, setSearchByName] = useState("");
   const [debouncedSearchByName] = useDebounce(searchByName, 500);
@@ -69,6 +71,10 @@ const AddMembersModal = ({
       console.log("Added new members to the chat!");
       setShowAddMembersModal(false);
       navigate(`/chats/${chat.id}`);
+      notifyMessage.show({
+        content: "Members added to the chat!",
+        isError: false,
+      });
     } catch (error) {
       console.log("Error adding new members to the chat:", error);
     }

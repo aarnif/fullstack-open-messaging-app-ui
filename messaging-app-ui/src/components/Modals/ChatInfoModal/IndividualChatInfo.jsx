@@ -3,8 +3,6 @@ import useNotifyMessage from "../../../hooks/useNotifyMessage";
 import IndividualContactCard from "../../IndividualContactCard";
 import IndividualContactOptions from "../../IndividualContactOptions";
 
-import NotifyMessage from "../../NotifyMessage";
-
 import { useState } from "react";
 
 import { useMutation } from "@apollo/client";
@@ -70,7 +68,6 @@ const IndividualChatInfo = ({
         haveContactBlockedYou={haveContactBlockedYou}
         setShowImageViewModal={setShowImageViewModal}
       />
-
       <IndividualContactOptions
         contact={contact}
         isBlocked={isBlocked}
@@ -78,8 +75,6 @@ const IndividualChatInfo = ({
         handleChat={handleChat}
         handleRemoveContact={handleRemoveContact}
       />
-      {/* Will not currently show notification without adding the component here also */}
-      <NotifyMessage />
     </>
   );
 };

@@ -1,4 +1,5 @@
 import { REMOVE_CHAT_MEMBERS } from "../../../graphql/mutations";
+import useNotifyMessage from "../../../hooks/useNotifyMessage";
 
 import SearchBar from "../../SearchBar";
 import SelectContactsList from "../../SelectContactsList";
@@ -29,6 +30,7 @@ const RemoveMembersModal = ({
   showRemoveMembersModal,
   setShowRemoveMembersModal,
 }) => {
+  const notifyMessage = useNotifyMessage();
   const [chosenUsersIds, setChosenUsersIds] = useState([]);
   const [searchByName, setSearchByName] = useState("");
 
@@ -61,6 +63,10 @@ const RemoveMembersModal = ({
       console.log("Remove members from the chat!");
       setShowRemoveMembersModal(false);
       navigate(`/chats/${chat.id}`);
+      notifyMessage.show({
+        content: "Members removed from the chat!",
+        isError: false,
+      });
     } catch (error) {
       console.log("Error removing members from the chat:", error);
     }

@@ -5,16 +5,10 @@ import AddMembersModal from "../UpdateMembersModal/AddMembersModal.jsx";
 import RemoveMembersModal from "../UpdateMembersModal/RemoveMembersModal.jsx";
 import IndividualChatInfo from "./IndividualChatInfo.jsx";
 import GroupChatInfo from "./GroupChatInfo.jsx";
+import NotifyMessage from "../../NotifyMessage.jsx";
 
 import { useState } from "react";
-import {
-  Modal,
-  SafeAreaView,
-  View,
-  Text,
-  Pressable,
-  Image,
-} from "react-native";
+import { Modal, SafeAreaView, View, Text, Pressable } from "react-native";
 import { useMutation } from "@apollo/client";
 import { useNavigate } from "react-router-native";
 
@@ -130,6 +124,8 @@ const ChatInfoModal = ({
             setShowChatInfoModal={setShowChatInfoModal}
           />
         )}
+        {/* Will not currently show notification without adding the component here also */}
+        <NotifyMessage />
       </SafeAreaView>
       {showImageViewModal && (
         <ImageViewModal
