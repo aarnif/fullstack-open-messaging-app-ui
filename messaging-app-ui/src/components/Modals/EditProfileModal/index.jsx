@@ -68,6 +68,9 @@ const EditProfileForm = ({
           placeholder="Enter something about yourself..."
           value={aboutField.value}
           onChangeText={(text) => aboutHelpers.setValue(text)}
+          maxHeight={100}
+          multiline={true}
+          numberOfLines={4}
         ></FormikFormField>
       </View>
     </>
@@ -102,7 +105,7 @@ const EditProfileModal = ({
 }) => {
   const notifyMessage = useNotifyMessage();
   const [editProfile] = useMutation(EDIT_PROFILE);
-  const [isUploading, setIsUploading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [showUploadPictureModal, setShowUploadPictureModal] = useState(false);
 
   const handleCloseUploadPicture = () => {
@@ -137,7 +140,7 @@ const EditProfileModal = ({
 
     try {
       let result;
-      setIsUploading(true);
+      setIsLoading(true);
 
       if (base64Image) {
         console.log("Uploading profile picture...");
@@ -167,7 +170,7 @@ const EditProfileModal = ({
         content: "Edited profile successfully!",
         isError: false,
       });
-      setIsUploading(false);
+      setIsLoading(false);
       setShowEditProfileModal(false);
 
       console.log("Edited profile successfully!");
@@ -176,7 +179,7 @@ const EditProfileModal = ({
     }
   };
 
-  console.log("Is uploading:", isUploading);
+  console.log("Is uploading:", isLoading);
 
   return (
     <Modal animationType="slide" visible={showEditProfileModal}>
@@ -198,7 +201,7 @@ const EditProfileModal = ({
           />
         )}
       </SafeAreaView>
-      {isUploading && (
+      {isLoading && (
         <LoadingIconWithOverlay loadingMessage={"Editing profile..."} />
       )}
     </Modal>

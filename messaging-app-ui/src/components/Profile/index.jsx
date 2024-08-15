@@ -28,7 +28,7 @@ const Profile = ({ user, handleEditProfilePress }) => {
         <Text className="text-md text-slate-500 font-bold dark:text-slate-300">
           @{user.username}
         </Text>
-        <Text className="mt-4 text-base text-slate-700 dark:text-slate-200">
+        <Text className="mt-4 mx-8 text-base text-slate-700 text-center dark:text-slate-200">
           {user.about}
         </Text>
       </View>
