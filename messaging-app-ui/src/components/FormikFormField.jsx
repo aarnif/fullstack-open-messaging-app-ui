@@ -3,7 +3,7 @@ import { useField } from "formik";
 import { useColorScheme } from "nativewind";
 import { View, Text, TextInput } from "react-native";
 
-const FormikFormField = ({ name, ...props }) => {
+const FormikFormField = ({ name, maxHeight, ...props }) => {
   const { colorScheme } = useColorScheme();
   const [field, meta, helpers] = useField(name);
   const showError = meta.touched && meta.error;
@@ -17,8 +17,11 @@ const FormikFormField = ({ name, ...props }) => {
         :
       </Text>
       <TextInput
-        style={{ borderColor: showError ? "red" : "#e2e8f0" }}
-        className="w-full flex-grow max-h-[50px] p-2 border rounded-lg bg-slate-200 text-slate-800 dark:bg-slate-600 dark:text-slate-100"
+        style={{
+          borderColor: showError ? "red" : "#e2e8f0",
+          maxHeight: maxHeight ? maxHeight : 50,
+        }}
+        className="w-full flex-grow p-2 border rounded-lg bg-slate-200 text-slate-800 dark:bg-slate-600 dark:text-slate-100"
         placeholderTextColor={colorScheme === "dark" ? "#e2e8f0" : "#475569"}
         onChangeText={(value) => helpers.setValue(value)}
         onBlur={() => helpers.setTouched(true)}
