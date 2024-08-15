@@ -77,6 +77,9 @@ const EditChatForm = ({
           placeholder="Enter chat description..."
           value={descriptionField.value}
           onChangeText={(text) => descriptionHelpers.setValue(text)}
+          maxHeight={100}
+          multiline={true}
+          numberOfLines={4}
         ></FormikFormField>
 
         <View className="w-full pt-4 pb-2 flex justify-center items-start bg-white dark:bg-slate-700">
