@@ -3,22 +3,30 @@ import { GET_CHATS_BY_USER } from "../../graphql/queries";
 import Header from "../Header";
 import SearchBar from "../SearchBar";
 import ChatItem from "./ChatItem";
+import SelectChatItem from "./SelectChatItem";
 import LoadingIcon from "../LoadingIcon";
 import Menu from "../Menu";
 
 import useSubscriptions from "../../hooks/useSubscriptions";
 
 import { useState } from "react";
-import { View, Text, FlatList } from "react-native";
+import { View, Text, FlatList, Pressable } from "react-native";
 import { useQuery } from "@apollo/client";
 import { useDebounce } from "use-debounce";
 
-const ChatsHeader = ({ searchByTitle, handleChange }) => {
+const ChatsHeader = ({ searchByTitle, handleChange, handlePress }) => {
   return (
     <View className="w-full bg-white dark:bg-slate-700">
-      <Text className="text-2xl font-bold mt-4 mx-4 mb-2 dark:text-slate-200">
-        Chats
-      </Text>
+      <View className="flex flex-row justify-between items-end">
+        <Text className="text-2xl font-bold mt-4 mx-4 mb-2 dark:text-slate-200">
+          Chats
+        </Text>
+        <Pressable onPress={handlePress}>
+          <Text className="text-lg font-bold mt-4 mx-4 mb-2 dark:text-slate-200">
+            Select
+          </Text>
+        </Pressable>
+      </View>
       <SearchBar
         placeholder={"Search by title..."}
         searchByTitle={searchByTitle}
@@ -28,7 +36,13 @@ const ChatsHeader = ({ searchByTitle, handleChange }) => {
   );
 };
 
-const ChatsList = ({ user, data }) => {
+const ChatsList = ({
+  user,
+  data,
+  selectChatsView,
+  chosenChatIds,
+  setChosenChatIds,
+}) => {
   if (!data.length) {
     return (
       <View className="flex justify-start items-center">
@@ -44,7 +58,16 @@ const ChatsList = ({ user, data }) => {
       className="w-full"
       data={data}
       renderItem={({ item }) => {
-        return <ChatItem user={user} item={item} />;
+        return selectChatsView ? (
+          <SelectChatItem
+            user={user}
+            item={item}
+            chosenChatIds={chosenChatIds}
+            setChosenChatIds={setChosenChatIds}
+          />
+        ) : (
+          <ChatItem user={user} item={item} />
+        );
       }}
       keyExtractor={({ id }) => id}
     />
@@ -52,6 +75,8 @@ const ChatsList = ({ user, data }) => {
 };
 
 const Chats = ({ user, handleNewChatPress }) => {
+  const [chosenChatIds, setChosenChatIds] = useState([]);
+  const [selectChatsView, setSelectChatsView] = useState(false);
   const [searchByTitle, setSearchByTitle] = useState("");
   const [debouncedSearchByTitle] = useDebounce(searchByTitle, 500);
   const { data, loading } = useQuery(GET_CHATS_BY_USER, {
@@ -72,16 +97,31 @@ const Chats = ({ user, handleNewChatPress }) => {
     setSearchByTitle(text);
   };
 
+  const handlePress = () => {
+    console.log("Press select button");
+    setSelectChatsView(!selectChatsView);
+  };
+
   return (
     <>
       <Header user={user} handlePress={handleNewChatPress} />
-      <ChatsHeader searchByTitle={searchByTitle} handleChange={handleChange} />
+      <ChatsHeader
+        searchByTitle={searchByTitle}
+        handleChange={handleChange}
+        handlePress={handlePress}
+      />
       {loading ? (
         <View className="flex justify-end items-center">
           <LoadingIcon />
         </View>
       ) : (
-        <ChatsList user={user} data={data?.allChatsByUser} />
+        <ChatsList
+          user={user}
+          data={data?.allChatsByUser}
+          selectChatsView={selectChatsView}
+          chosenChatIds={chosenChatIds}
+          setChosenChatIds={setChosenChatIds}
+        />
       )}
       {user && <Menu />}
     </>
