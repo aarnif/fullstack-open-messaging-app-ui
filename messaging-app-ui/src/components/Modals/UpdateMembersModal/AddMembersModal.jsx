@@ -1,16 +1,15 @@
 import { GET_CONTACTS_BY_USER } from "../../../graphql/queries";
-import { ADD_NEW_CHAT_MEMBERS } from "../../../graphql/mutations";
+
 import useNotifyMessage from "../../../hooks/useNotifyMessage";
 import SearchBar from "../../SearchBar";
 import SelectContactsList from "../../SelectContactsList";
 import LoadingIcon from "../../LoadingIcon";
-import LoadingIconWithOverlay from "../../LoadingIconWithOverlay";
 
 import { Modal, SafeAreaView, View, Text, Pressable } from "react-native";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { useState } from "react";
-import { useQuery, useMutation } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { useDebounce } from "use-debounce";
 import { useNavigate } from "react-router-native";
 
@@ -31,6 +30,8 @@ const AddMembersModal = ({
   chat,
   showAddMembersModal,
   setShowAddMembersModal,
+  addChatMembers,
+  setIsLoading,
 }) => {
   const notifyMessage = useNotifyMessage();
   const [chosenUsersIds, setChosenUsersIds] = useState([]);
@@ -42,12 +43,6 @@ const AddMembersModal = ({
   const data = useQuery(GET_CONTACTS_BY_USER, {
     variables: {
       searchByName: debouncedSearchByName,
-    },
-  });
-
-  const [mutate, loading] = useMutation(ADD_NEW_CHAT_MEMBERS, {
-    onError: (error) => {
-      console.log(error.graphQLErrors[0].message);
     },
   });
 
@@ -63,15 +58,17 @@ const AddMembersModal = ({
     console.log("Chosen users:", chosenUsersIds);
 
     try {
-      await mutate({
+      console.log("Added new members to the chat!");
+      setIsLoading(true);
+      setShowAddMembersModal(false);
+      navigate(`/chats/${chat.id}`);
+      await addChatMembers({
         variables: {
           chatId: chat.id,
           participants: chosenUsersIds,
         },
       });
-      console.log("Added new members to the chat!");
-      setShowAddMembersModal(false);
-      navigate(`/chats/${chat.id}`);
+      setIsLoading(false);
       notifyMessage.show({
         content: "Members added!",
         isError: false,
@@ -140,9 +137,6 @@ const AddMembersModal = ({
           />
         )}
       </SafeAreaView>
-      {loading.loading && (
-        <LoadingIconWithOverlay loadingMessage={"Adding members..."} />
-      )}
     </Modal>
   );
 };

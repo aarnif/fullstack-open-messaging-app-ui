@@ -1,6 +1,10 @@
 import useChangeImage from "../../../hooks/useChangeImage";
 import imageService from "../../../services/imageService";
 import { EDIT_CHAT } from "../../../graphql/mutations";
+import {
+  ADD_NEW_CHAT_MEMBERS,
+  REMOVE_CHAT_MEMBERS,
+} from "../../../graphql/mutations";
 import FormikFormField from "../../FormikFormField";
 import UploadImageWindow from "../../UploadImageWindow";
 import LoadingIconWithOverlay from "../../LoadingIconWithOverlay";
@@ -21,6 +25,8 @@ const EditChatForm = ({
   goBack,
   onSubmit,
   handlePressUploadPicture,
+  handlePressAddMembers,
+  handlePressRemoveMembers,
   image,
 }) => {
   const [titleField, titleMeta, titleHelpers] = useField("title");
@@ -72,6 +78,29 @@ const EditChatForm = ({
           value={descriptionField.value}
           onChangeText={(text) => descriptionHelpers.setValue(text)}
         ></FormikFormField>
+
+        <View className="w-full pt-4 pb-2 flex justify-center items-start bg-white dark:bg-slate-700">
+          <Pressable
+            onPress={handlePressAddMembers}
+            className="mb-2 w-full flex-grow max-h-[60px] px-2 py-4 flex justify-center items-center border-2 border-slate-200 bg-slate-200 rounded-xl 
+        dark:border-slate-500 dark:bg-slate-500"
+          >
+            <Text className="text-md font-bold text-slate-700 dark:text-slate-200">
+              Add Members
+            </Text>
+          </Pressable>
+        </View>
+        <View className="w-full py-2 flex justify-center items-start bg-white dark:bg-slate-700">
+          <Pressable
+            onPress={handlePressRemoveMembers}
+            className="mb-2 w-full flex-grow max-h-[60px] px-2 py-4 flex justify-center items-center border-2 border-slate-200 bg-slate-200 rounded-xl 
+        dark:border-slate-500 dark:bg-slate-500"
+          >
+            <Text className="text-md font-bold text-slate-700 dark:text-slate-200">
+              Remove Members
+            </Text>
+          </Pressable>
+        </View>
       </View>
     </>
   );
@@ -81,6 +110,8 @@ export const EditChatContainer = ({
   goBack,
   onSubmit,
   handlePressUploadPicture,
+  handlePressAddMembers,
+  handlePressRemoveMembers,
   image,
   initialValues,
 }) => {
@@ -91,6 +122,8 @@ export const EditChatContainer = ({
           goBack={goBack}
           onSubmit={handleSubmit}
           handlePressUploadPicture={handlePressUploadPicture}
+          handlePressAddMembers={handlePressAddMembers}
+          handlePressRemoveMembers={handlePressRemoveMembers}
           image={image}
         />
       )}
@@ -100,10 +133,22 @@ export const EditChatContainer = ({
 
 const EditChatModal = ({ user, chat, showEditChat, setShowEditChat }) => {
   const [editChat] = useMutation(EDIT_CHAT);
-  const [isUploading, setIsUploading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [showUploadPictureModal, setShowUploadPictureModal] = useState(false);
   const [showAddMembersModal, setShowAddMembersModal] = useState(false);
   const [showRemoveMembersModal, setShowRemoveMembersModal] = useState(false);
+
+  const [addChatMembers] = useMutation(ADD_NEW_CHAT_MEMBERS, {
+    onError: (error) => {
+      console.log(error.graphQLErrors[0].message);
+    },
+  });
+
+  const [removeChatMembers] = useMutation(REMOVE_CHAT_MEMBERS, {
+    onError: (error) => {
+      console.log(error.graphQLErrors[0].message);
+    },
+  });
 
   const handleCloseUploadPicture = () => {
     console.log("Close edit chat picture window!");
@@ -137,7 +182,7 @@ const EditChatModal = ({ user, chat, showEditChat, setShowEditChat }) => {
 
     try {
       let result;
-      setIsUploading(true);
+      setIsLoading(true);
 
       if (base64Image) {
         console.log("Uploading chat picture...");
@@ -163,7 +208,7 @@ const EditChatModal = ({ user, chat, showEditChat, setShowEditChat }) => {
         },
       });
 
-      setIsUploading(false);
+      setIsLoading(false);
       setShowEditChat(false);
 
       console.log("Edited chat successfully!");
@@ -182,7 +227,7 @@ const EditChatModal = ({ user, chat, showEditChat, setShowEditChat }) => {
     setShowRemoveMembersModal(true);
   };
 
-  console.log("Is uploading:", isUploading);
+  console.log("Is uploading:", isLoading);
 
   return (
     <Modal animationType="slide" visible={showEditChat}>
@@ -191,18 +236,12 @@ const EditChatModal = ({ user, chat, showEditChat, setShowEditChat }) => {
           goBack={goBack}
           onSubmit={onSubmit}
           handlePressUploadPicture={handlePressUploadPicture}
+          handlePressAddMembers={handlePressAddMembers}
+          handlePressRemoveMembers={handlePressRemoveMembers}
           image={image}
           initialValues={initialValues}
         />
-        {showUploadPictureModal && (
-          <UploadImageWindow
-            title={"Edit Chat Picture"}
-            chooseImageFromCamera={chooseImageFromCamera}
-            chooseImageFromFiles={chooseImageFromFiles}
-            handleClose={handleCloseUploadPicture}
-            setShowUploadPictureModal={setShowUploadPictureModal}
-          />
-        )}
+        {/* 
         <View className="w-full px-4 pt-4 pb-2 flex justify-center items-start bg-white dark:bg-slate-700">
           <Pressable
             onPress={handlePressAddMembers}
@@ -224,16 +263,27 @@ const EditChatModal = ({ user, chat, showEditChat, setShowEditChat }) => {
               Remove Members
             </Text>
           </Pressable>
-        </View>
+        </View> */}
         {/* Will not currently show notification without adding the component here also */}
         <NotifyMessage />
       </SafeAreaView>
+      {showUploadPictureModal && (
+        <UploadImageWindow
+          title={"Edit Chat Picture"}
+          chooseImageFromCamera={chooseImageFromCamera}
+          chooseImageFromFiles={chooseImageFromFiles}
+          handleClose={handleCloseUploadPicture}
+          setShowUploadPictureModal={setShowUploadPictureModal}
+        />
+      )}
       {showAddMembersModal && (
         <AddMembersModal
           user={user}
           chat={chat}
           showAddMembersModal={showAddMembersModal}
           setShowAddMembersModal={setShowAddMembersModal}
+          addChatMembers={addChatMembers}
+          setIsLoading={setIsLoading}
         />
       )}
       {showRemoveMembersModal && (
@@ -242,9 +292,11 @@ const EditChatModal = ({ user, chat, showEditChat, setShowEditChat }) => {
           chat={chat}
           showRemoveMembersModal={showRemoveMembersModal}
           setShowRemoveMembersModal={setShowRemoveMembersModal}
+          removeChatMembers={removeChatMembers}
+          setIsLoading={setIsLoading}
         />
       )}
-      {isUploading && (
+      {isLoading && (
         <LoadingIconWithOverlay loadingMessage={"Editing chat..."} />
       )}
     </Modal>

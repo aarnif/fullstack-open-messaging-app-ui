@@ -1,15 +1,12 @@
-import { REMOVE_CHAT_MEMBERS } from "../../../graphql/mutations";
 import useNotifyMessage from "../../../hooks/useNotifyMessage";
 
 import SearchBar from "../../SearchBar";
 import SelectContactsList from "../../SelectContactsList";
-import LoadingIconWithOverlay from "../../LoadingIconWithOverlay";
 
 import { Modal, SafeAreaView, View, Text, Pressable } from "react-native";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { useState } from "react";
-import { useMutation } from "@apollo/client";
 
 import { useNavigate } from "react-router-native";
 
@@ -30,20 +27,14 @@ const RemoveMembersModal = ({
   chat,
   showRemoveMembersModal,
   setShowRemoveMembersModal,
+  removeChatMembers,
+  setIsLoading,
 }) => {
   const notifyMessage = useNotifyMessage();
   const [chosenUsersIds, setChosenUsersIds] = useState([]);
   const [searchByName, setSearchByName] = useState("");
 
   console.log("Chosen users:", chosenUsersIds);
-
-  const [mutate, loading] = useMutation(REMOVE_CHAT_MEMBERS, {
-    onError: (error) => {
-      console.log(error.graphQLErrors[0].message);
-    },
-  });
-
-  console.log("Loading:", loading.loading);
 
   const navigate = useNavigate();
 
@@ -57,15 +48,17 @@ const RemoveMembersModal = ({
     console.log("Chosen users:", chosenUsersIds);
 
     try {
-      await mutate({
+      console.log("Remove members from the chat!");
+      setIsLoading(true);
+      setShowRemoveMembersModal(false);
+      navigate(`/chats/${chat.id}`);
+      await removeChatMembers({
         variables: {
           chatId: chat.id,
           participants: chosenUsersIds,
         },
       });
-      console.log("Remove members from the chat!");
-      setShowRemoveMembersModal(false);
-      navigate(`/chats/${chat.id}`);
+      setIsLoading(false);
       notifyMessage.show({
         content: "Members removed!",
         isError: false,
@@ -121,9 +114,6 @@ const RemoveMembersModal = ({
           setShowRemoveMembersModal={setShowRemoveMembersModal}
         />
       </SafeAreaView>
-      {loading.loading && (
-        <LoadingIconWithOverlay loadingMessage={"Removing members..."} />
-      )}
     </Modal>
   );
 };
