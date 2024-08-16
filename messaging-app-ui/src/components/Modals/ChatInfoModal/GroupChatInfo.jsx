@@ -1,4 +1,5 @@
 import ChatMembersList from "./ChatMembersList";
+import confirmAlert from "../../confirmAlert";
 
 import { View, Text, Pressable, Image } from "react-native";
 
@@ -36,7 +37,13 @@ const GroupChatInfo = ({
       {user.id !== chatAdmin.id && (
         <View className="w-full p-4 flex justify-center items-start bg-white dark:bg-slate-700">
           <Pressable
-            onPress={leaveChat}
+            onPress={() =>
+              confirmAlert(
+                "Leave Chat?",
+                "Are you sure you want to leave this chat?",
+                leaveChat
+              )
+            }
             className="mb-2 w-full flex-grow max-h-[60px] p-2 flex justify-center items-center border-2 border-slate-200 bg-slate-200 rounded-xl 
         dark:border-slate-500 dark:bg-slate-500"
           >

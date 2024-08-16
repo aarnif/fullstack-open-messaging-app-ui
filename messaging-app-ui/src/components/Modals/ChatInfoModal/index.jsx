@@ -1,4 +1,5 @@
 import { LEAVE_GROUP_CHAT } from "../../../graphql/mutations";
+import useNotifyMessage from "../../../hooks/useNotifyMessage.js";
 import ImageViewModal from "../ImageViewModal/index.jsx";
 import EditChatModal from "../EditChatModal/index.jsx";
 import IndividualChatInfo from "./IndividualChatInfo.jsx";
@@ -21,6 +22,7 @@ const ChatInfoModal = ({
   console.log("User:", user);
   const chatAdmin = chat.admin;
 
+  const notifyMessage = useNotifyMessage();
   const [showEditChat, setShowEditChat] = useState(false);
 
   const [showImageViewModal, setShowImageViewModal] = useState(false);
@@ -44,6 +46,10 @@ const ChatInfoModal = ({
       });
       console.log("Left group chat:", chat.title);
       navigate("/chats");
+      notifyMessage.show({
+        content: `You left chat!`,
+        isError: false,
+      });
     } catch (error) {
       console.log("Error leaving chat:", error);
       console.log(error);
