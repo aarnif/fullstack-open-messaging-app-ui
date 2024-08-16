@@ -27,7 +27,7 @@ const ContactsHeader = ({ searchByTitle, handleChange }) => {
   );
 };
 
-const ContactsList = ({ data }) => {
+const ContactsList = ({ user, data }) => {
   if (!data.length) {
     return (
       <View className="flex justify-start items-center">
@@ -43,7 +43,7 @@ const ContactsList = ({ data }) => {
       className="w-full"
       data={data}
       renderItem={({ item }) => {
-        return <ContactItem item={item} />;
+        return <ContactItem user={user} item={item} />;
       }}
       keyExtractor={({ id }) => id}
     />
@@ -81,7 +81,7 @@ const Contacts = ({ user, handleNewContactPress }) => {
           <LoadingIcon />
         </View>
       ) : (
-        <ContactsList data={data?.allContactsByUser.contacts} />
+        <ContactsList user={user} data={data?.allContactsByUser.contacts} />
       )}
       {user && <Menu />}
     </>
