@@ -3,15 +3,9 @@ import { ADD_CONTACTS } from "../../../graphql/mutations";
 import LoadingIcon from "../../LoadingIcon";
 import SearchBar from "../../SearchBar";
 import SelectContactsList from "../../SelectContactsList";
+import useNotifyMessage from "../../../hooks/useNotifyMessage";
 
-import {
-  Modal,
-  SafeAreaView,
-  View,
-  Text,
-  TextInput,
-  Pressable,
-} from "react-native";
+import { Modal, SafeAreaView, View, Text, Pressable } from "react-native";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { useState } from "react";
@@ -36,6 +30,7 @@ const NewContactModal = ({
   showNewContactModal,
   setShowNewContactModal,
 }) => {
+  const notifyMessage = useNotifyMessage();
   const [chosenUsersIds, setChosenUsersIds] = useState([]);
   const [searchByName, setSearchByName] = useState("");
   const [debouncedSearchByName] = useDebounce(searchByName, 500);
@@ -78,6 +73,7 @@ const NewContactModal = ({
 
       setShowNewContactModal(false);
       navigate("/contacts");
+      notifyMessage.show({ content: "New contacts added!", isError: false });
     } catch (error) {
       console.log("Error adding new contacts:", error);
     }
