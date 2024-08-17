@@ -1,8 +1,20 @@
 import { Pressable, View, Text } from "react-native";
+import { useSpring, animated } from "@react-spring/native";
 
-const RemoveChatsWindow = ({ handleRemoveChats }) => {
+const RemoveChatsWindow = ({ selectChatsView, handleRemoveChats }) => {
+  const props = useSpring({
+    from: { translateY: selectChatsView ? 200 : 0 },
+    to: { translateY: selectChatsView ? 0 : 200 },
+  });
+
   return (
-    <View className="bg-slate-300 shadow-lg dark:bg-slate-600 z-10">
+    <animated.View
+      style={{
+        transform: [{ translateY: props.translateY }],
+        zIndex: 100,
+      }}
+      className="bg-slate-300 shadow-lg dark:bg-slate-600"
+    >
       <View className="w-full flex justify-center items-center py-4 bg-slate-300">
         <View className="w-full px-4 flex flex-col">
           <Pressable
@@ -16,7 +28,7 @@ const RemoveChatsWindow = ({ handleRemoveChats }) => {
           </Pressable>
         </View>
       </View>
-    </View>
+    </animated.View>
   );
 };
 

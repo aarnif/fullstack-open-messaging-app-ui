@@ -131,10 +131,17 @@ const Chats = ({ user, handleNewChatPress }) => {
     console.log("Delete chats button pressed!");
     console.log("Chosen chat ids:", chosenChatIds);
 
-    setIsLoading(true);
+    if (!chosenChatIds.length) {
+      notifyMessage.show({
+        content: "No chats selected!",
+        isError: true,
+      });
+      return;
+    }
 
     try {
       setSelectChatsView(false);
+      setIsLoading(true);
       await leaveGroupChats({
         variables: {
           chatIds: chosenChatIds,
@@ -166,26 +173,28 @@ const Chats = ({ user, handleNewChatPress }) => {
           <LoadingIcon />
         </View>
       ) : (
-        <ChatsList
-          user={user}
-          data={data?.allChatsByUser}
-          selectChatsView={selectChatsView}
-          chosenChatIds={chosenChatIds}
-          setChosenChatIds={setChosenChatIds}
-        />
+        <>
+          <ChatsList
+            user={user}
+            data={data?.allChatsByUser}
+            selectChatsView={selectChatsView}
+            chosenChatIds={chosenChatIds}
+            setChosenChatIds={setChosenChatIds}
+          />
+
+          <RemoveChatsWindow
+            selectChatsView={selectChatsView}
+            handleRemoveChats={() =>
+              confirmAlert(
+                "Remove Chats?",
+                "Are you sure you want to remove these chats?",
+                handleRemoveChats
+              )
+            }
+          />
+        </>
       )}
       {user && <Menu />}
-      {selectChatsView && (
-        <RemoveChatsWindow
-          handleRemoveChats={() =>
-            confirmAlert(
-              "Remove Chats?",
-              "Are you sure you want to remove these chats?",
-              handleRemoveChats
-            )
-          }
-        />
-      )}
       {isLoading && (
         <LoadingIconWithOverlay loadingMessage={"Removing chats..."} />
       )}
