@@ -64,6 +64,12 @@ export const LEFT_GROUP_CHAT = gql`
   }
 `;
 
+export const LEFT_GROUP_CHATS = gql`
+  subscription LeftChats {
+    leftGroupChats
+  }
+`;
+
 export const CONTACTS_ADDED = gql`
   subscription ContactsAdded {
     contactsAdded {

@@ -6,6 +6,7 @@ import {
   PARTICIPANTS_ADDED_TO_GROUP_CHAT,
   PARTICIPANTS_REMOVED_FROM_GROUP_CHAT,
   LEFT_GROUP_CHAT,
+  LEFT_GROUP_CHATS,
   CONTACTS_ADDED,
   CONTACT_BLOCKED,
   CONTACT_REMOVED,
@@ -19,7 +20,6 @@ import {
 } from "../graphql/queries";
 
 import { useApolloClient, useSubscription } from "@apollo/client";
-import { EDIT_CHAT } from "../graphql/mutations";
 
 const useSubscriptions = (user) => {
   const client = useApolloClient();
@@ -303,6 +303,37 @@ const useSubscriptions = (user) => {
           return {
             allChatsByUser: allChatsByUser
               .filter((chat) => chat.id !== leftGroupChatId)
+              .sort((a, b) => {
+                if (!a.messages.length) return 1;
+
+                if (!b.messages.length) return -1;
+
+                return (
+                  new Date(b.messages[0].createdAt) -
+                  new Date(a.messages[0].createdAt)
+                );
+              }),
+          };
+        }
+      );
+    },
+  });
+
+  // When using this hook for the first time Apollo-client throws a console warning: "JSON Parse error: Unterminated string",
+  // unable to find the cause of this warning right now.
+  useSubscription(LEFT_GROUP_CHATS, {
+    onData: ({ data }) => {
+      console.log("Use LEFT_GROUP_CHATS-subscription:");
+      const leftGroupChatIds = data.data.leftGroupChats;
+      client.cache.updateQuery(
+        {
+          query: GET_CHATS_BY_USER,
+          variables: { userId: user.id, searchByTitle: "" },
+        },
+        ({ allChatsByUser }) => {
+          return {
+            allChatsByUser: allChatsByUser
+              .filter((chat) => !leftGroupChatIds.includes(chat.id))
               .sort((a, b) => {
                 if (!a.messages.length) return 1;
 
