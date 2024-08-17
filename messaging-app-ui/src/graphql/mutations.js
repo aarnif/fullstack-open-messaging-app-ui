@@ -103,6 +103,12 @@ export const LEAVE_GROUP_CHAT = gql`
   }
 `;
 
+export const LEAVE_GROUP_CHATS = gql`
+  mutation LeaveGroupChats($chatIds: [ID!]!) {
+    leaveGroupChats(chatIds: $chatIds)
+  }
+`;
+
 export const ADD_CONTACTS = gql`
   mutation AddContacts($contacts: [ID!]!) {
     addContacts(contacts: $contacts) {
