@@ -15,9 +15,9 @@ const formatMessageTime = (latestMessageTime, is24HourClock = true) => {
   }
 };
 
-const sliceLatestMessage = (latestMessage) =>
-  latestMessage.length > 30
-    ? latestMessage.slice(0, 30) + "..."
+const sliceLatestMessage = (latestMessage, characterCount = 20) =>
+  latestMessage.length > characterCount
+    ? latestMessage.slice(0, characterCount) + "..."
     : latestMessage;
 
 const newMessagesCount = (user, messages) =>
