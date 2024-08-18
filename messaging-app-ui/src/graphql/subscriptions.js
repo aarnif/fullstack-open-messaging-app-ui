@@ -58,12 +58,6 @@ export const PARTICIPANTS_REMOVED_FROM_GROUP_CHAT = gql`
   ${CHAT_DETAILS}
 `;
 
-export const LEFT_GROUP_CHAT = gql`
-  subscription LeftChat {
-    leftGroupChat
-  }
-`;
-
 export const LEFT_GROUP_CHATS = gql`
   subscription LeftChats {
     leftGroupChats

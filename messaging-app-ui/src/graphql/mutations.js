@@ -97,12 +97,6 @@ export const REMOVE_CHAT_MEMBERS = gql`
   ${CHAT_DETAILS}
 `;
 
-export const LEAVE_GROUP_CHAT = gql`
-  mutation LeaveGroupChat($chatId: ID!) {
-    leaveGroupChat(chatId: $chatId)
-  }
-`;
-
 export const LEAVE_GROUP_CHATS = gql`
   mutation LeaveGroupChats($chatIds: [ID!]!) {
     leaveGroupChats(chatIds: $chatIds)

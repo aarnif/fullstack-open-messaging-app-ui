@@ -5,7 +5,6 @@ import {
   MESSAGES_IN_CHAT_READ,
   PARTICIPANTS_ADDED_TO_GROUP_CHAT,
   PARTICIPANTS_REMOVED_FROM_GROUP_CHAT,
-  LEFT_GROUP_CHAT,
   LEFT_GROUP_CHATS,
   CONTACTS_ADDED,
   CONTACT_BLOCKED,
@@ -272,37 +271,6 @@ const useSubscriptions = (user) => {
               .map((chat) => {
                 return chat.id === updatedChat.id ? { ...updatedChat } : chat;
               })
-              .sort((a, b) => {
-                if (!a.messages.length) return 1;
-
-                if (!b.messages.length) return -1;
-
-                return (
-                  new Date(b.messages[0].createdAt) -
-                  new Date(a.messages[0].createdAt)
-                );
-              }),
-          };
-        }
-      );
-    },
-  });
-
-  // When using this hook for the first time Apollo-client throws a console warning: "JSON Parse error: Unterminated string",
-  // unable to find the cause of this warning right now.
-  useSubscription(LEFT_GROUP_CHAT, {
-    onData: ({ data }) => {
-      console.log("Use LEFT_GROUP_CHAT-subscription:");
-      const leftGroupChatId = data.data.leftGroupChat;
-      client.cache.updateQuery(
-        {
-          query: GET_CHATS_BY_USER,
-          variables: { userId: user.id, searchByTitle: "" },
-        },
-        ({ allChatsByUser }) => {
-          return {
-            allChatsByUser: allChatsByUser
-              .filter((chat) => chat.id !== leftGroupChatId)
               .sort((a, b) => {
                 if (!a.messages.length) return 1;
 

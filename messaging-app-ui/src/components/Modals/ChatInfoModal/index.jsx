@@ -1,4 +1,4 @@
-import { LEAVE_GROUP_CHAT } from "../../../graphql/mutations";
+import { LEAVE_GROUP_CHATS } from "../../../graphql/mutations";
 import useNotifyMessage from "../../../hooks/useNotifyMessage.js";
 import ImageViewModal from "../ImageViewModal/index.jsx";
 import EditChatModal from "../EditChatModal/index.jsx";
@@ -26,7 +26,7 @@ const ChatInfoModal = ({
   const [showEditChat, setShowEditChat] = useState(false);
 
   const [showImageViewModal, setShowImageViewModal] = useState(false);
-  const [mutate] = useMutation(LEAVE_GROUP_CHAT, {
+  const [mutate] = useMutation(LEAVE_GROUP_CHATS, {
     onError: (error) => {
       console.log(error.graphQLErrors[0].message);
     },
@@ -42,7 +42,9 @@ const ChatInfoModal = ({
     console.log("Leave group chat:", chat.title);
     try {
       await mutate({
-        variables: { chatId: chat.id, participantId: user.id },
+        variables: {
+          chatIds: [chat.id],
+        },
       });
       console.log("Left group chat:", chat.title);
       navigate("/chats");
