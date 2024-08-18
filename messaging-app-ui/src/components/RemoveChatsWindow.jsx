@@ -3,15 +3,23 @@ import { useSpring, animated } from "@react-spring/native";
 
 const RemoveChatsWindow = ({ selectChatsView, handleRemoveChats }) => {
   const props = useSpring({
-    from: { translateY: selectChatsView ? 200 : 0 },
-    to: { translateY: selectChatsView ? 0 : 200 },
+    from: {
+      translateY: selectChatsView ? 200 : 0,
+      opacity: selectChatsView ? 0 : 1,
+    },
+    to: {
+      translateY: selectChatsView ? 0 : 200,
+      opacity: selectChatsView ? 1 : 0,
+    },
   });
 
   return (
     <animated.View
       style={{
         transform: [{ translateY: props.translateY }],
+        opacity: props.opacity,
         zIndex: 100,
+        marginTop: "auto",
       }}
       className="bg-slate-300 shadow-lg dark:bg-slate-600"
     >
@@ -23,7 +31,7 @@ const RemoveChatsWindow = ({ selectChatsView, handleRemoveChats }) => {
         dark:border-slate-500 dark:bg-slate-500"
           >
             <Text className="ml-2 text-xl font-bold text-slate-700 dark:text-slate-200">
-              Delete Chats
+              Remove Chats
             </Text>
           </Pressable>
         </View>
