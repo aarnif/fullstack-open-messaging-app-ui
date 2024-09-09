@@ -27,6 +27,7 @@ export default {
   },
   extra: {
     apolloUri: process.env.APOLLO_URI,
+    wsUri: process.env.WS_URI,
     imgbbApikey: process.env.IMGBB_API_KEY,
   },
   plugins: [

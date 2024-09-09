@@ -27,7 +27,7 @@ const getContext = async (authStorage) => {
 const createWsLink = (authStorage) =>
   new GraphQLWsLink(
     createClient({
-      url: "ws://localhost:4000",
+      url: Constants.expoConfig.extra.wsUri,
       connectionParams: async () => {
         return await getContext(authStorage);
       },
