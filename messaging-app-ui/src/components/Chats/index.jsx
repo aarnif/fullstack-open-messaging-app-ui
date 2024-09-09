@@ -98,7 +98,6 @@ const Chats = ({ user, handleNewChatPress }) => {
 
   const { data, loading } = useQuery(GET_CHATS_BY_USER, {
     variables: {
-      userId: user.id,
       searchByTitle: debouncedSearchByTitle,
     },
   });

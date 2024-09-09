@@ -98,8 +98,8 @@ export const GET_USER_BY_ID = gql`
 `;
 
 export const GET_CHATS_BY_USER = gql`
-  query AllChatsByUser($userId: ID!, $searchByTitle: String) {
-    allChatsByUser(userId: $userId, searchByTitle: $searchByTitle) {
+  query AllChatsByUser($searchByTitle: String) {
+    allChatsByUser(searchByTitle: $searchByTitle) {
       ...ChatDetails
     }
   }
